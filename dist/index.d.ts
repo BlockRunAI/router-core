@@ -1,0 +1,393 @@
+/**
+ * Model-performance priors consumed by the portfolio router.
+ *
+ * The entries below are a small, auditable seed extracted from the 2026-03-16
+ * BlockRun performance run.  They are deliberately weak priors: live data
+ * injected by the host should replace them through configuration before a
+ * release. Historical numbers must never be presented as a current
+ * provider SLA or as task-quality measurements.
+ */
+type ModelPerformanceProfile = {
+    measuredAt: string;
+    /** Gateway end-to-end latency for the benchmark workload. */
+    latencyMs: number;
+    /** Tail latency is more relevant than mean latency for urgent requests. */
+    p95LatencyMs?: number;
+    outputTokensPerSecond: number;
+    /** External intelligence index when one was available; not task success. */
+    intelligenceIndex?: number;
+    /** Failure fraction observed in the same benchmark run. */
+    errorRate?: number;
+    /** Number of sampled calls behind the observation. */
+    samples?: number;
+};
+declare const LIVE_MODEL_PROFILES: Readonly<Record<string, ModelPerformanceProfile>>;
+declare const HISTORICAL_MODEL_PROFILES: Readonly<Record<string, ModelPerformanceProfile>>;
+
+/**
+ * Model capabilities used for hard routing constraints.
+ *
+ * Hosts may inject fresher values through RouterOptions.modelCapabilities.
+ * Keeping a small built-in snapshot makes the core safe and useful when a
+ * product catalog is temporarily unavailable, without importing product code.
+ */
+type ModelCapabilities = {
+    contextWindow: number;
+    maxOutputTokens: number;
+    supportsTools: boolean;
+    supportsVision: boolean;
+};
+declare const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabilities>>;
+
+/**
+ * Tier → Model Selection
+ *
+ * Maps a classification tier to the cheapest capable model.
+ * Builds RoutingDecision metadata with cost estimates and savings.
+ */
+
+type ModelPricing = {
+    inputPrice: number;
+    outputPrice: number;
+    /** Active promo flat price per request (overrides token-based pricing when set) */
+    flatPrice?: number;
+};
+/**
+ * Get the ordered fallback chain for a tier: [primary, ...fallbacks].
+ */
+declare function getFallbackChain(tier: Tier, tierConfigs: Record<Tier, TierConfig>): string[];
+declare function calculateModelCost(model: string, modelPricing: Map<string, ModelPricing>, estimatedInputTokens: number, maxOutputTokens: number, routingProfile?: "free" | "eco" | "auto" | "premium"): {
+    costEstimate: number;
+    baselineCost: number;
+    savings: number;
+};
+/**
+ * Filter a model list to only those that support tool calling.
+ * When hasTools is false, returns the list unchanged.
+ * When all models lack tool calling support, returns the full list as a fallback
+ * (better to let the API error than produce an empty chain).
+ */
+declare function filterByToolCalling(models: string[], hasTools: boolean, supportsToolCalling: (modelId: string) => boolean): string[];
+/**
+ * Filter a model list to only those that support vision (image inputs).
+ * When hasVision is false, returns the list unchanged.
+ * When all models lack vision support, returns the full list as a fallback
+ * (better to let the API error than produce an empty chain).
+ */
+declare function filterByVision(models: string[], hasVision: boolean, supportsVision: (modelId: string) => boolean): string[];
+/**
+ * Filter a model list to remove user-excluded models.
+ * When all models are excluded, returns the full list as a fallback
+ * (same safety pattern as filterByToolCalling/filterByVision).
+ */
+declare function filterByExcludeList(models: string[], excludeList: Set<string>): string[];
+/**
+ * Get the fallback chain filtered by context length.
+ * Only returns models that can handle the estimated total context.
+ *
+ * @param tier - The tier to get fallback chain for
+ * @param tierConfigs - Tier configurations
+ * @param estimatedTotalTokens - Estimated total context (input + output)
+ * @param getContextWindow - Function to get context window for a model ID
+ * @returns Filtered list of models that can handle the context
+ */
+declare function getFallbackChainFiltered(tier: Tier, tierConfigs: Record<Tier, TierConfig>, estimatedTotalTokens: number, getContextWindow: (modelId: string) => number | undefined): string[];
+/**
+ * Filter an already-ranked candidate list by total context and requested output.
+ * Unlike the legacy tier helper, this supports the V3 portfolio order.
+ */
+declare function filterCandidatesByCapacity(models: string[], estimatedInputTokens: number, requestedOutputTokens: number, getCapabilities: (modelId: string) => {
+    contextWindow: number;
+    maxOutput: number;
+} | undefined): string[];
+
+/**
+ * Smart Router Types
+ *
+ * Four classification tiers — REASONING is distinct from COMPLEX because
+ * reasoning tasks need different models (o3, gemini-pro) than general
+ * complex tasks (gpt-4o, sonnet-4).
+ *
+ * Scoring uses weighted float dimensions with sigmoid confidence calibration.
+ */
+type Tier = "SIMPLE" | "MEDIUM" | "COMPLEX" | "REASONING";
+type ScoringResult = {
+    score: number;
+    tier: Tier | null;
+    confidence: number;
+    signals: string[];
+    agenticScore?: number;
+    dimensions?: Array<{
+        name: string;
+        score: number;
+        signal: string | null;
+    }>;
+};
+type RoutingDecision = {
+    model: string;
+    tier: Tier;
+    confidence: number;
+    method: "rules" | "llm" | "portfolio";
+    reasoning: string;
+    costEstimate: number;
+    baselineCost: number;
+    savings: number;
+    agenticScore?: number;
+    /** Which tier configs were used (auto/eco/premium/agentic) — avoids re-derivation in the host */
+    tierConfigs?: Record<Tier, TierConfig>;
+    /** Which routing profile was applied */
+    profile?: "auto" | "eco" | "premium" | "agentic";
+    /** Ordered, capability-eligible candidates. The first entry is `model`. */
+    candidates?: string[];
+    /** Explainable request classification used by the portfolio router. */
+    taskType?: TaskType;
+    /** Router implementation that made the selection. */
+    routerVersion?: "v2-rules" | "v3-portfolio";
+    /** Explainable local portfolio score breakdown, ordered with `candidates`. */
+    candidateScores?: Array<{
+        model: string;
+        score: number;
+        quality: number;
+        cost: number;
+        speed: number;
+        reliability: number;
+    }>;
+};
+type TaskType = "chat" | "extraction" | "code_edit" | "code_agent" | "tool_agent" | "tool_agent_parallel" | "debug" | "reasoning" | "reasoning_mcq" | "reasoning_math" | "long_context" | "vision";
+interface RouterStrategy {
+    readonly name: string;
+    route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
+}
+type RouterOptions = {
+    config: RoutingConfig;
+    modelPricing: Map<string, ModelPricing>;
+    /**
+     * Host-provided model capability snapshot. Values override the core's
+     * built-in snapshot, so products can track catalog changes independently.
+     */
+    modelCapabilities?: Readonly<Record<string, ModelCapabilities>>;
+    routingProfile?: "eco" | "auto" | "premium";
+    hasTools?: boolean;
+    /** Number of tool definitions visible to the model on this turn. */
+    toolCount?: number;
+    /** Local tool identifiers, used only for request/tool intent matching. */
+    toolNames?: readonly string[];
+    /** Tools are attached by the host and this specific turn needs to use them. */
+    requiresTools?: boolean;
+    hasVision?: boolean;
+    /** OpenAI `response_format` / JSON schema requires reliable structured output. */
+    requiresStructuredOutput?: boolean;
+    /** Override current time for promotion window checks (for testing). Default: new Date() */
+    now?: Date;
+    /**
+     * Fresh gateway performance observations. Injected rather than fetched on
+     * the hot path; omitted entries fall back to a weak historical prior.
+     */
+    modelPerformance?: Readonly<Record<string, ModelPerformanceProfile>>;
+};
+type TierConfig = {
+    primary: string;
+    fallback: string[];
+};
+type ScoringConfig = {
+    tokenCountThresholds: {
+        simple: number;
+        complex: number;
+    };
+    codeKeywords: string[];
+    reasoningKeywords: string[];
+    simpleKeywords: string[];
+    technicalKeywords: string[];
+    creativeKeywords: string[];
+    imperativeVerbs: string[];
+    constraintIndicators: string[];
+    outputFormatKeywords: string[];
+    referenceKeywords: string[];
+    negationKeywords: string[];
+    domainSpecificKeywords: string[];
+    agenticTaskKeywords: string[];
+    dimensionWeights: Record<string, number>;
+    tierBoundaries: {
+        simpleMedium: number;
+        mediumComplex: number;
+        complexReasoning: number;
+    };
+    confidenceSteepness: number;
+    confidenceThreshold: number;
+};
+type ClassifierConfig = {
+    llmModel: string;
+    llmMaxTokens: number;
+    llmTemperature: number;
+    promptTruncationChars: number;
+    cacheTtlMs: number;
+};
+type OverridesConfig = {
+    maxTokensForceComplex: number;
+    structuredOutputMinTier: Tier;
+    ambiguousDefaultTier: Tier;
+    /**
+     * When enabled, prefer models optimized for agentic workflows.
+     * Agentic models continue autonomously with multi-step tasks
+     * instead of stopping and waiting for user input.
+     */
+    agenticMode?: boolean;
+};
+/**
+ * Time-windowed promotion that temporarily overrides tier routing.
+ * Active promotions are auto-applied; expired ones are ignored at runtime.
+ */
+type Promotion = {
+    /** Human-readable label (e.g. "GLM-5 Launch Promo") */
+    name: string;
+    /** ISO date string, promotion starts (inclusive). e.g. "2026-04-01" */
+    startDate: string;
+    /** ISO date string, promotion ends (exclusive). e.g. "2026-04-15" */
+    endDate: string;
+    /** Partial tier overrides — merged into the active tier configs (primary/fallback) */
+    tierOverrides: Partial<Record<Tier, Partial<TierConfig>>>;
+    /** Which profiles this applies to. Default: all profiles. */
+    profiles?: Array<"auto" | "eco" | "premium" | "agentic">;
+};
+type RoutingConfig = {
+    version: string;
+    /** Enables a one-line rollback to the established V2 rules selector. */
+    strategy?: "rules" | "portfolio";
+    /**
+     * Locally recompute a comparison strategy without changing the model that
+     * actually serves the request. The host emits only decision metadata via
+     * `onShadowRouted`; it never persists prompt content or makes a second call.
+     */
+    shadow?: {
+        strategy: "rules" | "portfolio";
+        sampleRate?: number;
+    };
+    /** Calibratable local portfolio scoring weights; values are relative, not probabilities. */
+    portfolio?: {
+        auto: {
+            quality: number;
+            capability: number;
+            cost: number;
+            speed: number;
+            reliability: number;
+            legacy: number;
+        };
+        eco: {
+            quality: number;
+            capability: number;
+            cost: number;
+            speed: number;
+            reliability: number;
+            legacy: number;
+        };
+        premium: {
+            quality: number;
+            capability: number;
+            cost: number;
+            speed: number;
+            reliability: number;
+            legacy: number;
+        };
+        highStakesBoost: {
+            quality: number;
+            reliability: number;
+        };
+        latencySensitiveSpeedBoost: number;
+        /** A candidate materially below the best task affinity cannot win on cost alone. */
+        affinityFloorGap: {
+            auto: number;
+            eco: number;
+            premium: number;
+        };
+    };
+    classifier: ClassifierConfig;
+    scoring: ScoringConfig;
+    tiers: Record<Tier, TierConfig>;
+    /**
+     * Tier configs for agentic mode — models that excel at multi-step tasks.
+     * Set to `null` to disable agentic tier selection entirely (forces all
+     * requests through `tiers`, even when tools are present in the request).
+     */
+    agenticTiers?: Record<Tier, TierConfig> | null;
+    /** Tier configs for eco profile — ultra cost-optimized (blockrun/eco). `null` falls back to `tiers`. */
+    ecoTiers?: Record<Tier, TierConfig> | null;
+    /** Tier configs for premium profile — best quality (blockrun/premium). `null` falls back to `tiers`. */
+    premiumTiers?: Record<Tier, TierConfig> | null;
+    /** Time-windowed promotions that temporarily override tier routing */
+    promotions?: Promotion[];
+    overrides: OverridesConfig;
+};
+
+/**
+ * Router Strategy Registry
+ *
+ * Pluggable strategy system for request routing.
+ * Default: RulesStrategy — identical to the original inline route() logic, <1ms.
+ */
+
+/**
+ * Rules-based routing strategy.
+ * Extracted from the original route() in index.ts — logic is identical.
+ * Attaches tierConfigs and profile to the decision for downstream use.
+ */
+declare class RulesStrategy implements RouterStrategy {
+    readonly name = "rules";
+    route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
+}
+declare function getStrategy(name: string): RouterStrategy;
+declare function registerStrategy(strategy: RouterStrategy): void;
+
+/** Candidate router used for Auto. Rules still set the capability tier; V3 ranks within it. */
+declare class PortfolioStrategy implements RouterStrategy {
+    readonly name = "portfolio";
+    route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
+}
+
+/**
+ * Rule-Based Classifier (v2 — Weighted Scoring)
+ *
+ * Scores a request across 15 weighted dimensions and maps the aggregate
+ * score to a tier using configurable boundaries. Confidence is calibrated
+ * via sigmoid — low confidence triggers the fallback classifier.
+ *
+ * Handles 70-80% of requests in < 1ms with zero cost.
+ */
+
+declare function classifyByRules(prompt: string, systemPrompt: string | undefined, estimatedTokens: number, config: ScoringConfig): ScoringResult;
+
+/**
+ * Whether the request actually requires an external action/tool, as distinct
+ * from merely being sent by a host that exposes tools on every turn.
+ *
+ * The detector intentionally looks for action+target pairs. A generic factual
+ * or multiple-choice question must stay false even when the host attaches a
+ * large tool schema; otherwise every tool-enabled host turn is over-routed as
+ * an agent task and models may browse or mutate state unnecessarily.
+ */
+declare function inferToolRequirement(prompt: string, _systemPrompt?: string, toolChoice?: unknown): boolean;
+
+/**
+ * Default Routing Config
+ *
+ * All routing parameters as a TypeScript constant.
+ * Operators override via openclaw.yaml plugin config.
+ *
+ * Scoring uses 15 weighted dimensions with sigmoid confidence calibration.
+ */
+
+declare const DEFAULT_ROUTING_CONFIG: RoutingConfig;
+
+/**
+ * Smart Router Entry Point
+ *
+ * Classifies requests and routes to the cheapest capable model.
+ * Delegates to pluggable RouterStrategy (default: RulesStrategy, <1ms).
+ */
+
+/**
+ * Route a request to the cheapest capable model.
+ * Delegates to the configured strategy (PortfolioStrategy by default).
+ */
+declare function route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
+
+export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, calculateModelCost, classifyByRules, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };
