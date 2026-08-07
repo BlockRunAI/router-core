@@ -22,3 +22,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      # Consumers install this package straight from a commit tarball, which
+      # runs no build step — they execute the dist/ committed here. `npm run
+      # check` rebuilds it but never asserts the result matches what is
+      # checked in, so a change that edits source without rebuilding stays
+      # green and silently ships a stale artifact to every pinned consumer.
+      # One matrix leg is enough: the build output does not vary by Node major.
+      - name: Verify committed dist matches source
+        if: matrix.node == 20
+        run: git diff --exit-code -- dist
