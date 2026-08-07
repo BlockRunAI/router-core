@@ -1,0 +1,47 @@
+{
+  "name": "@blockrun/router-core",
+  "version": "0.1.0",
+  "description": "Deterministic, constraint-first model routing shared by BlockRun products.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test && npm run build",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run check"
+  },
+  "keywords": [
+    "llm",
+    "router",
+    "model-routing",
+    "blockrun"
+  ],
+  "author": "BlockRun <hello@blockrun.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlockRunAI/router-core.git"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.3"
+  }
+}

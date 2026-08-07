@@ -7,7 +7,7 @@
  * RouterBench evaluation before health telemetry / an optional judge are added.
  */
 
-import { BLOCKRUN_MODELS } from "../models.js";
+import { DEFAULT_MODEL_CAPABILITIES } from "./model-capabilities.js";
 import { getFallbackChain, selectModel } from "./selector.js";
 import { RulesStrategy } from "./strategy.js";
 import {
@@ -222,7 +222,7 @@ function classifyTask(
           : "other";
   // Distinguish a cheap lookup from a BrowseComp-like investigation. These
   // prompts require joining several clues, resolving an entity, and ending in
-  // one exact answer; full Franklin trajectories show that treating them as
+  // one exact answer; complete agent trajectories show that treating them as
   // ordinary search causes long, costly loops. This is request/tool-surface
   // evidence only and does not depend on a benchmark id or hidden answer.
   const clueConnectors =
@@ -512,7 +512,7 @@ function affinity(
           match(["gemini-3.5-flash"], 0.76),
         );
       }
-      // Seven valid full Franklin + official Terminal-Bench trajectories
+      // Seven valid full agent + official Terminal-Bench trajectories
       // (2026-07-28) gave GPT-5 Mini 4/7 resolved tasks versus 1/7 for the
       // prior dynamic code-agent choice. Its token-normalized total cost was
       // higher in this small calibration, so keep Codex and Sonnet's quality
@@ -556,7 +556,7 @@ function affinity(
         );
       }
       if (terminalToolSignal && terminalSafetySensitive) {
-        // Two complete Franklin observations on the public
+        // Two complete agent observations on the public
         // Terminal-Bench new-encrypt-command task ended in Codex repeating
         // the same TerminalExec input until the loop guard fired. Keep Codex
         // as an availability fallback, but below the safety-band affinity
@@ -802,7 +802,7 @@ function affinity(
       );
     case "reasoning_mcq":
       // RouterBench calibration (2026-07-28, six stratified GPQA Diamond
-      // tasks, identical Franklin adapter and 512-token budget): Gemini 3
+      // tasks, identical agent adapter and 512-token budget): Gemini 3
       // Flash Preview scored 5/6, Gemini 3.5 Flash 4/6, and Gemini 3.1 Pro
       // 3/6 while costing ~170x more than Flash. Keep the measured winner as
       // the narrow default; version recency alone is not a quality signal.
@@ -934,15 +934,20 @@ function evidenceCandidates(task: TaskType): string[] {
   return [];
 }
 
-function isEligible(modelId: string, features: TaskFeatures, maxOutputTokens: number): boolean {
-  const model = BLOCKRUN_MODELS.find((candidate) => candidate.id === modelId);
+function isEligible(
+  modelId: string,
+  features: TaskFeatures,
+  maxOutputTokens: number,
+  options: RouterOptions,
+): boolean {
+  const model = options.modelCapabilities?.[modelId] ?? DEFAULT_MODEL_CAPABILITIES[modelId];
   // Preserve compatibility for temporarily catalog-less fallback IDs. They are
   // kept behind known-model candidates but are not silently dropped.
   if (!model) return true;
-  if (features.needsTools && !model.toolCalling) return false;
-  if (features.needsVision && !model.vision) return false;
-  if (features.needsStructuredOutput && !model.toolCalling) return false;
-  if (model.maxOutput < maxOutputTokens) return false;
+  if (features.needsTools && !model.supportsTools) return false;
+  if (features.needsVision && !model.supportsVision) return false;
+  if (features.needsStructuredOutput && !model.supportsTools) return false;
+  if (model.maxOutputTokens < maxOutputTokens) return false;
   return model.contextWindow >= (features.estimatedInputTokens + maxOutputTokens) * 1.1;
 }
 
@@ -1021,7 +1026,9 @@ export class PortfolioStrategy implements RouterStrategy {
     const chain = [
       ...new Set([...configuredCandidates, ...evidenceCandidates(features.taskType)]),
     ].filter((model): model is string => typeof model === "string" && model.length > 0);
-    const eligible = chain.filter((model) => isEligible(model, features, maxOutputTokens));
+    const eligible = chain.filter((model) =>
+      isEligible(model, features, maxOutputTokens, options),
+    );
     const eligibleCandidates = eligible.length > 0 ? eligible : chain;
     if (eligibleCandidates.length === 0) return base;
     const profileName =
@@ -1079,7 +1086,7 @@ export class PortfolioStrategy implements RouterStrategy {
           Number.isFinite(cost) && maxCost > minCost
             ? 1 - (cost - minCost) / (maxCost - minCost)
             : 0.5;
-        const capabilityScore = isEligible(model, features, maxOutputTokens) ? 1 : 0;
+        const capabilityScore = isEligible(model, features, maxOutputTokens, options) ? 1 : 0;
         const profile = profileScore(model, options, now);
         // Fresh observations can refine affinity. Historical observations fade
         // quickly and never replace task-level RouterBench evidence.
@@ -1160,7 +1167,7 @@ export class PortfolioStrategy implements RouterStrategy {
       ...tierConfigs,
       [targetTier]: { primary: model, fallback: ranked.slice(1) },
     };
-    // selectModel only reads the selected tier; retain the complete tier map for proxy fallback.
+    // selectModel only reads the selected tier; retain the complete tier map for host fallback.
     const decision = selectModel(
       targetTier,
       base.confidence,

@@ -29,7 +29,7 @@ export type RoutingDecision = {
   baselineCost: number;
   savings: number; // 0-1 percentage
   agenticScore?: number; // 0-1 agentic task score (present when tier routing used)
-  /** Which tier configs were used (auto/eco/premium/agentic) — avoids re-derivation in proxy */
+  /** Which tier configs were used (auto/eco/premium/agentic) — avoids re-derivation in the host */
   tierConfigs?: Record<Tier, TierConfig>;
   /** Which routing profile was applied */
   profile?: "auto" | "eco" | "premium" | "agentic";
@@ -77,6 +77,13 @@ export interface RouterStrategy {
 export type RouterOptions = {
   config: RoutingConfig;
   modelPricing: Map<string, import("./selector.js").ModelPricing>;
+  /**
+   * Host-provided model capability snapshot. Values override the core's
+   * built-in snapshot, so products can track catalog changes independently.
+   */
+  modelCapabilities?: Readonly<
+    Record<string, import("./model-capabilities.js").ModelCapabilities>
+  >;
   routingProfile?: "eco" | "auto" | "premium";
   hasTools?: boolean;
   /** Number of tool definitions visible to the model on this turn. */
@@ -174,7 +181,7 @@ export type RoutingConfig = {
   strategy?: "rules" | "portfolio";
   /**
    * Locally recompute a comparison strategy without changing the model that
-   * actually serves the request. The proxy emits only decision metadata via
+   * actually serves the request. The host emits only decision metadata via
    * `onShadowRouted`; it never persists prompt content or makes a second call.
    */
   shadow?: { strategy: "rules" | "portfolio"; sampleRate?: number };

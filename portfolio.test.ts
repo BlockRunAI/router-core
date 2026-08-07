@@ -925,4 +925,23 @@ describe("PortfolioStrategy", () => {
     expect(decision.method).toBe("rules");
     expect(decision.model).toBe("");
   });
+
+  it("lets a host capability snapshot override the built-in catalog", () => {
+    const decision = route("Use the lookup_order tool for order B-42.", undefined, 256, {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+      hasTools: true,
+      requiresTools: true,
+      modelCapabilities: {
+        "anthropic/claude-sonnet-5": {
+          contextWindow: 1_000_000,
+          maxOutputTokens: 128_000,
+          supportsTools: false,
+          supportsVision: true,
+        },
+      },
+    });
+
+    expect(decision.candidates).not.toContain("anthropic/claude-sonnet-5");
+  });
 });

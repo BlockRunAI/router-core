@@ -28,6 +28,9 @@ export function route(
 }
 
 export { getStrategy, registerStrategy } from "./strategy.js";
+export { RulesStrategy } from "./strategy.js";
+export { PortfolioStrategy } from "./portfolio.js";
+export { classifyByRules } from "./rules.js";
 export { inferToolRequirement } from "./tool-intent.js";
 export {
   getFallbackChain,
@@ -39,6 +42,8 @@ export {
   calculateModelCost,
 } from "./selector.js";
 export { DEFAULT_ROUTING_CONFIG } from "./config.js";
+export { DEFAULT_MODEL_CAPABILITIES } from "./model-capabilities.js";
+export { LIVE_MODEL_PROFILES, HISTORICAL_MODEL_PROFILES } from "./model-profiles.js";
 export type {
   RoutingDecision,
   Tier,
@@ -48,3 +53,5 @@ export type {
   RouterStrategy,
 } from "./types.js";
 export type { ModelPricing } from "./selector.js";
+export type { ModelCapabilities } from "./model-capabilities.js";
+export type { ModelPerformanceProfile } from "./model-profiles.js";

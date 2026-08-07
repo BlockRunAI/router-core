@@ -4,7 +4,7 @@
  *
  * The detector intentionally looks for action+target pairs. A generic factual
  * or multiple-choice question must stay false even when the host attaches a
- * large tool schema; otherwise every Franklin/OpenClaw turn is over-routed as
+ * large tool schema; otherwise every tool-enabled host turn is over-routed as
  * an agent task and models may browse or mutate state unnecessarily.
  */
 export function inferToolRequirement(
