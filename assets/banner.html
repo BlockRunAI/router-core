@@ -1,0 +1,83 @@
+<!--
+  Source for assets/banner.png (2560x608, rendered at 1280x304 @2x).
+
+  Matches the ClawRouter family banner: white ground, emoji + wordmark, a
+  tagline whose key phrase is bold, and the BlockRun attribution small and
+  grey in the bottom-right. Graphite wordmark with a ClawRouter-red "core"
+  says "shared foundation of that family" without borrowing any one product's
+  identity outright.
+
+  Deliberately carries no savings figure, model count, or product list: a PNG
+  can't be kept in step by scripts/sync-brand-numbers.mjs, which is how the old
+  ClawRouter banner ended up advertising "Save 78%" long after the published
+  number moved to 87%.
+
+  Regenerate:
+    B=~/.claude/skills/gstack/browse/dist/browse
+    $B viewport 1280x304 --scale 2
+    $B load-html assets/banner.html
+    $B screenshot assets/banner.png --selector '#banner'
+-->
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    background: #fff;
+  }
+  #banner {
+    width: 1280px;
+    height: 304px;
+    background: #fff;
+    position: relative;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .wordmark {
+    font-size: 66px;
+    font-weight: 700;
+    letter-spacing: -1.2px;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: #16181d;
+  }
+  .wordmark .compass {
+    font-size: 58px;
+    vertical-align: 2px;
+    margin-right: 14px;
+  }
+  .wordmark .core {
+    color: #cc2028;
+  }
+  .tagline {
+    margin-top: 22px;
+    font-size: 27px;
+    font-weight: 400;
+    color: #2f3237;
+    letter-spacing: -0.2px;
+  }
+  .tagline b {
+    font-weight: 600;
+    color: #16181d;
+  }
+  .credit {
+    position: absolute;
+    right: 30px;
+    bottom: 18px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8a8f96;
+  }
+</style>
+
+<div id="banner">
+  <div class="wordmark"><span class="compass">🧭</span>router<span class="core">-core</span></div>
+  <div class="tagline"><b>Hard constraints first.</b> Then the cheapest model that can finish.</div>
+  <div class="credit">brought to you by BlockRun.AI</div>
+</div>
