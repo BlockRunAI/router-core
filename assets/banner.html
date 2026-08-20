@@ -2,30 +2,34 @@
   Source for assets/banner.png (2560x608, rendered at 1280x304 @2x).
 
   Family conventions kept: white ground, emoji + wordmark, a tagline whose key
-  phrase is bold, and the BlockRun attribution small and grey. The wordmark is
-  graphite with a ClawRouter-red "core" — the shared foundation of that family,
-  without borrowing any one product's identity outright.
+  phrase is bold, and the BlockRun attribution small and grey in the
+  bottom-right. The wordmark is graphite with a ClawRouter-red "core" — the
+  shared foundation of that family, without borrowing any one product's
+  identity outright.
 
-  Two deliberate departures from the ClawRouter/Hermes/dsh banners, both
-  forced by banner-art.png: the block is left-aligned rather than centred so
-  the artwork owns the right half, and the credit moves to the bottom-left
-  because the artwork's own bottom-right corner is not empty.
+  The one departure is that the block is left-aligned rather than centred,
+  because the banner's job here is to name the relationship, not just the
+  package: the wordmark is itself the root of the graph to its right. A
+  reader who has never heard of router-core should learn in one glance that
+  ClawRouter, Franklin, Hermes and dsh-clawrouter all run on it.
 
-  banner-art.png is generated (openai/gpt-image-2) and deliberately carries no
-  text, so it never needs regenerating when a number moves. It illustrates the
-  actual routing model: many candidate paths enter, successive constraint
-  gates eliminate most of them, one qualified path comes out the far side.
+  The 4.2:1 banner is why this graph runs left-to-right while the README's
+  ecosystem figure runs top-down. Same content, and the same connector
+  grammar: solid means the package carries this engine itself, dashed means
+  it reaches the engine through the package to its left.
 
-  Deliberately carries no savings figure, model count or product list: a PNG
-  can't be kept in step by scripts/sync-brand-numbers.mjs, which is how the old
-  ClawRouter banner ended up advertising "Save 78%" long after the published
-  number moved to 87%.
+  Deliberately carries no savings figure or model count: a PNG can't be kept
+  in step by scripts/sync-brand-numbers.mjs, which is how the old ClawRouter
+  banner ended up advertising "Save 78%" long after the published number
+  moved to 87%. Product names are safe — those change on a timescale where
+  redrawing the banner is the smallest part of the work.
 
-  Regenerate:
+  Regenerate (goto, not load-html: load-html leaves the page without a base
+  URL, and anything this file references would silently resolve to nothing):
     B=~/.claude/skills/gstack/browse/dist/browse
     $B viewport 1280x304 --scale 2
-    $B load-html assets/banner.html
-    $B screenshot assets/banner.png --selector '#banner'
+    $B goto "file://$PWD/assets/banner.html"
+    $B screenshot assets/banner.png '#banner'
 -->
 <style>
   * {
@@ -47,68 +51,156 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Pre-cropped to its own content, so it is placed rather than object-fit:
-     the only crop is the ~12% of outer fan tips lost top and bottom, which
-     keeps the linework at a readable scale. */
-  .art {
+  .wires {
     position: absolute;
-    top: -18px;
-    right: 48px;
-    height: 340px;
-    width: auto;
+    inset: 0;
   }
 
+  /* ── the wordmark doubles as the root node of the graph ──────────────── */
   .block {
     position: absolute;
-    left: 88px;
-    top: 50%;
+    left: 64px;
+    top: 152px;
     transform: translateY(-50%);
   }
   .wordmark {
-    font-size: 56px;
+    font-size: 50px;
     font-weight: 700;
-    letter-spacing: -1.1px;
+    letter-spacing: -1px;
     line-height: 1.1;
     white-space: nowrap;
     color: #16181d;
   }
   .wordmark .compass {
-    font-size: 48px;
+    font-size: 43px;
     vertical-align: 1px;
-    margin-right: 12px;
+    margin-right: 11px;
   }
   .wordmark .core {
     color: #cc2028;
   }
   .tagline {
-    margin-top: 20px;
-    font-size: 22px;
+    margin-top: 16px;
+    font-size: 18px;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.45;
     color: #2f3237;
     letter-spacing: -0.1px;
+    white-space: nowrap;
   }
   .tagline b {
     font-weight: 600;
     color: #16181d;
   }
 
+  /* ── product chips ───────────────────────────────────────────────────── */
+  .chip {
+    position: absolute;
+    height: 56px;
+    background: #f5f7f9;
+    border-radius: 8px;
+    padding-left: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .chip .name {
+    font-size: 15.5px;
+    line-height: 19px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #16181d;
+    white-space: nowrap;
+  }
+  .chip .name .ico {
+    font-size: 14px;
+    margin-right: 7px;
+    vertical-align: 0.5px;
+  }
+  .chip .role {
+    margin-top: 2px;
+    font-size: 11px;
+    line-height: 14px;
+    color: #767c85;
+    white-space: nowrap;
+  }
+  /* Column A carries the engine itself; column B reaches it through column A,
+     so it is narrower and one shade lighter. */
+  .a {
+    left: 540px;
+    width: 330px;
+  }
+  .b {
+    left: 930px;
+    width: 310px;
+    background: #f9fafb;
+  }
+
   .credit {
     position: absolute;
-    left: 90px;
-    bottom: 20px;
-    font-size: 14px;
+    right: 34px;
+    bottom: 16px;
+    font-size: 13px;
     font-weight: 700;
     color: #9aa0a8;
   }
 </style>
 
 <div id="banner">
-  <img class="art" src="banner-art.png" alt="" />
+  <!-- Rows: 47 ClawRouter · 117 Franklin · 187 @blockrun/llm · 257 blockrun-llm.
+       Column B hangs off rows 1 and 3, the two packages it routes through. -->
+  <svg class="wires" viewBox="0 0 1280 304">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5"
+              markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#c4cad3"/>
+      </marker>
+    </defs>
+    <g stroke="#c4cad3" fill="none" stroke-linecap="round">
+      <g stroke-width="1.6">
+        <path d="M 452 152 L 492 152"/>
+        <path d="M 492 47 L 492 257"/>
+        <path d="M 492 47 L 533 47"   marker-end="url(#ah)"/>
+        <path d="M 492 117 L 533 117" marker-end="url(#ah)"/>
+        <path d="M 492 187 L 533 187" marker-end="url(#ah)"/>
+        <path d="M 492 257 L 533 257" marker-end="url(#ah)"/>
+      </g>
+      <g stroke-width="1.4" stroke-dasharray="4 4">
+        <path d="M 870 47 L 923 47"   marker-end="url(#ah)"/>
+        <path d="M 870 187 L 923 187" marker-end="url(#ah)"/>
+      </g>
+    </g>
+  </svg>
 
   <div class="block">
     <div class="wordmark"><span class="compass">🧭</span>router<span class="core">-core</span></div>
-    <div class="tagline"><b>Hard constraints first.</b><br />Then the cheapest model that can finish.</div>
+    <div class="tagline"><b>One engine</b>, shared by all of them.</div>
+  </div>
+
+  <div class="chip a" style="top: 19px">
+    <div class="name"><span class="ico">🦞</span>ClawRouter</div>
+    <div class="role">OpenClaw plugin · proxy · CLI</div>
+  </div>
+  <div class="chip a" style="top: 89px">
+    <div class="name"><span class="ico">💵</span>Franklin</div>
+    <div class="role">the agent with a wallet</div>
+  </div>
+  <div class="chip a" style="top: 159px">
+    <div class="name"><span class="ico">📦</span>@blockrun/llm</div>
+    <div class="role">TypeScript SDK</div>
+  </div>
+  <div class="chip a" style="top: 229px">
+    <div class="name"><span class="ico">🐍</span>blockrun-llm</div>
+    <div class="role">Python SDK · line-by-line port</div>
+  </div>
+
+  <div class="chip b" style="top: 19px">
+    <div class="name"><span class="ico">🏛️</span>ClawRouter-Hermes</div>
+    <div class="role">Hermes agent plugin</div>
+  </div>
+  <div class="chip b" style="top: 159px">
+    <div class="name"><span class="ico">🛡️</span>dsh-clawrouter</div>
+    <div class="role">DeepSeek Harness plugin</div>
   </div>
 
   <div class="credit">brought to you by BlockRun.AI</div>

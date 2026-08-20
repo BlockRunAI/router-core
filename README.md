@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="router-core — hard constraints first, then the cheapest model that can finish" width="600">
+<img src="assets/banner.png" alt="router-core — one engine, shared by ClawRouter, Franklin, @blockrun/llm, blockrun-llm, ClawRouter-Hermes and dsh-clawrouter" width="820">
 
 <h1>The routing engine underneath every BlockRun product</h1>
 
@@ -45,12 +45,7 @@ The **constraint-first** ordering is the design commitment worth naming: hard re
 
 ## Who runs this engine
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/ecosystem-dark.png">
-  <img alt="router-core is a commit-pinned npm dependency of ClawRouter, Franklin and @blockrun/llm, and is carried into the Python SDK as a line-by-line port. ClawRouter-Hermes reaches it by spawning the ClawRouter proxy; dsh-clawrouter reaches it through @blockrun/llm." src="assets/ecosystem-light.png" width="100%">
-</picture>
-
-A solid line means the package carries this engine itself. A dashed line means it reaches the engine through the package above it.
+The banner above is the shape of it; the mechanism differs per package, and that difference is what decides how an upgrade propagates.
 
 | Product | How it reaches Router Core | Where to look |
 |---|---|---|
