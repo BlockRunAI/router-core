@@ -1,0 +1,278 @@
+<!--
+  Source for assets/ecosystem-light.png and assets/ecosystem-dark.png
+  (2240x1020 each, rendered at 1120x510 @2x).
+
+  Hand-drawn rather than mermaid: mermaid's auto-layout gave ragged card
+  widths, chip-backed edge labels and a dark palette that fought GitHub's.
+  Fixed geometry costs a little maintenance and buys consistent cards, one
+  bus instead of three repeated edge labels, and a figure that reads the
+  same in both themes.
+
+  Connector grammar, which is the whole point of the drawing:
+    solid  = reaches the engine directly (npm dep, or the Python port)
+    dashed = reaches it through one of those packages
+  The port is the one exception on the bus, so it is called out on its own
+  card rather than by a second edge style — a third line weight would make
+  "different mechanism" and "one hop further away" look like the same claim.
+
+  Every card sits on the same internal grid (kicker / name / role) even when
+  the kicker is empty, so the four tier-2 cards align to the pixel.
+
+  Two variants live in one file so the palettes cannot drift apart. The
+  README selects between them with <picture media="(prefers-color-scheme:…)">.
+
+  Regenerate:
+    B=~/.claude/skills/gstack/browse/dist/browse
+    $B viewport 1200x1200 --scale 2
+    $B load-html assets/ecosystem.html
+    $B screenshot assets/ecosystem-light.png --selector '#light'
+    $B screenshot assets/ecosystem-dark.png  --selector '#dark'
+-->
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #888;
+  }
+
+  .diagram {
+    position: relative;
+    width: 1120px;
+    height: 510px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+  }
+
+  .diagram[data-theme="light"] {
+    --bg: #f7f8fa;
+    --card-bg: #ffffff;
+    --card-border: #d8dde5;
+    --card-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    --ink: #16181d;
+    --muted: #6a7078;
+    --line: #b9c0cb;
+    --accent: #b91c24;
+    --hero-bg: #16181d;
+    --hero-border: #16181d;
+    --hero-ink: #ffffff;
+    --hero-muted: #a6acb6;
+    --hero-accent: #ff5f66;
+    --hero-shadow: 0 2px 4px rgba(16, 24, 40, 0.14), 0 10px 24px rgba(16, 24, 40, 0.12);
+  }
+
+  .diagram[data-theme="dark"] {
+    --bg: #11161d;
+    --card-bg: #161b22;
+    --card-border: #303944;
+    --card-shadow: none;
+    --ink: #e6edf3;
+    --muted: #8b949e;
+    --line: #46505d;
+    --accent: #ff7b81;
+    --hero-bg: #1c222b;
+    --hero-border: #ff5f66;
+    --hero-ink: #ffffff;
+    --hero-muted: #9aa3ae;
+    --hero-accent: #ff5f66;
+    --hero-shadow: none;
+  }
+
+  .wires {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* ── cards ───────────────────────────────────────────────────────────── */
+  .card {
+    position: absolute;
+    width: 250px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .card .kicker {
+    height: 12px;
+    line-height: 12px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .card .name {
+    margin-top: 6px;
+    font-size: 17.5px;
+    line-height: 22px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .card .name .ico {
+    font-size: 16px;
+    margin-right: 7px;
+    vertical-align: 1px;
+  }
+  .card .role {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* tier 2 — four 250x92 cards on a 24px gutter, flush to the 24px margin */
+  .t2 {
+    top: 222px;
+    height: 92px;
+  }
+  /* tier 3 — shorter, because an indirect consumer is a secondary claim */
+  .t3 {
+    top: 398px;
+    height: 84px;
+  }
+
+  .hero {
+    position: absolute;
+    left: 360px;
+    top: 24px;
+    width: 400px;
+    height: 110px;
+    background: var(--hero-bg);
+    border: 2px solid var(--hero-border);
+    border-radius: 12px;
+    box-shadow: var(--hero-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero .kicker {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+    color: var(--hero-accent);
+  }
+  .hero .name {
+    margin-top: 7px;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: var(--hero-ink);
+    white-space: nowrap;
+  }
+  .hero .name .ico {
+    font-size: 24px;
+    margin-right: 9px;
+    vertical-align: 1px;
+  }
+  .hero .role {
+    margin-top: 6px;
+    font-size: 13.5px;
+    color: var(--hero-muted);
+    letter-spacing: 0.1px;
+  }
+
+  /* ── edge labels, drawn over the wires so the line reads as passing behind ── */
+  .label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: var(--bg);
+    padding: 0 9px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  // Tier-2 centres: 149, 423, 697, 971. Hero spans x 360–760, y 24–134.
+  const CARDS = [
+    { cls: "t2", left: 24, ico: "🦞", name: "ClawRouter", role: "OpenClaw plugin · proxy · CLI" },
+    { cls: "t2", left: 298, ico: "💵", name: "Franklin", role: "the agent with a wallet" },
+    { cls: "t2", left: 572, ico: "📦", name: "@blockrun/llm", role: "TypeScript SDK" },
+    {
+      cls: "t2",
+      left: 846,
+      ico: "🐍",
+      name: "blockrun-llm",
+      role: "Python SDK",
+      kicker: "line-by-line port",
+    },
+    { cls: "t3", left: 24, ico: "🏛️", name: "ClawRouter-Hermes", role: "Hermes agent plugin" },
+    { cls: "t3", left: 572, ico: "🛡️", name: "dsh-clawrouter", role: "DeepSeek Harness plugin" },
+  ];
+
+  const LABELS = [
+    { x: 286, y: 178, text: "commit-pinned npm dependency" },
+    { x: 149, y: 356, text: "spawns the proxy" },
+    { x: 697, y: 356, text: "SDK dependency" },
+  ];
+
+  const WIRES = `
+    <defs>
+      <marker id="ah-{T}" viewBox="0 0 10 10" refX="8.5" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--line)"/>
+      </marker>
+    </defs>
+    <g stroke="var(--line)" fill="none" stroke-linecap="round">
+      <!-- direct: hero → bus → all four packages that carry the engine itself -->
+      <g stroke-width="1.6">
+        <path d="M 560 134 L 560 178"/>
+        <path d="M 149 178 L 971 178"/>
+        <path d="M 149 178 L 149 219" marker-end="url(#ah-{T})"/>
+        <path d="M 423 178 L 423 219" marker-end="url(#ah-{T})"/>
+        <path d="M 697 178 L 697 219" marker-end="url(#ah-{T})"/>
+        <path d="M 971 178 L 971 219" marker-end="url(#ah-{T})"/>
+      </g>
+      <!-- indirect: one hop further out, so a lighter dashed stroke -->
+      <g stroke-width="1.4" stroke-dasharray="4 4">
+        <path d="M 149 314 L 149 395" marker-end="url(#ah-{T})"/>
+        <path d="M 697 314 L 697 395" marker-end="url(#ah-{T})"/>
+      </g>
+    </g>`;
+
+  const HERO = `
+    <div class="hero">
+      <div class="kicker">this repository</div>
+      <div class="name"><span class="ico">🧭</span>router-core</div>
+      <div class="role">classify · filter · rank — locally, in &lt;1ms</div>
+    </div>`;
+
+  document.write(
+    ["light", "dark"]
+      .map(
+        (t) => `
+    <div class="diagram" id="${t}" data-theme="${t}">
+      <svg class="wires" viewBox="0 0 1120 510">${WIRES.replaceAll("{T}", t)}</svg>
+      ${HERO}
+      ${CARDS.map(
+        (c) => `<div class="card ${c.cls}" style="left:${c.left}px">
+                 <div class="kicker">${c.kicker ?? ""}</div>
+                 <div class="name"><span class="ico">${c.ico}</span>${c.name}</div>
+                 <div class="role">${c.role}</div>
+               </div>`,
+      ).join("")}
+      ${LABELS.map(
+        (l) => `<div class="label" style="left:${l.x}px;top:${l.y}px">${l.text}</div>`,
+      ).join("")}
+    </div>`,
+      )
+      .join(""),
+  );
+</script>

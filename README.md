@@ -45,20 +45,12 @@ The **constraint-first** ordering is the design commitment worth naming: hard re
 
 ## Who runs this engine
 
-```mermaid
-graph TD
-    RC["🧭 <b>router-core</b><br/><i>this repository</i><br/>classify · filter · rank"]
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/ecosystem-dark.png">
+  <img alt="router-core is a commit-pinned npm dependency of ClawRouter, Franklin and @blockrun/llm, and is carried into the Python SDK as a line-by-line port. ClawRouter-Hermes reaches it by spawning the ClawRouter proxy; dsh-clawrouter reaches it through @blockrun/llm." src="assets/ecosystem-light.png" width="100%">
+</picture>
 
-    RC -->|npm dep, commit-pinned| CR["🦞 <b>ClawRouter</b><br/>OpenClaw plugin · local proxy · CLI"]
-    RC -->|npm dep, commit-pinned| FR["💵 <b>Franklin</b><br/>the agent with a wallet"]
-    RC -->|npm dep, commit-pinned| TS["📦 <b>@blockrun/llm</b><br/>TypeScript SDK"]
-    RC -.->|line-by-line Python port| PY["🐍 <b>blockrun-llm</b><br/>Python SDK"]
-
-    CR -->|spawns the proxy| HM["🏛️ <b>ClawRouter-Hermes</b><br/>Hermes agent plugin"]
-    TS -->|SDK dependency| DSH["🛡️ <b>dsh-clawrouter</b><br/>DeepSeek Harness plugin"]
-
-    style RC fill:#16181d,color:#fff,stroke:#cc2028,stroke-width:3px
-```
+A solid line means the package carries this engine itself. A dashed line means it reaches the engine through the package above it.
 
 | Product | How it reaches Router Core | Where to look |
 |---|---|---|

@@ -1,13 +1,22 @@
 <!--
   Source for assets/banner.png (2560x608, rendered at 1280x304 @2x).
 
-  Matches the ClawRouter family banner: white ground, emoji + wordmark, a
-  tagline whose key phrase is bold, and the BlockRun attribution small and
-  grey in the bottom-right. Graphite wordmark with a ClawRouter-red "core"
-  says "shared foundation of that family" without borrowing any one product's
-  identity outright.
+  Family conventions kept: white ground, emoji + wordmark, a tagline whose key
+  phrase is bold, and the BlockRun attribution small and grey. The wordmark is
+  graphite with a ClawRouter-red "core" — the shared foundation of that family,
+  without borrowing any one product's identity outright.
 
-  Deliberately carries no savings figure, model count, or product list: a PNG
+  Two deliberate departures from the ClawRouter/Hermes/dsh banners, both
+  forced by banner-art.png: the block is left-aligned rather than centred so
+  the artwork owns the right half, and the credit moves to the bottom-left
+  because the artwork's own bottom-right corner is not empty.
+
+  banner-art.png is generated (openai/gpt-image-2) and deliberately carries no
+  text, so it never needs regenerating when a number moves. It illustrates the
+  actual routing model: many candidate paths enter, successive constraint
+  gates eliminate most of them, one qualified path comes out the far side.
+
+  Deliberately carries no savings figure, model count or product list: a PNG
   can't be kept in step by scripts/sync-brand-numbers.mjs, which is how the old
   ClawRouter banner ended up advertising "Save 78%" long after the published
   number moved to 87%.
@@ -33,51 +42,74 @@
     height: 304px;
     background: #fff;
     position: relative;
+    overflow: hidden;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Pre-cropped to its own content, so it is placed rather than object-fit:
+     the only crop is the ~12% of outer fan tips lost top and bottom, which
+     keeps the linework at a readable scale. */
+  .art {
+    position: absolute;
+    top: -18px;
+    right: 48px;
+    height: 340px;
+    width: auto;
+  }
+
+  .block {
+    position: absolute;
+    left: 88px;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .wordmark {
-    font-size: 66px;
+    font-size: 56px;
     font-weight: 700;
-    letter-spacing: -1.2px;
+    letter-spacing: -1.1px;
     line-height: 1.1;
     white-space: nowrap;
     color: #16181d;
   }
   .wordmark .compass {
-    font-size: 58px;
-    vertical-align: 2px;
-    margin-right: 14px;
+    font-size: 48px;
+    vertical-align: 1px;
+    margin-right: 12px;
   }
   .wordmark .core {
     color: #cc2028;
   }
   .tagline {
-    margin-top: 22px;
-    font-size: 27px;
+    margin-top: 20px;
+    font-size: 22px;
     font-weight: 400;
+    line-height: 1.5;
     color: #2f3237;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.1px;
   }
   .tagline b {
     font-weight: 600;
     color: #16181d;
   }
+
   .credit {
     position: absolute;
-    right: 30px;
-    bottom: 18px;
-    font-size: 15px;
+    left: 90px;
+    bottom: 20px;
+    font-size: 14px;
     font-weight: 700;
-    color: #8a8f96;
+    color: #9aa0a8;
   }
 </style>
 
 <div id="banner">
-  <div class="wordmark"><span class="compass">🧭</span>router<span class="core">-core</span></div>
-  <div class="tagline"><b>Hard constraints first.</b> Then the cheapest model that can finish.</div>
+  <img class="art" src="banner-art.png" alt="" />
+
+  <div class="block">
+    <div class="wordmark"><span class="compass">🧭</span>router<span class="core">-core</span></div>
+    <div class="tagline"><b>Hard constraints first.</b><br />Then the cheapest model that can finish.</div>
+  </div>
+
   <div class="credit">brought to you by BlockRun.AI</div>
 </div>
