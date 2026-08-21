@@ -33,12 +33,23 @@ import { route } from "./index.js";
 
 const SNAPSHOT_PATH = new URL("./decisions.snapshot.json", import.meta.url);
 
-// Deterministic, deliberately varied prices; the anchor keeps real pricing so
-// savings figures stay meaningful.
+// Deterministic, deliberately varied prices, derived from the model NAME so
+// that adding or removing an unrelated catalog entry cannot shift every other
+// model's synthetic price (index-derived prices did exactly that, burying a
+// one-chain config change under a snapshot-wide cost diff). The anchor keeps
+// real pricing so savings figures stay meaningful.
+function nameHash(model: string): number {
+  let hash = 0;
+  for (let i = 0; i < model.length; i++) hash = (hash * 31 + model.charCodeAt(i)) >>> 0;
+  return hash;
+}
 const PRICING = new Map(
-  Object.keys(DEFAULT_MODEL_CAPABILITIES).map((model, index) => [
+  Object.keys(DEFAULT_MODEL_CAPABILITIES).map((model) => [
     model,
-    { inputPrice: 0.1 + (index % 7) * 0.7, outputPrice: 0.4 + (index % 5) * 2.1 },
+    {
+      inputPrice: 0.1 + (nameHash(model) % 7) * 0.7,
+      outputPrice: 0.4 + (nameHash(model) % 5) * 2.1,
+    },
   ]),
 );
 PRICING.set("anthropic/claude-opus-4.7", { inputPrice: 5, outputPrice: 25 });
