@@ -86,18 +86,6 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: false,
       supportsVision: false,
     },
-    "free/gpt-oss-120b": {
-      contextWindow: 128_000,
-      maxOutputTokens: 16_384,
-      supportsTools: false,
-      supportsVision: false,
-    },
-    "free/gpt-oss-20b": {
-      contextWindow: 128_000,
-      maxOutputTokens: 16_384,
-      supportsTools: false,
-      supportsVision: false,
-    },
     "free/seed-oss-36b": {
       contextWindow: 131_072,
       maxOutputTokens: 16_384,
@@ -169,6 +157,18 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       maxOutputTokens: 65_536,
       supportsTools: true,
       supportsVision: true,
+    },
+    "nvidia/nemotron-nano-9b-v2": {
+      contextWindow: 131_072,
+      maxOutputTokens: 16_384,
+      supportsTools: false,
+      supportsVision: false,
+    },
+    "nvidia/step-3.7-flash": {
+      contextWindow: 131_072,
+      maxOutputTokens: 16_384,
+      supportsTools: false,
+      supportsVision: false,
     },
     "openai/gpt-4.1": {
       contextWindow: 128_000,

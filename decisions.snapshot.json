@@ -20,7 +20,7 @@
    "google/gemini-2.5-flash-lite",
    "openai/gpt-5.4-nano",
    "xai/grok-4-fast-non-reasoning",
-   "free/gpt-oss-120b"
+   "nvidia/step-3.7-flash"
   ],
   "candidateScores": [
    {
@@ -907,18 +907,18 @@
  {
   "prompt": 0,
   "profile": "eco",
-  "model": "free/gpt-oss-120b",
+  "model": "nvidia/step-3.7-flash",
   "tier": "SIMPLE",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
-  "costEstimate": 0.0001564,
+  "costEstimate": 0.0012420999999999999,
   "baselineCost": 0.006475,
-  "savings": 0.9758455598455599,
+  "savings": 0.8081698841698842,
   "agenticScore": 0,
   "candidates": [
-   "free/gpt-oss-120b",
-   "free/gpt-oss-20b",
+   "nvidia/step-3.7-flash",
+   "nvidia/nemotron-nano-9b-v2",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
@@ -926,7 +926,7 @@
   ],
   "candidateScores": [
    {
-    "model": "free/gpt-oss-120b",
+    "model": "nvidia/step-3.7-flash",
     "score": 0.6948000000000001,
     "quality": 0.68,
     "cost": 0.5,
@@ -1020,18 +1020,18 @@
  {
   "prompt": 2,
   "profile": "eco",
-  "model": "free/gpt-oss-120b",
+  "model": "nvidia/step-3.7-flash",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
   "reasoning": "score=-0.08 | short (16 tokens) | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
-  "costEstimate": 0.0009792000000000002,
+  "costEstimate": 0.010667200000000002,
   "baselineCost": 0.057679999999999995,
-  "savings": 0.9830235783633842,
+  "savings": 0.8150624133148404,
   "agenticScore": 0,
   "candidates": [
-   "free/gpt-oss-120b",
-   "free/gpt-oss-20b",
+   "nvidia/step-3.7-flash",
+   "nvidia/nemotron-nano-9b-v2",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
@@ -1039,7 +1039,7 @@
   ],
   "candidateScores": [
    {
-    "model": "free/gpt-oss-120b",
+    "model": "nvidia/step-3.7-flash",
     "score": 0.4948,
     "quality": 0.68,
     "cost": 0.5,
@@ -1220,18 +1220,18 @@
  {
   "prompt": 7,
   "profile": "eco",
-  "model": "free/gpt-oss-120b",
+  "model": "nvidia/step-3.7-flash",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
   "reasoning": "score=-0.08 | short (13 tokens) | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
-  "costEstimate": 0.001378,
+  "costEstimate": 0.0153647,
   "baselineCost": 0.08326499999999999,
-  "savings": 0.9834504293520686,
+  "savings": 0.815472287275566,
   "agenticScore": 0,
   "candidates": [
-   "free/gpt-oss-120b",
-   "free/gpt-oss-20b",
+   "nvidia/step-3.7-flash",
+   "nvidia/nemotron-nano-9b-v2",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
@@ -1239,7 +1239,7 @@
   ],
   "candidateScores": [
    {
-    "model": "free/gpt-oss-120b",
+    "model": "nvidia/step-3.7-flash",
     "score": 0.4948,
     "quality": 0.68,
     "cost": 0.5,
@@ -1928,7 +1928,7 @@
    "google/gemini-2.5-flash-lite",
    "openai/gpt-5.4-nano",
    "xai/grok-4-fast-non-reasoning",
-   "free/gpt-oss-120b"
+   "nvidia/step-3.7-flash"
   ],
   "candidateScores": [
    {
