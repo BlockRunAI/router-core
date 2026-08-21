@@ -55,7 +55,7 @@ export function selectModel(
       (estimatedInputTokens / 1_000_000) * inputPrice + (maxOutputTokens / 1_000_000) * outputPrice;
   }
 
-  // Baseline: what Claude Opus 4.5 would cost (the premium reference)
+  // Baseline: what the anchor Opus tier would cost (see BASELINE_MODEL_ID)
   const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
   const opusInputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
   const opusOutputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
@@ -127,7 +127,7 @@ export function calculateModelCost(
     );
   }
 
-  // Baseline: what Claude Opus 4.5 would cost (the premium reference)
+  // Baseline: what the anchor Opus tier would cost (see BASELINE_MODEL_ID)
   const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
   const opusInputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
   const opusOutputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;

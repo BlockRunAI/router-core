@@ -128,7 +128,7 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
 }
 ```
 
-**Measured cost of a decision: ~0.27 ms** (mean over 1,000 calls, Node 22, M-series laptop). No process leaves the machine.
+**Measured cost of a decision: ~0.05 ms warm, ~0.15 ms including JIT warm-up** (mixed prompt shapes up to 33KB, Node 22, M-series laptop — feature extraction is bounded, so a 400KB prompt still routes in under 0.1 ms). No process leaves the machine.
 
 ---
 
@@ -444,7 +444,7 @@ A stronger model reviews the dangerous command before it runs. Built on the Type
 Yes. It is MIT-licensed and has no BlockRun dependency — you supply `modelPricing` and, optionally, `modelCapabilities`. The default config happens to be tuned against BlockRun's catalog; replace it and the engine routes across yours.
 
 **Does it call an LLM to decide?**
-No. There is no classifier model, no network access, and no I/O on the decision path. A decision costs ~0.27 ms.
+No. There is no classifier model, no network access, and no I/O on the decision path. A warm decision costs ~0.05 ms.
 
 **Is it deterministic?**
 Yes, for identical inputs, configuration, model metadata and time. `options.now` exists so time-windowed promotions are testable.

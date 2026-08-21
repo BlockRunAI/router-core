@@ -1151,16 +1151,7 @@ export class PortfolioStrategy implements RouterStrategy {
               (model) => !scoredModels.includes(model) && !webResearchFallbackOrder.includes(model),
             ),
           ]
-        : features.taskType === "tool_agent" ||
-            (features.taskType === "tool_agent_parallel" && features.agentDomain !== "other")
-          ? [
-              ...scoredModels,
-              ...eligibleCandidates.filter((model) => !scoredModels.includes(model)),
-            ]
-          : [
-              ...scoredModels,
-              ...eligibleCandidates.filter((model) => !scoredModels.includes(model)),
-            ];
+        : [...scoredModels, ...eligibleCandidates.filter((model) => !scoredModels.includes(model))];
 
     const model = ranked[0] ?? base.model;
     const selectedTierConfigs: Record<Tier, TierConfig> = {

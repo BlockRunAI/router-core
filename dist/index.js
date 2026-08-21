@@ -1823,13 +1823,7 @@ var PortfolioStrategy = class {
       ...eligibleCandidates.filter(
         (model2) => !scoredModels.includes(model2) && !webResearchFallbackOrder.includes(model2)
       )
-    ] : features.taskType === "tool_agent" || features.taskType === "tool_agent_parallel" && features.agentDomain !== "other" ? [
-      ...scoredModels,
-      ...eligibleCandidates.filter((model2) => !scoredModels.includes(model2))
-    ] : [
-      ...scoredModels,
-      ...eligibleCandidates.filter((model2) => !scoredModels.includes(model2))
-    ];
+    ] : [...scoredModels, ...eligibleCandidates.filter((model2) => !scoredModels.includes(model2))];
     const model = ranked[0] ?? base.model;
     const selectedTierConfigs = {
       ...tierConfigs,
