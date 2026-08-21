@@ -332,15 +332,16 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 94 tests across 4 files
+npm test            # vitest — 95 tests across 5 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 ```
 
-Two rules keep consumers safe:
+Three rules keep consumers safe:
 
 1. **`dist/` is committed and must match source.** Tarball installs run no build step, so a source edit without a rebuild would silently ship a stale artifact to every pinned consumer. CI runs `git diff --exit-code -- dist`.
 2. **Routing changes need test coverage.** The decision path is the product for six downstream packages; `portfolio.test.ts`, `selector.test.ts`, `strategy.test.ts` and `tool-intent.test.ts` are the contract.
+3. **Refactors must not move a decision.** `decisions.snapshot.test.ts` routes a frozen 88-request corpus (22 prompts × 4 profiles, mixed tool/vision/structured-output shapes) and compares full decisions byte-for-byte against `decisions.snapshot.json`. A behavior-preserving change leaves it green untouched; a deliberate routing change regenerates it with `UPDATE_DECISION_SNAPSHOT=1 npm test`, and the fixture diff in review shows exactly which requests moved.
 
 When the routing logic changes, the [Python port](https://github.com/BlockRunAI/blockrun-llm) has to follow — it is pinned to an upstream commit and its tests assert cross-language parity.
 

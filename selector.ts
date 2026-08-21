@@ -28,6 +28,12 @@ const BASELINE_OUTPUT_PRICE = 25.0;
 
 /**
  * Select the primary model for a tier and build the RoutingDecision.
+ *
+ * Cost contract: the estimates here are raw token economics — no server
+ * margin, no minimum-payment floor. `calculateModelCost` below applies both
+ * to match the actual x402 charge, and hosts that display money (ClawRouter's
+ * proxy does) recompute through it rather than reading these fields. Folding
+ * the margin in here would double-apply it in every such host.
  */
 export function selectModel(
   tier: Tier,
@@ -93,8 +99,9 @@ export function getFallbackChain(tier: Tier, tierConfigs: Record<Tier, TierConfi
 }
 
 /**
- * Calculate cost for a specific model (used when fallback model is used).
- * Returns updated cost fields for RoutingDecision.
+ * Calculate charge-accurate cost fields for a specific model (server margin
+ * and minimum-payment floor included — see the cost contract on selectModel).
+ * Hosts call this to display money and to recost a decision after a fallback.
  */
 // Server-side margin applied to all x402 payments (must match blockrun server's MARGIN_PERCENT)
 const SERVER_MARGIN_PERCENT = 5;
