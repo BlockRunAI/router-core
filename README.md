@@ -258,6 +258,7 @@ const decision = route(prompt, systemPrompt, maxOutputTokens, {
   hasTools, toolCount, toolNames, requiresTools,
   hasVision,
   requiresStructuredOutput,
+  unavailableModels,     // optional — models the host observed dead at the gateway (400/410)
   now,                   // optional — override time for promotion-window tests
 });
 ```
@@ -315,6 +316,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 | `classifyByRules` | Tier classification on its own. |
 | `inferToolRequirement` | Whether a turn actually needs the attached tools. |
 | `getFallbackChain` / `getFallbackChainFiltered` | Ordered recovery chains. |
+| `applyUnavailableModels` | Drop host-declared-dead models from a tier map, promoting surviving rungs. |
 | `filterByToolCalling` / `filterByVision` / `filterByExcludeList` / `filterCandidatesByCapacity` | The hard filters, individually. |
 | `calculateModelCost` | Cost estimate for a model and token count. |
 
@@ -323,6 +325,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 - **One-line rollback.** `config.strategy = "rules"` reverts to the V2 tier selector without a code change.
 - **Shadow evaluation.** `config.shadow = { strategy: "rules", sampleRate: 0.1 }` recomputes a comparison decision locally without changing the model that serves the request. The host emits decision metadata only — it never persists prompt content and never makes a second call.
 - **Promotions.** Time-windowed `tierOverrides` that apply themselves inside their date range and are ignored outside it, so a launch promo needs no release.
+- **Dead-rung kill-switch.** `options.unavailableModels` hard-removes models the host has observed dead at the gateway (a 400/404/410 on a direct call, a provider EOL) from every chain before selection — never restored by an eligibility fail-open. Effective on the next request, no core release or consumer repin required; the committed chains then catch up in their own time.
 - **Custom strategies.** Implement `RouterStrategy`, `registerStrategy(yours)`, point `config.strategy` at it.
 
 ---
@@ -332,7 +335,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 95 tests across 5 files
+npm test            # vitest — 104 tests across 6 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 ```

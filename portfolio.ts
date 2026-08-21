@@ -1023,9 +1023,16 @@ export class PortfolioStrategy implements RouterStrategy {
         : base.tier;
     const tierConfig = tierConfigs[targetTier];
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
+    // Evidence candidates join the configured chain, but the host's
+    // unavailable set applies to both: the configured side arrives filtered
+    // through RulesStrategy, and a dead evidence model must not re-enter here.
+    const unavailable = new Set(options.unavailableModels ?? []);
     const chain = [
       ...new Set([...configuredCandidates, ...evidenceCandidates(features.taskType)]),
-    ].filter((model): model is string => typeof model === "string" && model.length > 0);
+    ].filter(
+      (model): model is string =>
+        typeof model === "string" && model.length > 0 && !unavailable.has(model),
+    );
     const eligible = chain.filter((model) =>
       isEligible(model, features, maxOutputTokens, options),
     );

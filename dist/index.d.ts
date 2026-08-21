@@ -177,6 +177,16 @@ type RouterOptions = {
     hasVision?: boolean;
     /** OpenAI `response_format` / JSON schema requires reliable structured output. */
     requiresStructuredOutput?: boolean;
+    /**
+     * Model ids the host has observed to be unavailable at the gateway (a 400/404/410
+     * on a direct call, a provider EOL). Hard-removed from every chain before
+     * selection and never restored by an eligibility fail-open — the operational
+     * kill-switch for a dead chain rung, usable the moment the host observes the
+     * failure instead of waiting on a core release and two consumer repins.
+     * Distinct from user-preference exclusion (`filterByExcludeList`), which
+     * deliberately fail-opens rather than empty a chain.
+     */
+    unavailableModels?: readonly string[];
     /** Override current time for promotion window checks (for testing). Default: new Date() */
     now?: Date;
     /**
@@ -326,6 +336,13 @@ type RoutingConfig = {
  */
 
 /**
+ * Remove host-declared-dead models from every tier chain, promoting the first
+ * surviving rung to primary. A tier whose chain is entirely dead keeps its
+ * original config — the router has nothing live to offer there, and inventing
+ * a model would hide the outage from the host that reported it.
+ */
+declare function applyUnavailableModels(tierConfigs: Record<Tier, TierConfig>, unavailableModels: readonly string[] | undefined): Record<Tier, TierConfig>;
+/**
  * Rules-based routing strategy.
  * Extracted from the original route() in index.ts — logic is identical.
  * Attaches tierConfigs and profile to the decision for downstream use.
@@ -390,4 +407,4 @@ declare const DEFAULT_ROUTING_CONFIG: RoutingConfig;
  */
 declare function route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
 
-export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, calculateModelCost, classifyByRules, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };
+export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, applyUnavailableModels, calculateModelCost, classifyByRules, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };

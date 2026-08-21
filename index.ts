@@ -27,7 +27,7 @@ export function route(
   return strategy.route(prompt, systemPrompt, maxOutputTokens, options);
 }
 
-export { getStrategy, registerStrategy } from "./strategy.js";
+export { getStrategy, registerStrategy, applyUnavailableModels } from "./strategy.js";
 export { RulesStrategy } from "./strategy.js";
 export { PortfolioStrategy } from "./portfolio.js";
 export { classifyByRules } from "./rules.js";

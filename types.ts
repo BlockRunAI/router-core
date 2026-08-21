@@ -95,6 +95,16 @@ export type RouterOptions = {
   hasVision?: boolean;
   /** OpenAI `response_format` / JSON schema requires reliable structured output. */
   requiresStructuredOutput?: boolean;
+  /**
+   * Model ids the host has observed to be unavailable at the gateway (a 400/404/410
+   * on a direct call, a provider EOL). Hard-removed from every chain before
+   * selection and never restored by an eligibility fail-open — the operational
+   * kill-switch for a dead chain rung, usable the moment the host observes the
+   * failure instead of waiting on a core release and two consumer repins.
+   * Distinct from user-preference exclusion (`filterByExcludeList`), which
+   * deliberately fail-opens rather than empty a chain.
+   */
+  unavailableModels?: readonly string[];
   /** Override current time for promotion window checks (for testing). Default: new Date() */
   now?: Date;
   /**

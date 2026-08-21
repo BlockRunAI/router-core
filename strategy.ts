@@ -62,6 +62,31 @@ function applyPromotions(
 }
 
 /**
+ * Remove host-declared-dead models from every tier chain, promoting the first
+ * surviving rung to primary. A tier whose chain is entirely dead keeps its
+ * original config — the router has nothing live to offer there, and inventing
+ * a model would hide the outage from the host that reported it.
+ */
+export function applyUnavailableModels(
+  tierConfigs: Record<Tier, TierConfig>,
+  unavailableModels: readonly string[] | undefined,
+): Record<Tier, TierConfig> {
+  if (!unavailableModels || unavailableModels.length === 0) return tierConfigs;
+  const dead = new Set(unavailableModels);
+  let result = tierConfigs;
+  for (const tier of Object.keys(tierConfigs) as Tier[]) {
+    const config = tierConfigs[tier];
+    const alive = [config.primary, ...config.fallback].filter((model) => !dead.has(model));
+    if (alive.length === 0 || (alive[0] === config.primary && alive.length === config.fallback.length + 1)) {
+      continue;
+    }
+    if (result === tierConfigs) result = { ...tierConfigs };
+    result[tier] = { primary: alive[0], fallback: alive.slice(1) };
+  }
+  return result;
+}
+
+/**
  * Rules-based routing strategy.
  * Extracted from the original route() in index.ts — logic is identical.
  * Attaches tierConfigs and profile to the decision for downstream use.
@@ -146,6 +171,10 @@ export class RulesStrategy implements RouterStrategy {
 
     // Apply time-windowed promotions
     tierConfigs = applyPromotions(tierConfigs, config.promotions, profile!, options.now);
+
+    // Hard-remove models the host has observed dead at the gateway. After
+    // promotions, so a promo cannot resurrect a rung the host just killed.
+    tierConfigs = applyUnavailableModels(tierConfigs, options.unavailableModels);
 
     const agenticScoreValue = ruleResult.agenticScore;
 
