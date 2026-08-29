@@ -765,8 +765,8 @@ describe("PortfolioStrategy", () => {
     );
 
     expect(decision.taskType).toBe("extraction");
-    expect(decision.model).toBe("moonshot/kimi-k2.7");
-    expect(decision.candidates?.[0]).toBe("moonshot/kimi-k2.7");
+    expect(decision.model).toBe("moonshot/kimi-k3");
+    expect(decision.candidates?.[0]).toBe("moonshot/kimi-k3");
   });
 
   it("does not promote a generic recovery fallback without task affinity", () => {

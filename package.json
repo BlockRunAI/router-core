@@ -21,7 +21,9 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm test && npm run build",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check",
+    "probe:profiles": "node scripts/probe-model-profiles.mjs",
+    "sync:capabilities": "node scripts/sync-model-capabilities.mjs"
   },
   "keywords": [
     "llm",

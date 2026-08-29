@@ -18,6 +18,7 @@ const MODEL_PRICING = new Map<string, ModelPricing>([
   ["anthropic/claude-sonnet-4.6", { inputPrice: 3, outputPrice: 15 }],
   ["google/gemini-3.1-pro", { inputPrice: 1.25, outputPrice: 10 }],
   ["google/gemini-3.5-flash", { inputPrice: 0.5, outputPrice: 3 }],
+  ["google/gemini-3-flash-preview", { inputPrice: 0.5, outputPrice: 3 }],
   ["xai/grok-4.5", { inputPrice: 2.5, outputPrice: 9 }],
   ["anthropic/claude-sonnet-5", { inputPrice: 3, outputPrice: 15 }],
   ["deepseek/deepseek-v4-pro", { inputPrice: 0.435, outputPrice: 0.87 }],

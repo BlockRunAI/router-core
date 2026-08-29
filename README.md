@@ -21,7 +21,7 @@ They make the same routing decision, because they all run this package.<br><br>
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A520.19-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Router](https://img.shields.io/badge/Router_Core-V3.4-cc2028?style=flat-square)](#how-a-decision-is-made)
+[![Router](https://img.shields.io/badge/Router_Core-V3.5-cc2028?style=flat-square)](#how-a-decision-is-made)
 
 [Report](https://blockrun.ai/signal/router-v3-4-constraint-first-auto-routing) · [Live model health](https://blockrun.ai/observatory) · [Model pricing](https://blockrun.ai/models) · [BlockRun](https://blockrun.ai)
 
@@ -106,7 +106,7 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
   "taskType": "chat",
   "profile": "auto",
   "confidence": 0.77,
-  "candidates": ["google/gemini-2.5-flash", "google/gemini-3-flash-preview", "deepseek/deepseek-chat", "…"],
+  "candidates": ["google/gemini-2.5-flash", "google/gemini-3-flash-preview", "google/gemini-3.5-flash-lite", "…"],
   "reasoning": "score=-0.10 | short (8 tokens), simple (what is, capital of) | v3 task=chat agentRisk=standard … candidates=9"
 }
 
@@ -116,7 +116,7 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
   "tier": "REASONING",
   "taskType": "reasoning",
   "confidence": 0.97,
-  "candidates": ["deepseek/deepseek-v4-pro", "xai/grok-4-1-fast-reasoning", "xai/grok-4-fast-reasoning", "…"]
+  "candidates": ["deepseek/deepseek-v4-pro", "google/gemini-3.5-flash", "deepseek/deepseek-reasoner", "…"]
 }
 
 // same request, tools attached: "Cancel order B-42 and book the 9am flight to SFO."
@@ -225,11 +225,11 @@ And the limits, because a benchmark that only publishes wins is not evidence: th
 `model-profiles.generated.json` carries speed and reliability observations refreshed from BlockRun's gateway benchmark and published live at **[blockrun.ai/observatory](https://blockrun.ai/observatory)**:
 
 ```jsonc
-"openai/gpt-5.3-codex": {
-  "measuredAt": "2026-07-21T10:21:31Z",
-  "latencyMs": 4617.1,
-  "p95LatencyMs": 5800.7,
-  "outputTokensPerSecond": 12.48,
+"google/gemini-3.5-flash": {
+  "measuredAt": "2026-08-29T16:51:33Z",
+  "latencyMs": 5320.6,
+  "p95LatencyMs": 5429.8,
+  "outputTokensPerSecond": 226.21,
   "errorRate": 0,
   "samples": 3
 }
@@ -240,7 +240,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 30 live profiles plus 13 auditable historical seeds, and a built-in capability snapshot for 46 models.
+The repository ships 66 live profiles (2026-08-29 probe, three samples plus one function-calling request per model) plus 9 auditable historical seeds, and a built-in capability snapshot for the 70 text models on the public catalog.
 
 ---
 
@@ -252,7 +252,7 @@ The engine never makes a network call. Everything current is **injected** by the
 const decision = route(prompt, systemPrompt, maxOutputTokens, {
   config: DEFAULT_ROUTING_CONFIG,
   modelPricing,          // required — current prices from your catalog
-  modelCapabilities,     // optional — overrides the built-in 46-model snapshot
+  modelCapabilities,     // optional — overrides the built-in 70-model snapshot
   modelPerformance,      // optional — fresh speed/reliability, e.g. the Observatory feed
   routingProfile: "auto",
   hasTools, toolCount, toolNames, requiresTools,
@@ -308,7 +308,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 | Export | Purpose |
 |---|---|
 | `route(prompt, systemPrompt, maxOutputTokens, options)` | The entry point. Returns a `RoutingDecision`. |
-| `DEFAULT_ROUTING_CONFIG` | Router Core V3.4 config: tiers, profiles, weights, promotions. |
+| `DEFAULT_ROUTING_CONFIG` | Router Core V3.5 config: tiers, profiles, weights, promotions. |
 | `DEFAULT_MODEL_CAPABILITIES` | Built-in capability snapshot (context, max output, tools, vision). |
 | `LIVE_MODEL_PROFILES` / `HISTORICAL_MODEL_PROFILES` | Performance priors. |
 | `PortfolioStrategy` / `RulesStrategy` | V3 portfolio scorer and the stable V2 rules selector. |
@@ -338,7 +338,15 @@ npm run typecheck   # tsc --noEmit
 npm test            # vitest — 104 tests across 6 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
+
+# Catalog refresh (needs network; the probe needs a funded Base wallet)
+npm i --no-save @blockrun/llm
+BLOCKRUN_WALLET_KEY=0x… npm run probe:profiles   # → model-profiles.generated.json + scripts/probe-tools.json
+npm run sync:capabilities                        # → model-capabilities.ts from GET /api/v1/models
+UPDATE_DECISION_SNAPSHOT=1 npm test              # then review the snapshot diff
 ```
+
+The two scripts are the only place the catalog enters this repository. `probe:profiles` pays for real, uncached completions (three samples plus one function-calling request per model, ≈$1 for the whole catalog) and writes the speed/reliability priors; `sync:capabilities` rebuilds the built-in capability snapshot from the public model list, taking `supportsTools` **only** from that probe. Hidden gateway ids are never written — the router should only name a model a user can see on [blockrun.ai/models](https://blockrun.ai/models).
 
 Three rules keep consumers safe:
 

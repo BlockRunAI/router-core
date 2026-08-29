@@ -1,0 +1,14 @@
+{
+  "openai/gpt-5.3-codex": {
+    "supportsTools": true,
+    "reason": "2026-08-29 probe: every request (6 plain + 3 tool attempts) returned a gateway 500, so the probe measured an incident, not the model. Codex's function calling is established by the 2026-07 Terminal-Bench / tau2 calibration trajectories in portfolio.ts. Hosts observing the 500s should drop it with RouterOptions.unavailableModels rather than this snapshot claiming the model cannot call tools."
+  },
+  "anthropic/claude-sonnet-4.6": {
+    "supportsVision": true,
+    "reason": "The public catalog's `categories` omit \"vision\" for this Anthropic model even though the gateway accepts image input for it (the prior hand-maintained snapshot had it, and Anthropic's model card lists it). Without this the vision filter would silently drop it — reported against the catalog; remove once the categories carry vision."
+  },
+  "anthropic/claude-haiku-4.5": {
+    "supportsVision": true,
+    "reason": "The public catalog's `categories` omit \"vision\" for this Anthropic model even though the gateway accepts image input for it (the prior hand-maintained snapshot had it, and Anthropic's model card lists it). Without this the vision filter would silently drop it — reported against the catalog; remove once the categories carry vision."
+  }
+}

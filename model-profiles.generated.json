@@ -1,241 +1,529 @@
 {
-  "openai/gpt-5.5": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 6243.1,
-    "p95LatencyMs": 9865,
-    "outputTokensPerSecond": 12.53,
-    "errorRate": 0,
-    "samples": 3
-  },
-  "openai/gpt-5.4-pro": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 13015.5,
-    "p95LatencyMs": 23976.4,
-    "outputTokensPerSecond": 6.42,
-    "errorRate": 0,
-    "samples": 3
-  },
-  "openai/gpt-5.4-mini": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 5550,
-    "p95LatencyMs": 6595.7,
-    "outputTokensPerSecond": 11.96,
-    "errorRate": 0.3333,
-    "samples": 3
-  },
-  "openai/gpt-5.3-codex": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4617.1,
-    "p95LatencyMs": 5800.7,
-    "outputTokensPerSecond": 12.48,
-    "errorRate": 0,
-    "samples": 3
-  },
-  "anthropic/claude-opus-4.8": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3915.1,
-    "p95LatencyMs": 6130.8,
-    "outputTokensPerSecond": 16.33,
-    "errorRate": 0,
-    "samples": 3
-  },
-  "anthropic/claude-opus-4.6": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3765.5,
-    "p95LatencyMs": 4257.2,
-    "outputTokensPerSecond": 14.18,
-    "errorRate": 0,
-    "samples": 3
-  },
-  "anthropic/claude-sonnet-4.6": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3860.6,
-    "p95LatencyMs": 5093.5,
-    "outputTokensPerSecond": 13.85,
+  "anthropic/claude-fable-5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 9298.5,
+    "p95LatencyMs": 9873.4,
+    "outputTokensPerSecond": 55.17,
     "errorRate": 0,
     "samples": 3
   },
   "anthropic/claude-haiku-4.5": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 2734.9,
-    "p95LatencyMs": 3181.6,
-    "outputTokensPerSecond": 19.58,
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3157.4,
+    "p95LatencyMs": 3170.7,
+    "outputTokensPerSecond": 162.16,
     "errorRate": 0,
     "samples": 3
   },
-  "google/gemini-3.1-pro": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 13935.7,
-    "p95LatencyMs": 26675.3,
-    "outputTokensPerSecond": 77.47,
+  "anthropic/claude-opus-4.5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6497.7,
+    "p95LatencyMs": 6953.7,
+    "outputTokensPerSecond": 78.99,
     "errorRate": 0,
     "samples": 3
   },
-  "google/gemini-3.5-flash": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4608.7,
-    "p95LatencyMs": 8420.9,
-    "outputTokensPerSecond": 57.88,
+  "anthropic/claude-opus-4.7": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5316.5,
+    "p95LatencyMs": 6121.5,
+    "outputTokensPerSecond": 97.34,
     "errorRate": 0,
     "samples": 3
   },
-  "google/gemini-3.1-flash-lite": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4619.7,
-    "p95LatencyMs": 9927.1,
-    "outputTokensPerSecond": 42.01,
+  "anthropic/claude-opus-4.8": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6216.1,
+    "p95LatencyMs": 6847.7,
+    "outputTokensPerSecond": 82.81,
     "errorRate": 0,
     "samples": 3
   },
-  "google/gemini-2.5-flash": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 5506.9,
-    "p95LatencyMs": 11462.5,
-    "outputTokensPerSecond": 65.19,
+  "anthropic/claude-opus-5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 7309,
+    "p95LatencyMs": 7745.2,
+    "outputTokensPerSecond": 70.17,
     "errorRate": 0,
     "samples": 3
   },
-  "deepseek/deepseek-v4-pro": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 6044.8,
-    "p95LatencyMs": 10782.3,
-    "outputTokensPerSecond": 22.47,
+  "anthropic/claude-sonnet-4.5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6330.4,
+    "p95LatencyMs": 6631.6,
+    "outputTokensPerSecond": 81.03,
     "errorRate": 0,
     "samples": 3
   },
-  "deepseek/deepseek-reasoner": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4111.9,
-    "p95LatencyMs": 5305.7,
-    "outputTokensPerSecond": 16.46,
+  "anthropic/claude-sonnet-4.6": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6508,
+    "p95LatencyMs": 6698.3,
+    "outputTokensPerSecond": 78.6,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "anthropic/claude-sonnet-5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6165.4,
+    "p95LatencyMs": 6582.9,
+    "outputTokensPerSecond": 83.62,
     "errorRate": 0,
     "samples": 3
   },
   "deepseek/deepseek-chat": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 2648.6,
-    "p95LatencyMs": 3524.1,
-    "outputTokensPerSecond": 16.73,
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4351.4,
+    "p95LatencyMs": 4543.7,
+    "outputTokensPerSecond": 117.78,
     "errorRate": 0,
     "samples": 3
   },
-  "moonshot/kimi-k2.7": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4295.4,
-    "p95LatencyMs": 6153.8,
-    "outputTokensPerSecond": 18.54,
+  "deepseek/deepseek-reasoner": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5201.2,
+    "p95LatencyMs": 6079.6,
+    "outputTokensPerSecond": 99.77,
     "errorRate": 0,
     "samples": 3
   },
-  "qwen/qwen3.7-max": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 30729.4,
-    "p95LatencyMs": 39622,
-    "outputTokensPerSecond": 36.89,
-    "errorRate": 0.3333,
-    "samples": 3
-  },
-  "xai/grok-4.3": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 6946.1,
-    "p95LatencyMs": 9495.4,
-    "outputTokensPerSecond": 65.3,
+  "deepseek/deepseek-v4-pro": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 8781.2,
+    "p95LatencyMs": 9881.1,
+    "outputTokensPerSecond": 58.98,
     "errorRate": 0,
     "samples": 3
   },
-  "xai/grok-4.20-reasoning": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3472.4,
-    "p95LatencyMs": 5332.4,
-    "outputTokensPerSecond": 13.27,
+  "google/gemini-2.5-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5416.4,
+    "p95LatencyMs": 6442.8,
+    "outputTokensPerSecond": 213.07,
     "errorRate": 0,
     "samples": 3
   },
-  "xai/grok-4.20-non-reasoning": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 5174.4,
-    "p95LatencyMs": 6081.7,
-    "outputTokensPerSecond": 10.21,
-    "errorRate": 0.3333,
-    "samples": 3
-  },
-  "xai/grok-4-1-fast-reasoning": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 13148.2,
-    "p95LatencyMs": 19104.2,
-    "outputTokensPerSecond": 4.28,
+  "google/gemini-2.5-flash-lite": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5002.6,
+    "p95LatencyMs": 5780.3,
+    "outputTokensPerSecond": 408.43,
     "errorRate": 0,
     "samples": 3
   },
-  "minimax/minimax-m3": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3385,
-    "p95LatencyMs": 4247.2,
-    "outputTokensPerSecond": 15.16,
+  "google/gemini-2.5-pro": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 28169.5,
+    "p95LatencyMs": 29491.4,
+    "outputTokensPerSecond": 147.3,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3-flash-preview": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4717.1,
+    "p95LatencyMs": 5037.1,
+    "outputTokensPerSecond": 198.71,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3.1-flash-lite": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 2855.8,
+    "p95LatencyMs": 3172.7,
+    "outputTokensPerSecond": 286.91,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3.1-pro": {
+    "measuredAt": "2026-08-29T16:59:54Z",
+    "latencyMs": 24194.1,
+    "p95LatencyMs": 27269.6,
+    "outputTokensPerSecond": 109.47,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3.5-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5320.6,
+    "p95LatencyMs": 5429.8,
+    "outputTokensPerSecond": 226.21,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3.5-flash-lite": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3515.8,
+    "p95LatencyMs": 4363.4,
+    "outputTokensPerSecond": 248.9,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-3.6-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 13020,
+    "p95LatencyMs": 15383.1,
+    "outputTokensPerSecond": 187.87,
     "errorRate": 0,
     "samples": 3
   },
   "minimax/minimax-m2.7": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4596.7,
-    "p95LatencyMs": 6884.6,
-    "outputTokensPerSecond": 17.03,
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 8761.1,
+    "p95LatencyMs": 10199.3,
+    "outputTokensPerSecond": 59.18,
     "errorRate": 0,
     "samples": 3
   },
-  "zai/glm-5.2": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4406.3,
-    "p95LatencyMs": 6139.7,
-    "outputTokensPerSecond": 10.41,
+  "minimax/minimax-m3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 11101.9,
+    "p95LatencyMs": 26087.1,
+    "outputTokensPerSecond": 101.12,
     "errorRate": 0,
     "samples": 3
   },
-  "zai/glm-5.1": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 7775.4,
-    "p95LatencyMs": 9182.1,
-    "outputTokensPerSecond": 6.08,
+  "moonshot/kimi-k3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 24498.9,
+    "p95LatencyMs": 40365.3,
+    "outputTokensPerSecond": 25.11,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "nvidia/mistral-nemotron": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 7349.6,
+    "p95LatencyMs": 9932.3,
+    "outputTokensPerSecond": 79.48,
+    "errorRate": 0.3333,
+    "samples": 3
+  },
+  "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+    "measuredAt": "2026-08-29T16:59:54Z",
+    "latencyMs": 9324.6,
+    "p95LatencyMs": 12992,
+    "outputTokensPerSecond": 64.96,
+    "errorRate": 0.3333,
+    "samples": 3
+  },
+  "nvidia/nemotron-nano-12b-v2-vl": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5846.9,
+    "p95LatencyMs": 5846.9,
+    "outputTokensPerSecond": 87.57,
+    "errorRate": 0.6667,
+    "samples": 3
+  },
+  "nvidia/nemotron-nano-9b-v2": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5282.5,
+    "p95LatencyMs": 5282.5,
+    "outputTokensPerSecond": 96.92,
+    "errorRate": 0.6667,
+    "samples": 3
+  },
+  "nvidia/step-3.7-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4617.4,
+    "p95LatencyMs": 5237.4,
+    "outputTokensPerSecond": 112.92,
+    "errorRate": 0.3333,
+    "samples": 3
+  },
+  "openai/chat-latest": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3690.9,
+    "p95LatencyMs": 4344,
+    "outputTokensPerSecond": 111.85,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-4.1": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3527.9,
+    "p95LatencyMs": 3831.7,
+    "outputTokensPerSecond": 141.27,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-4.1-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4268.2,
+    "p95LatencyMs": 5101.5,
+    "outputTokensPerSecond": 103.42,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-4.1-nano": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3088.3,
+    "p95LatencyMs": 3369.2,
+    "outputTokensPerSecond": 150.31,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-4o": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 2995.2,
+    "p95LatencyMs": 3174.2,
+    "outputTokensPerSecond": 171.32,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-4o-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4751.5,
+    "p95LatencyMs": 4930.4,
+    "outputTokensPerSecond": 107.84,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4558.1,
+    "p95LatencyMs": 5081.9,
+    "outputTokensPerSecond": 113.25,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.2": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5436.6,
+    "p95LatencyMs": 5928.8,
+    "outputTokensPerSecond": 95.47,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.3-codex": {
+    "measuredAt": "2026-08-29T16:59:54Z",
+    "latencyMs": 15290.4,
+    "p95LatencyMs": 15290.4,
+    "outputTokensPerSecond": 33.49,
+    "errorRate": 0.6667,
+    "samples": 3
+  },
+  "openai/gpt-5.4": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5596,
+    "p95LatencyMs": 5919.4,
+    "outputTokensPerSecond": 91.67,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.4-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3377.8,
+    "p95LatencyMs": 3646.8,
+    "outputTokensPerSecond": 138.08,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.4-nano": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4040.4,
+    "p95LatencyMs": 4205.9,
+    "outputTokensPerSecond": 118.52,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6367.8,
+    "p95LatencyMs": 7330.7,
+    "outputTokensPerSecond": 81.29,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.6-luna": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6064.5,
+    "p95LatencyMs": 7347.3,
+    "outputTokensPerSecond": 87.93,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.6-luna-pro": {
+    "measuredAt": "2026-08-29T16:59:54Z",
+    "latencyMs": 13914.9,
+    "p95LatencyMs": 13914.9,
+    "outputTokensPerSecond": 36.79,
+    "errorRate": 0.6667,
+    "samples": 3
+  },
+  "openai/gpt-5.6-sol": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 7720.2,
+    "p95LatencyMs": 9108.2,
+    "outputTokensPerSecond": 67.47,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.6-sol-pro": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 11442.7,
+    "p95LatencyMs": 13363.1,
+    "outputTokensPerSecond": 148.75,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.6-terra": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4941,
+    "p95LatencyMs": 5095.3,
+    "outputTokensPerSecond": 103.69,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-5.6-terra-pro": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3574.1,
+    "p95LatencyMs": 4126.3,
+    "outputTokensPerSecond": 133.59,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/o1": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4324.9,
+    "p95LatencyMs": 5838.1,
+    "outputTokensPerSecond": 125.86,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/o3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 5463.4,
+    "p95LatencyMs": 5613.1,
+    "outputTokensPerSecond": 93.8,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/o3-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 2912.7,
+    "p95LatencyMs": 3092.1,
+    "outputTokensPerSecond": 176.49,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/o4-mini": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 4958.7,
+    "p95LatencyMs": 5313,
+    "outputTokensPerSecond": 103.81,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "qwen/qwen3.7-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 3385.5,
+    "p95LatencyMs": 4042.7,
+    "outputTokensPerSecond": 153.94,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "qwen/qwen3.7-max": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 9387.1,
+    "p95LatencyMs": 10490.2,
+    "outputTokensPerSecond": 54.92,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "qwen/qwen3.7-plus": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 9766.6,
+    "p95LatencyMs": 9798.2,
+    "outputTokensPerSecond": 52.42,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "tencent/hy3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6062.3,
+    "p95LatencyMs": 7070.2,
+    "outputTokensPerSecond": 87.3,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "xai/grok-4.3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 9467.7,
+    "p95LatencyMs": 10087.9,
+    "outputTokensPerSecond": 48.36,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "xai/grok-4.5": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 13564.8,
+    "p95LatencyMs": 17351.9,
+    "outputTokensPerSecond": 60.71,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "xai/grok-build-0.1": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 16394.8,
+    "p95LatencyMs": 18035.4,
+    "outputTokensPerSecond": 96.86,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "xiaomi/mimo-v2.5-pro": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 12070.7,
+    "p95LatencyMs": 12386.8,
+    "outputTokensPerSecond": 42.44,
     "errorRate": 0,
     "samples": 3
   },
   "zai/glm-5": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 4159.4,
-    "p95LatencyMs": 4992.7,
-    "outputTokensPerSecond": 10.28,
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 6839.7,
+    "p95LatencyMs": 7261.4,
+    "outputTokensPerSecond": 75.16,
     "errorRate": 0,
     "samples": 3
   },
-  "free/qwen3-coder-480b": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 2063.9,
-    "p95LatencyMs": 3646.3,
-    "outputTokensPerSecond": 39.8,
+  "zai/glm-5-turbo": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 55348.5,
+    "p95LatencyMs": 114086.6,
+    "outputTokensPerSecond": 14.64,
     "errorRate": 0,
     "samples": 3
   },
-  "free/mistral-large-3-675b": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 3147.5,
-    "p95LatencyMs": 5555.3,
-    "outputTokensPerSecond": 27.76,
+  "zai/glm-5.1": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 15658.4,
+    "p95LatencyMs": 17307.1,
+    "outputTokensPerSecond": 32.9,
     "errorRate": 0,
     "samples": 3
   },
-  "free/nemotron-3-nano-omni-30b-a3b-reasoning": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 6508.4,
-    "p95LatencyMs": 14252.7,
-    "outputTokensPerSecond": 68.26,
+  "zai/glm-5.2": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 10308.5,
+    "p95LatencyMs": 15127.6,
+    "outputTokensPerSecond": 54.87,
     "errorRate": 0,
     "samples": 3
   },
-  "free/glm-4.7": {
-    "measuredAt": "2026-07-21T10:21:31Z",
-    "latencyMs": 2014.8,
-    "p95LatencyMs": 3039.9,
-    "outputTokensPerSecond": 39.92,
+  "zai/glm-5.3": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 7272.4,
+    "p95LatencyMs": 7998.1,
+    "outputTokensPerSecond": 71.09,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "zai/glm-5.3-flash": {
+    "measuredAt": "2026-08-29T16:51:33Z",
+    "latencyMs": 10545.3,
+    "p95LatencyMs": 11672.4,
+    "outputTokensPerSecond": 49.01,
     "errorRate": 0,
     "samples": 3
   }

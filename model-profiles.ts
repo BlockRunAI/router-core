@@ -39,11 +39,6 @@ export const HISTORICAL_MODEL_PROFILES: Readonly<Record<string, ModelPerformance
       latencyMs: 2305,
       outputTokensPerSecond: 140.6,
     },
-    "anthropic/claude-opus-4.6": {
-      measuredAt: "2026-03-16T13:50:48Z",
-      latencyMs: 2139,
-      outputTokensPerSecond: 119.7,
-    },
     "anthropic/claude-sonnet-4.6": {
       measuredAt: "2026-03-16T13:50:48Z",
       latencyMs: 2110,
@@ -77,11 +72,6 @@ export const HISTORICAL_MODEL_PROFILES: Readonly<Record<string, ModelPerformance
       latencyMs: 1609,
       outputTokensPerSecond: 167.2,
     },
-    "moonshot/kimi-k2.5": {
-      measuredAt: "2026-03-16T13:50:48Z",
-      latencyMs: 1646,
-      outputTokensPerSecond: 155.7,
-    },
     "openai/gpt-4o-mini": {
       measuredAt: "2026-03-16T13:50:48Z",
       latencyMs: 2764,
@@ -91,17 +81,5 @@ export const HISTORICAL_MODEL_PROFILES: Readonly<Record<string, ModelPerformance
       measuredAt: "2026-03-16T13:50:48Z",
       latencyMs: 7935,
       outputTokensPerSecond: 32.3,
-    },
-    "xai/grok-4-1-fast-non-reasoning": {
-      measuredAt: "2026-03-16T13:50:48Z",
-      latencyMs: 1244,
-      outputTokensPerSecond: 205.8,
-      intelligenceIndex: 41,
-    },
-    "xai/grok-4-1-fast-reasoning": {
-      measuredAt: "2026-03-16T13:50:48Z",
-      latencyMs: 1454,
-      outputTokensPerSecond: 176.2,
-      intelligenceIndex: 41,
     },
   });
