@@ -556,6 +556,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "cohere/north-mini-code": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 256e3,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: false
+  },
   "deepseek/deepseek-chat": {
     contextWindow: 1048576,
     maxOutputTokens: 65536,
@@ -646,8 +653,15 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
-  "nvidia/mistral-nemotron": {
-    // supportsTools: gateway unavailable at probe time — fails closed
+  "nvidia/llama-3.2-11b-vision": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 128e3,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: true
+  },
+  "nvidia/nemotron-3-nano-30b": {
+    // supportsTools: not probed — fails closed
     contextWindow: 131072,
     maxOutputTokens: 16384,
     supportsTools: false,
@@ -659,21 +673,16 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: false,
     supportsVision: true
   },
-  "nvidia/nemotron-nano-12b-v2-vl": {
-    // supportsTools: gateway unavailable at probe time — fails closed
-    contextWindow: 131072,
-    maxOutputTokens: 16384,
-    supportsTools: false,
-    supportsVision: true
-  },
-  "nvidia/nemotron-nano-9b-v2": {
-    contextWindow: 131072,
+  "nvidia/nemotron-3-ultra-550b": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
     maxOutputTokens: 16384,
     supportsTools: false,
     supportsVision: false
   },
-  "nvidia/step-3.7-flash": {
-    contextWindow: 131072,
+  "nvidia/nemotron-3.5-lightning": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
     maxOutputTokens: 16384,
     supportsTools: false,
     supportsVision: false
@@ -729,13 +738,6 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
   "openai/gpt-5.2-pro": {
     // supportsTools: not probed — fails closed
     contextWindow: 4e5,
-    maxOutputTokens: 128e3,
-    supportsTools: false,
-    supportsVision: true
-  },
-  "openai/gpt-5.3": {
-    // supportsTools: gateway unavailable at probe time — fails closed
-    contextWindow: 128e3,
     maxOutputTokens: 128e3,
     supportsTools: false,
     supportsVision: true
@@ -843,6 +845,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     contextWindow: 128e3,
     maxOutputTokens: 1e5,
     supportsTools: true,
+    supportsVision: false
+  },
+  "poolside/laguna-xs-2.1": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 131072,
+    maxOutputTokens: 16384,
+    supportsTools: false,
     supportsVision: false
   },
   "qwen/qwen3.7-flash": {
@@ -3396,8 +3405,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.20/$1.25, 1M ctx
         "google/gemini-2.5-flash-lite",
         // $0.10/$0.40
-        "nvidia/step-3.7-flash"
-        // FREE backstop — NVIDIA free tier (probed 2026-08-21)
+        "nvidia/nemotron-3.5-lightning"
+        // FREE backstop — NVIDIA free tier (probed 2026-08-30)
       ]
     },
     MEDIUM: {
@@ -3486,15 +3495,19 @@ var DEFAULT_ROUTING_CONFIG = {
   // Eco tier configs - absolute cheapest (blockrun/eco)
   ecoTiers: {
     SIMPLE: {
-      primary: "nvidia/step-3.7-flash",
-      // FREE — NVIDIA free tier flagship
+      primary: "nvidia/nemotron-3.5-lightning",
+      // FREE — NVIDIA free tier flagship, 1M ctx
       fallback: [
-        "nvidia/nemotron-nano-9b-v2",
-        // FREE — compact + fast, high-volume light tasks
+        "nvidia/nemotron-3-nano-30b",
+        // FREE — fastest free model (~121 tok/s)
         // The free head keeps rotting with NVIDIA's hosting (deepseek-v4-flash
         // 410 2026-08-12, seed-oss-36b 410 2026-08-03, gpt-oss-120b/20b 400
-        // 2026-08-21). Each retirement retargets the two free rungs to the
-        // current free tier; the paid rungs below never move.
+        // 2026-08-21, and on 2026-08-30 FOUR of the five visible free models at
+        // once — step-3.7-flash, nemotron-nano-9b-v2 and nemotron-nano-12b-v2-vl
+        // all 410, mistral-nemotron hung). Each retirement retargets the two
+        // free rungs to the current free tier; the paid rungs below never move.
+        // The head follows blockrun's own redirect of the model it replaces, so
+        // the router and the gateway never name different models.
         "google/gemini-2.5-flash-lite",
         // $0.10/$0.40 — cheapest paid rung
         "zai/glm-5.3-flash",
@@ -3638,7 +3651,7 @@ var DEFAULT_ROUTING_CONFIG = {
         // strongest open-weight reasoner
         "deepseek/deepseek-chat",
         // Cheap, reliable
-        "nvidia/step-3.7-flash"
+        "nvidia/nemotron-3.5-lightning"
         // NVIDIA free ultimate backstop
       ]
     },
@@ -3742,7 +3755,7 @@ var DEFAULT_ROUTING_CONFIG = {
         // retail high-risk 3/3
         "deepseek/deepseek-chat",
         // cheap, reliable
-        "nvidia/step-3.7-flash"
+        "nvidia/nemotron-3.5-lightning"
         // NVIDIA free ultimate backstop
       ]
     },

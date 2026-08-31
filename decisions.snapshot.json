@@ -20,7 +20,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "nvidia/step-3.7-flash"
+   "nvidia/nemotron-3.5-lightning"
   ],
   "candidateScores": [
    {
@@ -958,18 +958,18 @@
  {
   "prompt": 0,
   "profile": "eco",
-  "model": "nvidia/step-3.7-flash",
+  "model": "nvidia/nemotron-3.5-lightning",
   "tier": "SIMPLE",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
-  "costEstimate": 0.0012420999999999999,
+  "costEstimate": 0.0001459,
   "baselineCost": 0.006475,
-  "savings": 0.8081698841698842,
+  "savings": 0.9774671814671815,
   "agenticScore": 0,
   "candidates": [
-   "nvidia/step-3.7-flash",
-   "nvidia/nemotron-nano-9b-v2",
+   "nvidia/nemotron-3.5-lightning",
+   "nvidia/nemotron-3-nano-30b",
    "google/gemini-2.5-flash-lite",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-luna",
@@ -978,12 +978,12 @@
   ],
   "candidateScores": [
    {
-    "model": "nvidia/step-3.7-flash",
-    "score": 0.6540727629055313,
+    "model": "nvidia/nemotron-3.5-lightning",
+    "score": 0.6948000000000001,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.13272362905531251,
-    "reliability": 0.90001
+    "speed": 0.5,
+    "reliability": 1
    }
   ],
   "taskType": "chat",
@@ -2086,7 +2086,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "nvidia/step-3.7-flash"
+   "nvidia/nemotron-3.5-lightning"
   ],
   "candidateScores": [
    {

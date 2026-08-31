@@ -1100,7 +1100,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "openai/gpt-5.6-luna", // $0.20/$1.20, 1M ctx — GPT-5.6 cost tier (cut 2026-07-30)
         "openai/gpt-5.4-nano", // $0.20/$1.25, 1M ctx
         "google/gemini-2.5-flash-lite", // $0.10/$0.40
-        "nvidia/step-3.7-flash", // FREE backstop — NVIDIA free tier (probed 2026-08-21)
+        "nvidia/nemotron-3.5-lightning", // FREE backstop — NVIDIA free tier (probed 2026-08-30)
       ],
     },
     MEDIUM: {
@@ -1157,13 +1157,17 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   // Eco tier configs - absolute cheapest (blockrun/eco)
   ecoTiers: {
     SIMPLE: {
-      primary: "nvidia/step-3.7-flash", // FREE — NVIDIA free tier flagship
+      primary: "nvidia/nemotron-3.5-lightning", // FREE — NVIDIA free tier flagship, 1M ctx
       fallback: [
-        "nvidia/nemotron-nano-9b-v2", // FREE — compact + fast, high-volume light tasks
+        "nvidia/nemotron-3-nano-30b", // FREE — fastest free model (~121 tok/s)
         // The free head keeps rotting with NVIDIA's hosting (deepseek-v4-flash
         // 410 2026-08-12, seed-oss-36b 410 2026-08-03, gpt-oss-120b/20b 400
-        // 2026-08-21). Each retirement retargets the two free rungs to the
-        // current free tier; the paid rungs below never move.
+        // 2026-08-21, and on 2026-08-30 FOUR of the five visible free models at
+        // once — step-3.7-flash, nemotron-nano-9b-v2 and nemotron-nano-12b-v2-vl
+        // all 410, mistral-nemotron hung). Each retirement retargets the two
+        // free rungs to the current free tier; the paid rungs below never move.
+        // The head follows blockrun's own redirect of the model it replaces, so
+        // the router and the gateway never name different models.
         "google/gemini-2.5-flash-lite", // $0.10/$0.40 — cheapest paid rung
         "zai/glm-5.3-flash", // $0.15/$0.50, 1M ctx, vision + tools
         "openai/gpt-5.6-luna", // $0.20/$1.20, 1M ctx
@@ -1255,7 +1259,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "zai/glm-5.3", // Z.AI flagship, 1M ctx
         "deepseek/deepseek-v4-pro", // strongest open-weight reasoner
         "deepseek/deepseek-chat", // Cheap, reliable
-        "nvidia/step-3.7-flash", // NVIDIA free ultimate backstop
+        "nvidia/nemotron-3.5-lightning", // NVIDIA free ultimate backstop
       ],
     },
     REASONING: {
@@ -1322,7 +1326,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "zai/glm-5.3", // long-horizon coding
         "deepseek/deepseek-v4-pro", // retail high-risk 3/3
         "deepseek/deepseek-chat", // cheap, reliable
-        "nvidia/step-3.7-flash", // NVIDIA free ultimate backstop
+        "nvidia/nemotron-3.5-lightning", // NVIDIA free ultimate backstop
       ],
     },
     REASONING: {
