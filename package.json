@@ -1,7 +1,7 @@
 {
   "name": "@blockrun/router-core",
   "version": "0.1.0",
-  "description": "Deterministic, constraint-first model routing shared by BlockRun products.",
+  "description": "Smart LLM router — deterministic, constraint-first automatic model selection shared by BlockRun products.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,15 @@
   "keywords": [
     "llm",
     "router",
+    "llm-router",
+    "smart-router",
+    "smart-llm-router",
+    "ai-model-router",
     "model-routing",
+    "model-selection",
+    "automatic-model-selection",
+    "routing-engine",
+    "llm-cost-optimization",
     "blockrun"
   ],
   "author": "BlockRun <hello@blockrun.ai>",

@@ -1,33 +1,36 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="router-core — one engine, shared by ClawRouter, Franklin, @blockrun/llm, blockrun-llm, ClawRouter-Hermes and dsh-clawrouter" width="820">
+<img src="assets/banner.png" alt="router-core — the smart LLM router shared by ClawRouter, Franklin, @blockrun/llm, blockrun-llm, ClawRouter-Hermes and dsh-clawrouter" width="820">
 
-<h1>The routing engine underneath every BlockRun product</h1>
+<h1>The smart LLM router underneath every BlockRun product</h1>
 
-<p>ClawRouter, Franklin, Hermes and dsh-clawrouter look like four different products.<br>
-They make the same routing decision, because they all run this package.<br><br>
+<p>A smart router for AI models: it reads the request, drops every model that <em>cannot</em> serve it,
+and picks the best of the rest — locally, in under a millisecond, with no inference call.<br><br>
+ClawRouter, Franklin, Hermes and dsh-clawrouter look like four different products.<br>
+They make the same smart routing decision, because they all run this package.<br><br>
 <strong>One engine. No inference call. Same answer everywhere.</strong><br><br>
 <em>Local, deterministic, and product-neutral — no wallet, no gateway, no network on the hot path.</em></p>
 
 <br>
 
+<img src="https://img.shields.io/badge/🧠_Smart_LLM_Router-cc2028?style=for-the-badge" alt="Smart LLM router">&nbsp;
 <img src="https://img.shields.io/badge/⚡_Sub--millisecond-yellow?style=for-the-badge" alt="Sub-millisecond">&nbsp;
 <img src="https://img.shields.io/badge/🧭_Constraint--First-black?style=for-the-badge" alt="Constraint first">&nbsp;
 <img src="https://img.shields.io/badge/🔒_Zero_Network_Calls-blue?style=for-the-badge" alt="Zero network calls">&nbsp;
 <img src="https://img.shields.io/badge/🔁_Deterministic-success?style=for-the-badge" alt="Deterministic">&nbsp;
-<img src="https://img.shields.io/badge/🔓_Open_Source-green?style=for-the-badge" alt="Open source">
+<img src="https://img.shields.io/badge/🎯_Automatic_Model_Selection-purple?style=for-the-badge" alt="Automatic model selection">
 
 [![CI](https://img.shields.io/github/actions/workflow/status/BlockRunAI/router-core/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/BlockRunAI/router-core/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A520.19-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Router](https://img.shields.io/badge/Router_Core-V3.5-cc2028?style=flat-square)](#how-a-decision-is-made)
+[![Router](https://img.shields.io/badge/Router_Core-V3.5-cc2028?style=flat-square)](#how-the-smart-router-decides)
 
 [Report](https://blockrun.ai/signal/router-v3-4-constraint-first-auto-routing) · [Live model health](https://blockrun.ai/observatory) · [Model pricing](https://blockrun.ai/models) · [BlockRun](https://blockrun.ai)
 
 </div>
 
-> **`@blockrun/router-core`** decides which model should answer a request. It classifies the request across 15 local dimensions, removes every model that *cannot* satisfy the request contract, ranks only the survivors on task fit, cost, speed and reliability, and returns the winner plus an ordered fallback chain — in about a quarter of a millisecond, with no inference call and no network access.
+> **`@blockrun/router-core`** is a **smart LLM router** — an automatic model selector that decides which model should answer a request. It classifies the request across 15 local dimensions, removes every model that *cannot* satisfy the request contract, ranks only the survivors on task fit, cost, speed and reliability, and returns the winner plus an ordered fallback chain — in about a quarter of a millisecond, with no inference call and no network access.
 >
 > It is deliberately product-neutral. There is no wallet, no gateway client, no proxy server, no agent loop, no payment handling, no telemetry transport, and no benchmark runner in this repository. Those live in the products. This is the part they share.
 
@@ -35,7 +38,7 @@ They make the same routing decision, because they all run this package.<br><br>
 
 ## Why this repository exists
 
-Routing logic that lives inside a product gets shaped by that product. Four different products with four copies of "pick a model" is four different answers to the same question, four sets of stale model tables, and four places to fix a routing bug.
+A smart router is only worth having if every product asks it the same question. Routing logic that lives inside a product gets shaped by that product. Four different products with four copies of "pick a model" is four different answers to the same question, four sets of stale model tables, and four places to fix a routing bug.
 
 So the engine was extracted. Every product that routes a request now routes it here, and a fix lands once.
 
@@ -132,7 +135,7 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
 
 ---
 
-## How a decision is made
+## How the smart router decides
 
 Four stages, all local, all deterministic for identical inputs, config, model metadata and time.
 
@@ -366,7 +369,7 @@ When the routing logic changes, the [Python port](https://github.com/BlockRunAI/
 
 ### 🧭 router-core
 
-**The routing engine underneath all of it**
+**The smart LLM router underneath all of it**
 
 You're here. Classify, filter, rank — locally, deterministically, in under a millisecond.
 
@@ -445,12 +448,18 @@ A stronger model reviews the dangerous command before it runs. Built on the Type
 | [Observatory](https://blockrun.ai/observatory) | Live model latency, p95, uptime and error rate |
 | [Model pricing](https://blockrun.ai/models) | Current catalog and prices |
 | [Routing profiles](https://github.com/BlockRunAI/ClawRouter/blob/main/docs/routing-profiles.md) | Eco / Auto / Premium in product terms |
-| [15-dimension classifier](https://github.com/BlockRunAI/ClawRouter/blob/main/docs/smart-llm-router-14-dimension-classifier.md) | How the scorer reads a request |
+| [Smart LLM router: the 15-dimension classifier](https://github.com/BlockRunAI/ClawRouter/blob/main/docs/smart-llm-router-14-dimension-classifier.md) | How the scorer reads a request |
 | [BlockRun docs](https://blockrun.ai/docs) | Gateway, payments, everything else |
 
 ---
 
 ## FAQ
+
+**What makes it a *smart* router?**
+It chooses the model per request instead of pinning one. Every turn is classified across 15 local dimensions, every model that cannot satisfy the request contract is removed, and the survivors are ranked on task fit, cost, speed and reliability. "Smart" here means *automatic model selection with an auditable reason* — not a second LLM guessing on the hot path.
+
+**Smart routing without a second model call — how?**
+The classifier is deterministic feature extraction, not inference. That is what keeps a smart routing decision at ~0.05 ms and $0.00, so routing is never the expensive part of the request.
 
 **Can I use this without BlockRun?**
 Yes. It is MIT-licensed and has no BlockRun dependency — you supply `modelPricing` and, optionally, `modelCapabilities`. The default config happens to be tuned against BlockRun's catalog; replace it and the engine routes across yours.
