@@ -4,10 +4,11 @@
 
 <h1>The smart LLM router underneath every BlockRun product</h1>
 
-<p>A smart LLM router: it reads the request, drops every model that <em>cannot</em> serve it,
-and picks the best of the rest — locally, in under a millisecond, with no inference call.<br><br>
+<p>A smart LLM router that <strong>fails closed</strong>: every model that <em>cannot</em> serve the request
+is gone before anything is ranked, the decision is computed locally in under a millisecond,<br>
+and it arrives with the reason attached — no inference call, no network, no second opinion to wait for.<br><br>
 ClawRouter, Franklin, Hermes and dsh-clawrouter look like four different products.<br>
-They make the same smart routing decision, because they all run this package.<br><br>
+They reach the same decision on the same request, because they all run this package.<br><br>
 <strong>One engine. No inference call. Same answer everywhere.</strong><br><br>
 <em>Local, deterministic, and product-neutral — no wallet, no gateway, no network on the hot path.</em></p>
 
@@ -33,6 +34,8 @@ They make the same smart routing decision, because they all run this package.<br
 > **`@blockrun/router-core`** is a **smart LLM router** — an automatic model selector that decides which model should answer a request. It classifies the request across 15 local dimensions, removes every model that *cannot* satisfy the request contract, ranks only the survivors on task fit, cost, speed and reliability, and returns the winner plus an ordered fallback chain — in about a quarter of a millisecond, with no inference call and no network access.
 >
 > It is deliberately product-neutral. There is no wallet, no gateway client, no proxy server, no agent loop, no payment handling, no telemetry transport, and no benchmark runner in this repository. Those live in the products. This is the part they share.
+>
+> The claim here is **not** "this picks better models than you would." [Our own benchmark declines to make that claim](#the-benchmark) — the interval on the quality gain crosses zero, and it says so. The claim is narrower and checkable: the pick never violates the request contract, it costs nothing to compute, it is identical every time across six packages and two languages, and it comes with the reason attached.
 
 ---
 
@@ -43,6 +46,23 @@ A smart LLM router is only worth having if every product asks it the same questi
 So the engine was extracted. Every product that routes a request now routes it here, and a fix lands once.
 
 The **constraint-first** ordering is the design commitment worth naming: hard requirements decide *who may compete*, scoring decides *who wins*. A model that cannot call tools, cannot read an image, or cannot hold the conversation is dropped **before** anything is scored — because being cheap or fast never compensates for failing the contract.
+
+---
+
+## What is left when routing itself is free
+
+Model selection is being commoditized — several gateways now route at no markup, and "we will pick a good model for you" is on its way to table stakes. That is fine. It was never the durable part.
+
+Four properties are, and each one is a design constraint in this repository rather than a slogan:
+
+| Property | What it rules out | Where it is enforced |
+|---|---|---|
+| **Fails closed** | A cheap model winning a request it cannot physically serve — no tools, no vision, no context room | Hard filters run *before* scoring, and never fail open ([stage 2](#2--apply-hard-eligibility)) |
+| **No inference on the hot path** | Paying a model, a vendor or a round trip to decide which model to pay | Deterministic feature extraction only: ~0.05 ms, $0.00, zero network calls |
+| **One decision everywhere** | Six products quietly disagreeing about the same request | Single engine, plus a line-by-line Python port held to cross-language parity |
+| **Auditable by construction** | "The router picked it" as the whole explanation | `tier`, `taskType`, `confidence`, per-candidate `candidateScores` and a `reasoning` string on every decision, and an 88-request snapshot that fails CI when any of them move |
+
+A routing service that is free but opaque, remote and non-reproducible is not the same product as this one, and the difference shows up on the day a request fails rather than on the pricing page.
 
 ---
 
@@ -203,7 +223,7 @@ Every decision is explainable: `tier`, `taskType`, `confidence`, ranked `candida
 
 ## The benchmark
 
-Two independent evidence streams feed this repository, and they answer different questions.
+Two independent evidence streams feed this repository, and they answer different questions. Neither is here to argue that this router picks better models — read them as the measurements that keep the four properties above honest.
 
 ### Does the routing policy pick better? — the agent checkpoint
 
@@ -454,6 +474,9 @@ A stronger model reviews the dangerous command before it runs. Built on the Type
 ---
 
 ## FAQ
+
+**Routing is going free. Why does this still matter?**
+Because the price of the decision was never the hard part. What is hard is a decision that cannot violate the request contract, costs nothing to compute, reproduces exactly, and can be read back afterwards. See [what is left when routing itself is free](#what-is-left-when-routing-itself-is-free).
 
 **What makes it a *smart* LLM router?**
 It chooses the model per request instead of pinning one. Every turn is classified across 15 local dimensions, every model that cannot satisfy the request contract is removed, and the survivors are ranked on task fit, cost, speed and reliability. "Smart" here means *automatic model selection with an auditable reason* — not a second LLM guessing on the hot path.
