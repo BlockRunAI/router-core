@@ -4,7 +4,7 @@
 
 <h1>The smart LLM router underneath every BlockRun product</h1>
 
-<p>A smart router for AI models: it reads the request, drops every model that <em>cannot</em> serve it,
+<p>A smart LLM router: it reads the request, drops every model that <em>cannot</em> serve it,
 and picks the best of the rest — locally, in under a millisecond, with no inference call.<br><br>
 ClawRouter, Franklin, Hermes and dsh-clawrouter look like four different products.<br>
 They make the same smart routing decision, because they all run this package.<br><br>
@@ -24,7 +24,7 @@ They make the same smart routing decision, because they all run this package.<br
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A520.19-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Router](https://img.shields.io/badge/Router_Core-V3.5-cc2028?style=flat-square)](#how-the-smart-router-decides)
+[![Router](https://img.shields.io/badge/Router_Core-V3.5-cc2028?style=flat-square)](#how-the-smart-llm-router-decides)
 
 [Report](https://blockrun.ai/signal/router-v3-4-constraint-first-auto-routing) · [Live model health](https://blockrun.ai/observatory) · [Model pricing](https://blockrun.ai/models) · [BlockRun](https://blockrun.ai)
 
@@ -38,7 +38,7 @@ They make the same smart routing decision, because they all run this package.<br
 
 ## Why this repository exists
 
-A smart router is only worth having if every product asks it the same question. Routing logic that lives inside a product gets shaped by that product. Four different products with four copies of "pick a model" is four different answers to the same question, four sets of stale model tables, and four places to fix a routing bug.
+A smart LLM router is only worth having if every product asks it the same question. Routing logic that lives inside a product gets shaped by that product. Four different products with four copies of "pick a model" is four different answers to the same question, four sets of stale model tables, and four places to fix a routing bug.
 
 So the engine was extracted. Every product that routes a request now routes it here, and a fix lands once.
 
@@ -135,7 +135,7 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
 
 ---
 
-## How the smart router decides
+## How the smart LLM router decides
 
 Four stages, all local, all deterministic for identical inputs, config, model metadata and time.
 
@@ -455,7 +455,7 @@ A stronger model reviews the dangerous command before it runs. Built on the Type
 
 ## FAQ
 
-**What makes it a *smart* router?**
+**What makes it a *smart* LLM router?**
 It chooses the model per request instead of pinning one. Every turn is classified across 15 local dimensions, every model that cannot satisfy the request contract is removed, and the survivors are ranked on task fit, cost, speed and reliability. "Smart" here means *automatic model selection with an auditable reason* — not a second LLM guessing on the hot path.
 
 **Smart routing without a second model call — how?**
