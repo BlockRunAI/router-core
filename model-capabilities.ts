@@ -175,17 +175,11 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: false,
       supportsVision: true,
     },
-    "nvidia/nemotron-3-nano-30b": { // supportsTools: not probed — fails closed
-      contextWindow: 131_072,
-      maxOutputTokens: 16_384,
-      supportsTools: false,
-      supportsVision: false,
-    },
-    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": { // override: The catalog tags this model "vision", but a correctly sized probe does not hold up (ClawRouter, 2026-08-31): a 64x64 solid-red PNG was named correctly 1 of 4 times on Base, and on Solana the image was silently dropped and a text model answered "white". An HTTP 200 with a confident wrong answer gives the caller nothing to branch on, so image turns must not be routed here. It is ecoTiers.SIMPLE.fallback[0] since nemotron-3-nano-30b was delisted (2026-09-08); remove once a probe of this size comes back right on both chains.
       contextWindow: 256_000,
       maxOutputTokens: 16_384,
       supportsTools: false,
-      supportsVision: true,
+      supportsVision: false,
     },
     "nvidia/nemotron-3-ultra-550b": { // supportsTools: not probed — fails closed
       contextWindow: 1_000_000,

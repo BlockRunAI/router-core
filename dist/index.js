@@ -660,18 +660,12 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: false,
     supportsVision: true
   },
-  "nvidia/nemotron-3-nano-30b": {
-    // supportsTools: not probed — fails closed
-    contextWindow: 131072,
-    maxOutputTokens: 16384,
-    supportsTools: false,
-    supportsVision: false
-  },
   "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+    // override: The catalog tags this model "vision", but a correctly sized probe does not hold up (ClawRouter, 2026-08-31): a 64x64 solid-red PNG was named correctly 1 of 4 times on Base, and on Solana the image was silently dropped and a text model answered "white". An HTTP 200 with a confident wrong answer gives the caller nothing to branch on, so image turns must not be routed here. It is ecoTiers.SIMPLE.fallback[0] since nemotron-3-nano-30b was delisted (2026-09-08); remove once a probe of this size comes back right on both chains.
     contextWindow: 256e3,
     maxOutputTokens: 16384,
     supportsTools: false,
-    supportsVision: true
+    supportsVision: false
   },
   "nvidia/nemotron-3-ultra-550b": {
     // supportsTools: not probed — fails closed
@@ -3498,8 +3492,13 @@ var DEFAULT_ROUTING_CONFIG = {
       primary: "nvidia/nemotron-3.5-lightning",
       // FREE — NVIDIA free tier flagship, 1M ctx
       fallback: [
-        "nvidia/nemotron-3-nano-30b",
-        // FREE — fastest free model (~121 tok/s)
+        // Was nvidia/nemotron-3-nano-30b until blockrun delisted it on 2026-09-08
+        // (NVIDIA deprovisioned it for the account — a structured per-account
+        // 404). nano-omni is blockrun's own redirect target for that id, so this
+        // follows the same rule as the head: the router and the gateway name the
+        // same model.
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        // FREE — nano-30b's successor, 256K ctx
         // The free head keeps rotting with NVIDIA's hosting (deepseek-v4-flash
         // 410 2026-08-12, seed-oss-36b 410 2026-08-03, gpt-oss-120b/20b 400
         // 2026-08-21, and on 2026-08-30 FOUR of the five visible free models at
