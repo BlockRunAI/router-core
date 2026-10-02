@@ -506,6 +506,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "anthropic/claude-fable-5.1": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
+  },
   "anthropic/claude-haiku-4.5": {
     // override: The public catalog's `categories` omit "vision" for this Anthropic model even though the gateway accepts image input for it (the prior hand-maintained snapshot had it, and Anthropic's model card lists it). Without this the vision filter would silently drop it — reported against the catalog; remove once the categories carry vision.
     contextWindow: 2e5,
@@ -537,6 +544,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "anthropic/claude-opus-5.5": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
+  },
   "anthropic/claude-sonnet-4.5": {
     contextWindow: 2e5,
     maxOutputTokens: 64e3,
@@ -554,6 +568,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     contextWindow: 1e6,
     maxOutputTokens: 128e3,
     supportsTools: true,
+    supportsVision: true
+  },
+  "anthropic/claude-sonnet-5.5": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
     supportsVision: true
   },
   "cohere/north-mini-code": {
@@ -574,6 +595,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     maxOutputTokens: 65536,
     supportsTools: true,
     supportsVision: false
+  },
+  "deepseek/deepseek-v4-flash-vision-exp": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1048576,
+    maxOutputTokens: 65536,
+    supportsTools: false,
+    supportsVision: true
   },
   "deepseek/deepseek-v4-pro": {
     contextWindow: 1048576,
@@ -633,6 +661,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     supportsTools: true,
+    supportsVision: true
+  },
+  "google/gemini-3.8-flash": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1048576,
+    maxOutputTokens: 65536,
+    supportsTools: false,
     supportsVision: true
   },
   "minimax/minimax-m2.7": {
@@ -722,6 +757,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     maxOutputTokens: 128e3,
     supportsTools: true,
     supportsVision: false
+  },
+  "openai/gpt-5.1": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 4e5,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
   },
   "openai/gpt-5.2": {
     contextWindow: 4e5,
@@ -817,6 +859,27 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "openai/gpt-6-astra": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 105e4,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
+  },
+  "openai/gpt-6-luna": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 105e4,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
+  },
+  "openai/gpt-6-sol": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 105e4,
+    maxOutputTokens: 128e3,
+    supportsTools: false,
+    supportsVision: true
+  },
   "openai/o1": {
     contextWindow: 2e5,
     maxOutputTokens: 1e5,
@@ -866,11 +929,12 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: false
   },
-  "tencent/hy3": {
-    contextWindow: 262144,
-    maxOutputTokens: 128e3,
-    supportsTools: true,
-    supportsVision: false
+  "qwen/qwen3.8-flash": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1e6,
+    maxOutputTokens: 131072,
+    supportsTools: false,
+    supportsVision: true
   },
   "xai/grok-4.3": {
     contextWindow: 1e6,
@@ -884,11 +948,32 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "xai/grok-4.6": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 5e5,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: true
+  },
+  "xai/grok-4.7": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 5e5,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: true
+  },
   "xai/grok-build-0.1": {
     contextWindow: 256e3,
     maxOutputTokens: 16384,
     supportsTools: true,
     supportsVision: false
+  },
+  "xiaomi/mimo-v2.5": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1048576,
+    maxOutputTokens: 131072,
+    supportsTools: false,
+    supportsVision: true
   },
   "xiaomi/mimo-v2.5-pro": {
     contextWindow: 1048576,
