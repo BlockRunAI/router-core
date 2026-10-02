@@ -263,7 +263,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 66 live profiles (2026-08-29 probe, three samples plus one function-calling request per model) plus 9 auditable historical seeds, and a built-in capability snapshot for the 70 text models on the public catalog.
+The repository ships 66 live profiles (2026-08-29 probe, three samples plus one function-calling request per model) plus 9 auditable historical seeds, and a built-in capability snapshot of every text model on the public catalog (2026-10-02 sync). Models added since the last probe carry no profile and are written `supportsTools: false` until probed — they can serve plain chat but never a tool-required turn.
 
 ---
 
