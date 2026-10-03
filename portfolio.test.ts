@@ -27,6 +27,17 @@ const pricing = new Map<string, ModelPricing>([
   ["openai/gpt-4o-mini", { inputPrice: 0.15, outputPrice: 0.6 }],
   ["deepseek/deepseek-chat", { inputPrice: 0.2, outputPrice: 0.4 }],
   ["free/seed-oss-36b", { inputPrice: 0, outputPrice: 0 }],
+  ["anthropic/claude-fable-5.1", { inputPrice: 10, outputPrice: 50 }],
+  ["anthropic/claude-opus-5.5", { inputPrice: 5, outputPrice: 25 }],
+  ["anthropic/claude-sonnet-5.5", { inputPrice: 3, outputPrice: 15 }],
+  ["google/gemini-3.8-flash", { inputPrice: 1, outputPrice: 5 }],
+  ["openai/gpt-5.1", { inputPrice: 1, outputPrice: 8 }],
+  ["openai/gpt-6-astra", { inputPrice: 5, outputPrice: 25 }],
+  ["openai/gpt-6-luna", { inputPrice: 0.2, outputPrice: 1.2 }],
+  ["openai/gpt-6-sol", { inputPrice: 1.75, outputPrice: 14 }],
+  ["xai/grok-4.6", { inputPrice: 2, outputPrice: 10 }],
+  ["xai/grok-4.7", { inputPrice: 2.5, outputPrice: 12 }],
+  ["xiaomi/mimo-v2.5", { inputPrice: 0.5, outputPrice: 2 }],
 ]);
 
 describe("PortfolioStrategy", () => {
@@ -105,6 +116,69 @@ describe("PortfolioStrategy", () => {
     expect(decision.taskType).toBe("tool_agent");
     expect(decision.model).toBe("anthropic/claude-sonnet-5");
     expect(decision.candidates).toContain("google/gemini-3.5-flash");
+  });
+
+  it("keeps newly tool-verified catalog models as safe fallbacks without promoting them", () => {
+    const decision = route("Use lookup_order for order B-42.", undefined, 256, {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+      routingProfile: "auto",
+      hasTools: true,
+      requiresTools: true,
+      toolCount: 1,
+      unavailableModels: ["openai/gpt-6-astra"],
+    });
+
+    expect(decision.taskType).toBe("tool_agent");
+    expect(decision.model).toBe("anthropic/claude-sonnet-5");
+    expect(decision.candidates).toEqual(
+      expect.arrayContaining([
+        "anthropic/claude-fable-5.1",
+        "anthropic/claude-opus-5.5",
+        "anthropic/claude-sonnet-5.5",
+        "google/gemini-3.8-flash",
+        "openai/gpt-5.1",
+        "openai/gpt-6-luna",
+        "openai/gpt-6-sol",
+        "xai/grok-4.6",
+        "xai/grok-4.7",
+        "xiaomi/mimo-v2.5",
+      ]),
+    );
+    expect(decision.candidates).not.toContain("openai/gpt-6-astra");
+  });
+
+  it("does not add tool-only availability fallbacks to an ordinary chat request", () => {
+    const decision = route("What is the capital of France?", undefined, 256, {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+    });
+
+    expect(decision.taskType).toBe("chat");
+    expect(decision.candidates).not.toContain("openai/gpt-6-luna");
+    expect(decision.candidates).not.toContain("anthropic/claude-sonnet-5.5");
+  });
+
+  it("can select a newly verified model when the established tool chain is unavailable", () => {
+    const input = {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+      routingProfile: "auto" as const,
+      hasTools: true,
+      requiresTools: true,
+      toolCount: 1,
+    };
+    const initial = route("Use lookup_order for order B-42.", undefined, 256, input);
+    const firstNewModel = "anthropic/claude-fable-5.1";
+    const firstNewIndex = initial.candidates?.indexOf(firstNewModel) ?? -1;
+
+    expect(firstNewIndex).toBeGreaterThan(0);
+    const decision = route("Use lookup_order for order B-42.", undefined, 256, {
+      ...input,
+      unavailableModels: initial.candidates?.slice(0, firstNewIndex),
+    });
+
+    expect(decision.model).toBe(firstNewModel);
   });
 
   it("keeps deep multi-clue web research on the empirically steadier Sonnet 5", () => {

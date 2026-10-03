@@ -263,7 +263,9 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 66 live profiles (2026-08-29 probe, three samples plus one function-calling request per model) plus 9 auditable historical seeds, and a built-in capability snapshot of every text model on the public catalog (2026-10-02 sync). Models added since the last probe carry no profile and are written `supportsTools: false` until probed — they can serve plain chat but never a tool-required turn.
+The repository ships 66 live performance profiles (2026-08-29, three samples per model), 9 auditable historical seeds, 74 function-calling probe results, and a built-in snapshot of all 86 text models in the public catalog (2026-10-03 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. A model with no probe evidence can serve plain chat but never a tool-required turn.
+
+Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately, while primary promotion still requires an end-to-end agent evaluation.
 
 ---
 
@@ -275,7 +277,7 @@ The engine never makes a network call. Everything current is **injected** by the
 const decision = route(prompt, systemPrompt, maxOutputTokens, {
   config: DEFAULT_ROUTING_CONFIG,
   modelPricing,          // required — current prices from your catalog
-  modelCapabilities,     // optional — overrides the built-in 70-model snapshot
+  modelCapabilities,     // optional — overrides the built-in 86-model snapshot
   modelPerformance,      // optional — fresh speed/reliability, e.g. the Observatory feed
   routingProfile: "auto",
   hasTools, toolCount, toolNames, requiresTools,
@@ -358,7 +360,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 104 tests across 6 files
+npm test            # vitest — 120 tests across 7 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 

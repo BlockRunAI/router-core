@@ -943,6 +943,30 @@ function evidenceCandidates(task: TaskType): string[] {
   return [];
 }
 
+/**
+ * Recently added catalog models with a verified structured function call.
+ *
+ * Tool compliance is enough to make these models safe availability fallbacks,
+ * but it is not evidence that they should displace a trajectory-benchmarked
+ * primary. Keep them after the configured and benchmark-backed chains until a
+ * full agent evaluation earns a task-specific affinity above the neutral 0.68
+ * floor. `isEligible` still applies every host capability override, context
+ * limit, vision constraint, and unavailable-model guard before they are used.
+ */
+const VERIFIED_TOOL_FALLBACKS = [
+  "anthropic/claude-fable-5.1",
+  "anthropic/claude-opus-5.5",
+  "anthropic/claude-sonnet-5.5",
+  "google/gemini-3.8-flash",
+  "openai/gpt-5.1",
+  "openai/gpt-6-astra",
+  "openai/gpt-6-luna",
+  "openai/gpt-6-sol",
+  "xai/grok-4.6",
+  "xai/grok-4.7",
+  "xiaomi/mimo-v2.5",
+] as const;
+
 function isEligible(
   modelId: string,
   features: TaskFeatures,
@@ -1036,8 +1060,17 @@ export class PortfolioStrategy implements RouterStrategy {
     // unavailable set applies to both: the configured side arrives filtered
     // through RulesStrategy, and a dead evidence model must not re-enter here.
     const unavailable = new Set(options.unavailableModels ?? []);
+    // `modelPricing` is the host's live catalog view. Do not introduce a
+    // built-in fallback that the current gateway does not advertise.
+    const verifiedToolFallbacks = features.needsTools
+      ? VERIFIED_TOOL_FALLBACKS.filter((model) => options.modelPricing.has(model))
+      : [];
     const chain = [
-      ...new Set([...configuredCandidates, ...evidenceCandidates(features.taskType)]),
+      ...new Set([
+        ...configuredCandidates,
+        ...evidenceCandidates(features.taskType),
+        ...verifiedToolFallbacks,
+      ]),
     ].filter(
       (model): model is string =>
         typeof model === "string" && model.length > 0 && !unavailable.has(model),
