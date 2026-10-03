@@ -42,7 +42,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (1 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.08 | short (1 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0032001,
   "baselineCost": 0.032005,
   "savings": 0.9000124980471801,
@@ -60,7 +60,18 @@
    "google/gemini-3.5-flash",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -230,7 +241,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (20 tokens) | agentic (tools) | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.08 | short (20 tokens) | agentic (tools) | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.020291200000000002,
   "baselineCost": 0.0577,
   "savings": 0.6483327556325823,
@@ -248,7 +259,18 @@
    "openai/gpt-4.1",
    "xai/grok-4.5",
    "google/gemini-3.5-flash",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -424,7 +446,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7373034537835593,
   "method": "portfolio",
-  "reasoning": "score=0.09 | long (1217 tokens), references (following) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=0.09 | long (1217 tokens), references (following) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0084417,
   "baselineCost": 0.089285,
   "savings": 0.905452203617629,
@@ -442,7 +464,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -677,7 +710,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0006437999999999999,
   "baselineCost": 0.0065899999999999995,
   "savings": 0.9023065250379363,
@@ -695,7 +728,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -922,7 +966,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=0.08 | long (14423 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=0.08 | long (14423 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0046423,
   "baselineCost": 0.104115,
   "savings": 0.9554118042549105,
@@ -940,7 +984,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -996,7 +1051,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (1 tokens) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=14",
+  "reasoning": "score=-0.08 | short (1 tokens) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=25",
   "costEstimate": 0.0032001,
   "baselineCost": 0.032005,
   "savings": 0.9000124980471801,
@@ -1015,7 +1070,18 @@
    "google/gemini-3.1-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
-   "openai/gpt-4o-mini"
+   "openai/gpt-4o-mini",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -1206,7 +1272,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (20 tokens) | eco | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=14",
+  "reasoning": "score=-0.08 | short (20 tokens) | eco | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=25",
   "costEstimate": 0.0009656,
   "baselineCost": 0.0577,
   "savings": 0.9832651646447141,
@@ -1225,7 +1291,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
-   "openai/gpt-4o-mini"
+   "openai/gpt-4o-mini",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -1437,7 +1514,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7373034537835593,
   "method": "portfolio",
-  "reasoning": "score=0.09 | long (1217 tokens), references (following) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=16",
+  "reasoning": "score=0.09 | long (1217 tokens), references (following) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0084417,
   "baselineCost": 0.089285,
   "savings": 0.905452203617629,
@@ -1458,7 +1535,18 @@
    "google/gemini-2.5-flash",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
-   "openai/gpt-4o-mini"
+   "openai/gpt-4o-mini",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -1713,7 +1801,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=16",
+  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0006437999999999999,
   "baselineCost": 0.0065899999999999995,
   "savings": 0.9023065250379363,
@@ -1734,7 +1822,18 @@
    "google/gemini-2.5-flash",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
-   "openai/gpt-4o-mini"
+   "openai/gpt-4o-mini",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -1989,7 +2088,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=0.08 | long (14423 tokens) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=16",
+  "reasoning": "score=0.08 | long (14423 tokens) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0046423,
   "baselineCost": 0.104115,
   "savings": 0.9554118042549105,
@@ -2010,7 +2109,18 @@
    "google/gemini-2.5-flash",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
-   "openai/gpt-4o-mini"
+   "openai/gpt-4o-mini",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -2108,7 +2218,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (1 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.08 | short (1 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0032001,
   "baselineCost": 0.032005,
   "savings": 0.9000124980471801,
@@ -2126,7 +2236,18 @@
    "google/gemini-3.5-flash",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -2296,7 +2417,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (20 tokens) | agentic (tools) | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.08 | short (20 tokens) | agentic (tools) | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.020291200000000002,
   "baselineCost": 0.0577,
   "savings": 0.6483327556325823,
@@ -2314,7 +2435,18 @@
    "openai/gpt-4.1",
    "xai/grok-4.5",
    "google/gemini-3.5-flash",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -2490,7 +2622,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7373034537835593,
   "method": "portfolio",
-  "reasoning": "score=0.09 | long (1217 tokens), references (following) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=0.09 | long (1217 tokens), references (following) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0084417,
   "baselineCost": 0.089285,
   "savings": 0.905452203617629,
@@ -2508,7 +2640,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -2743,7 +2886,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0006437999999999999,
   "baselineCost": 0.0065899999999999995,
   "savings": 0.9023065250379363,
@@ -2761,7 +2904,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -2988,7 +3142,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=0.08 | long (14423 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "reasoning": "score=0.08 | long (14423 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=24",
   "costEstimate": 0.0046423,
   "baselineCost": 0.104115,
   "savings": 0.9554118042549105,
@@ -3006,7 +3160,18 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -3070,7 +3235,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (1 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=15",
+  "reasoning": "score=-0.08 | short (1 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=26",
   "costEstimate": 0.0032001,
   "baselineCost": 0.032005,
   "savings": 0,
@@ -3090,7 +3255,18 @@
    "openai/gpt-4o-mini",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -3278,7 +3454,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (20 tokens) | premium | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=15",
+  "reasoning": "score=-0.08 | short (20 tokens) | premium | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=26",
   "costEstimate": 0.020291200000000002,
   "baselineCost": 0.0577,
   "savings": 0,
@@ -3298,7 +3474,18 @@
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
    "xai/grok-4.5",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -3470,7 +3657,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7373034537835593,
   "method": "portfolio",
-  "reasoning": "score=0.09 | long (1217 tokens), references (following) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=15",
+  "reasoning": "score=0.09 | long (1217 tokens), references (following) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=26",
   "costEstimate": 0.0084417,
   "baselineCost": 0.089285,
   "savings": 0,
@@ -3490,7 +3677,18 @@
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -3700,7 +3898,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=15",
+  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=26",
   "costEstimate": 0.0006437999999999999,
   "baselineCost": 0.0065899999999999995,
   "savings": 0,
@@ -3720,7 +3918,18 @@
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
@@ -3922,7 +4131,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=0.08 | long (14423 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=15",
+  "reasoning": "score=0.08 | long (14423 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=26",
   "costEstimate": 0.0046423,
   "baselineCost": 0.104115,
   "savings": 0,
@@ -3942,7 +4151,18 @@
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "deepseek/deepseek-v4-pro"
+   "deepseek/deepseek-v4-pro",
+   "anthropic/claude-fable-5.1",
+   "anthropic/claude-opus-5.5",
+   "anthropic/claude-sonnet-5.5",
+   "google/gemini-3.8-flash",
+   "openai/gpt-5.1",
+   "openai/gpt-6-astra",
+   "openai/gpt-6-luna",
+   "openai/gpt-6-sol",
+   "xai/grok-4.6",
+   "xai/grok-4.7",
+   "xiaomi/mimo-v2.5"
   ],
   "candidateScores": [
    {
