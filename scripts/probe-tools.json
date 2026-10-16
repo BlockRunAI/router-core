@@ -3,6 +3,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "anthropic/claude-fable-5.1": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:03Z"
+  },
   "anthropic/claude-haiku-4.5": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -24,6 +28,10 @@
     "probedAt": "2026-08-29T16:51:33Z",
     "emptyCompletionSeen": true
   },
+  "anthropic/claude-opus-5.5": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:06Z"
+  },
   "anthropic/claude-sonnet-4.5": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -36,6 +44,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "anthropic/claude-sonnet-5.5": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:07Z"
+  },
   "deepseek/deepseek-chat": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -43,6 +55,10 @@
   "deepseek/deepseek-reasoner": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
+  },
+  "deepseek/deepseek-v4-flash-vision-exp": {
+    "supportsTools": false,
+    "probedAt": "2026-10-03T04:27:09Z"
   },
   "deepseek/deepseek-v4-pro": {
     "supportsTools": true,
@@ -83,6 +99,10 @@
   "google/gemini-3.6-flash": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
+  },
+  "google/gemini-3.8-flash": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:11Z"
   },
   "minimax/minimax-m2.7": {
     "supportsTools": true,
@@ -154,6 +174,10 @@
     "probedAt": "2026-08-29T16:51:33Z",
     "emptyCompletionSeen": true
   },
+  "openai/gpt-5.1": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:13Z"
+  },
   "openai/gpt-5.2": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z",
@@ -217,6 +241,18 @@
     "probedAt": "2026-08-29T16:51:33Z",
     "emptyCompletionSeen": true
   },
+  "openai/gpt-6-astra": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:17Z"
+  },
+  "openai/gpt-6-luna": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:19Z"
+  },
+  "openai/gpt-6-sol": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:21Z"
+  },
   "openai/o1": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z",
@@ -249,6 +285,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "qwen/qwen3.8-flash": {
+    "supportsTools": false,
+    "probedAt": "2026-10-03T04:27:22Z"
+  },
   "tencent/hy3": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -261,9 +301,21 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "xai/grok-4.6": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:28Z"
+  },
+  "xai/grok-4.7": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:31Z"
+  },
   "xai/grok-build-0.1": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
+  },
+  "xiaomi/mimo-v2.5": {
+    "supportsTools": true,
+    "probedAt": "2026-10-03T04:27:34Z"
   },
   "xiaomi/mimo-v2.5-pro": {
     "supportsTools": true,
