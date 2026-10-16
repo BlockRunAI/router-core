@@ -289,7 +289,7 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: false,
       supportsVision: true,
     },
-    "openai/gpt-5.3-codex": { // override: 2026-08-29 probe: every request (6 plain + 3 tool attempts) returned a gateway 500, so the probe measured an incident, not the model. Codex's function calling is established by the 2026-07 Terminal-Bench / tau2 calibration trajectories in portfolio.ts. Hosts observing the 500s should drop it with RouterOptions.unavailableModels rather than this snapshot claiming the model cannot call tools.
+    "openai/gpt-5.3-codex": { // supportsTools: gateway unavailable at probe time — fails closed; override: 2026-08-29 probe: every request (6 plain + 3 tool attempts) returned a gateway 500, so the probe measured an incident, not the model. Codex's function calling is established by the 2026-07 Terminal-Bench / tau2 calibration trajectories in portfolio.ts. Hosts observing the 500s should drop it with RouterOptions.unavailableModels rather than this snapshot claiming the model cannot call tools.
       contextWindow: 400_000,
       maxOutputTokens: 128_000,
       supportsTools: true,

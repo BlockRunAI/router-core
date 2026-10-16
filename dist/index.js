@@ -780,7 +780,7 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "openai/gpt-5.3-codex": {
-    // override: 2026-08-29 probe: every request (6 plain + 3 tool attempts) returned a gateway 500, so the probe measured an incident, not the model. Codex's function calling is established by the 2026-07 Terminal-Bench / tau2 calibration trajectories in portfolio.ts. Hosts observing the 500s should drop it with RouterOptions.unavailableModels rather than this snapshot claiming the model cannot call tools.
+    // supportsTools: gateway unavailable at probe time — fails closed; override: 2026-08-29 probe: every request (6 plain + 3 tool attempts) returned a gateway 500, so the probe measured an incident, not the model. Codex's function calling is established by the 2026-07 Terminal-Bench / tau2 calibration trajectories in portfolio.ts. Hosts observing the 500s should drop it with RouterOptions.unavailableModels rather than this snapshot claiming the model cannot call tools.
     contextWindow: 4e5,
     maxOutputTokens: 128e3,
     supportsTools: true,
@@ -2300,6 +2300,10 @@ var PortfolioStrategy = class {
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
     const unavailable = new Set(options.unavailableModels ?? []);
     const verifiedToolFallbacks = features.needsTools ? VERIFIED_TOOL_FALLBACKS.filter((model2) => options.modelPricing.has(model2)) : [];
+    if (options.routingProfile !== "premium") {
+      const fallbackCost = (model2) => estimatedCost(model2, options, features.estimatedInputTokens, maxOutputTokens);
+      verifiedToolFallbacks.sort((a, b) => fallbackCost(a) - fallbackCost(b));
+    }
     const chain = [
       .../* @__PURE__ */ new Set([
         ...configuredCandidates,

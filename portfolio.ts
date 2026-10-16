@@ -1061,10 +1061,18 @@ export class PortfolioStrategy implements RouterStrategy {
     // through RulesStrategy, and a dead evidence model must not re-enter here.
     const unavailable = new Set(options.unavailableModels ?? []);
     // `modelPricing` is the host's live catalog view. Do not introduce a
-    // built-in fallback that the current gateway does not advertise.
+    // built-in fallback that the current gateway does not advertise. These
+    // models carry no task evidence, so outside Premium the cheapest one is
+    // the first recovery hop; otherwise an outage of the curated chain would
+    // jump an Eco turn straight to the most expensive model in the list.
     const verifiedToolFallbacks = features.needsTools
       ? VERIFIED_TOOL_FALLBACKS.filter((model) => options.modelPricing.has(model))
       : [];
+    if (options.routingProfile !== "premium") {
+      const fallbackCost = (model: string) =>
+        estimatedCost(model, options, features.estimatedInputTokens, maxOutputTokens);
+      verifiedToolFallbacks.sort((a, b) => fallbackCost(a) - fallbackCost(b));
+    }
     const chain = [
       ...new Set([
         ...configuredCandidates,

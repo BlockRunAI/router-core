@@ -61,17 +61,17 @@
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -260,17 +260,17 @@
    "xai/grok-4.5",
    "google/gemini-3.5-flash",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -465,17 +465,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -729,17 +729,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -985,17 +985,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
    "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
-   "google/gemini-3.8-flash",
    "openai/gpt-5.1",
-   "openai/gpt-6-astra",
+   "google/gemini-3.8-flash",
    "openai/gpt-6-luna",
-   "openai/gpt-6-sol",
    "xai/grok-4.6",
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-sol",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -1071,17 +1071,17 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -1292,17 +1292,17 @@
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -1536,17 +1536,17 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -1823,17 +1823,17 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -2110,17 +2110,17 @@
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
-   "anthropic/claude-fable-5.1",
    "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
-   "google/gemini-3.8-flash",
    "openai/gpt-5.1",
-   "openai/gpt-6-astra",
+   "google/gemini-3.8-flash",
    "openai/gpt-6-luna",
-   "openai/gpt-6-sol",
    "xai/grok-4.6",
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-sol",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -2237,17 +2237,17 @@
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -2436,17 +2436,17 @@
    "xai/grok-4.5",
    "google/gemini-3.5-flash",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -2641,17 +2641,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -2905,17 +2905,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
-   "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.8-flash",
-   "openai/gpt-5.1",
-   "openai/gpt-6-astra",
    "openai/gpt-6-luna",
    "openai/gpt-6-sol",
+   "openai/gpt-5.1",
    "xai/grok-4.6",
+   "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {
@@ -3161,17 +3161,17 @@
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
-   "anthropic/claude-fable-5.1",
    "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
-   "google/gemini-3.8-flash",
    "openai/gpt-5.1",
-   "openai/gpt-6-astra",
+   "google/gemini-3.8-flash",
    "openai/gpt-6-luna",
-   "openai/gpt-6-sol",
    "xai/grok-4.6",
+   "anthropic/claude-sonnet-5.5",
+   "openai/gpt-6-sol",
+   "openai/gpt-6-astra",
+   "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
-   "xiaomi/mimo-v2.5"
+   "anthropic/claude-fable-5.1"
   ],
   "candidateScores": [
    {

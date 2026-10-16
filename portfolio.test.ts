@@ -159,27 +159,33 @@ describe("PortfolioStrategy", () => {
     expect(decision.candidates).not.toContain("anthropic/claude-sonnet-5.5");
   });
 
-  it("can select a newly verified model when the established tool chain is unavailable", () => {
-    const input = {
-      config: DEFAULT_ROUTING_CONFIG,
-      modelPricing: pricing,
-      routingProfile: "auto" as const,
-      hasTools: true,
-      requiresTools: true,
-      toolCount: 1,
-    };
-    const initial = route("Use lookup_order for order B-42.", undefined, 256, input);
-    const firstNewModel = "anthropic/claude-fable-5.1";
-    const firstNewIndex = initial.candidates?.indexOf(firstNewModel) ?? -1;
+  it.each([
+    ["eco", "openai/gpt-6-luna"],
+    ["auto", "openai/gpt-6-luna"],
+    ["premium", "anthropic/claude-fable-5.1"],
+  ] as const)(
+    "recovers a %s tool turn on %s when the established tool chain is unavailable",
+    (routingProfile, firstNewModel) => {
+      const input = {
+        config: DEFAULT_ROUTING_CONFIG,
+        modelPricing: pricing,
+        routingProfile,
+        hasTools: true,
+        requiresTools: true,
+        toolCount: 1,
+      };
+      const initial = route("Use lookup_order for order B-42.", undefined, 256, input);
+      const firstNewIndex = initial.candidates?.indexOf(firstNewModel) ?? -1;
 
-    expect(firstNewIndex).toBeGreaterThan(0);
-    const decision = route("Use lookup_order for order B-42.", undefined, 256, {
-      ...input,
-      unavailableModels: initial.candidates?.slice(0, firstNewIndex),
-    });
+      expect(firstNewIndex).toBeGreaterThan(0);
+      const decision = route("Use lookup_order for order B-42.", undefined, 256, {
+        ...input,
+        unavailableModels: initial.candidates?.slice(0, firstNewIndex),
+      });
 
-    expect(decision.model).toBe(firstNewModel);
-  });
+      expect(decision.model).toBe(firstNewModel);
+    },
+  );
 
   it("keeps deep multi-clue web research on the empirically steadier Sonnet 5", () => {
     const decision = route(

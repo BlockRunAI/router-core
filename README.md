@@ -265,7 +265,7 @@ Two rules govern this file, and both are load-bearing:
 
 The repository ships 66 live performance profiles (2026-08-29, three samples per model), 9 auditable historical seeds, 74 function-calling probe results, and a built-in snapshot of all 86 text models in the public catalog (2026-10-03 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. A model with no probe evidence can serve plain chat but never a tool-required turn.
 
-Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately, while primary promotion still requires an end-to-end agent evaluation.
+Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
 
 ---
 
@@ -360,7 +360,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 120 tests across 7 files
+npm test            # vitest — 122 tests across 7 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 
