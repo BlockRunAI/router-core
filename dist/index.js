@@ -1799,7 +1799,7 @@ function classifyTask(prompt, systemPrompt, options) {
   );
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
-  const codeArtifact = /```|\b(?:stack trace|traceback|exception)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  const codeArtifact = /```|\b(?:stack trace|traceback)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools = options.requiresTools ?? (toolsAvailable && inferToolRequirement(scannedPrompt, scannedSystemPrompt));
   const likelyParallelToolCalls = likelyNeedsParallelToolCalls(

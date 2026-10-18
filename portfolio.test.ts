@@ -1156,6 +1156,7 @@ describe("PortfolioStrategy code-task floor gating", () => {
     for (const prompt of [
       "What is Python?",
       "Translate this sentence into French: I like Python.",
+      "Translate into French: Please make an exception.",
     ]) {
       const decision = route(prompt, undefined, 256, {
         config: DEFAULT_ROUTING_CONFIG,

@@ -196,9 +196,11 @@ function classifyTask(
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   // Stronger than hasCode: an actual code artifact or coding action, never a
-  // bare language name ("What is Python?" is trivia, not a code task).
+  // bare language name ("What is Python?" is trivia, not a code task) and
+  // never the English word "exception" on its own ("please make an
+  // exception"); a thrown exception shows up as a CamelCase class above.
   const codeArtifact =
-    /```|\b(?:stack trace|traceback|exception)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) ||
+    /```|\b(?:stack trace|traceback)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) ||
     codeConstructSignal ||
     nativeCodeSignal ||
     errorClassSignal;
