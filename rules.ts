@@ -17,20 +17,33 @@ type DimensionScore = { name: string; score: number; signal: string | null };
 // A plain substring test counted `class` in "classic", `story` in "history",
 // `edit` in "credit" and `fix` in "prefix", so everyday prose picked up code,
 // creative and agentic signals it did not carry. Alphabetic keywords now have
-// to start at a word boundary. ASCII keywords additionally have to end at one,
-// after an optional English inflection, so "classes", "defining" and
-// "deploying" still count while "classic" does not. Non-ASCII alphabetic
-// keywords keep a trailing-open match because several are deliberate stems
-// (`оптимизаци`, `рассуждени`), and CJK keywords keep the substring test since
-// those scripts have no word boundaries to anchor on.
+// to start at a word boundary. Short ASCII keywords additionally have to end
+// at one, after an optional inflection, graded by how much a stray suffix can
+// change the word: a three-letter keyword takes only the English endings that
+// cannot spell another word (fix → fixes, never pip → pipe or def → defer); a
+// four-to-six-letter keyword also takes the common German and Romance endings,
+// because the lists spell those languages in ASCII too (beweis → beweise,
+// klasse → klassen); anything longer stays trailing-open like the substring
+// test it replaces, since its false-positive surface is small and its
+// inflection surface is large. Non-ASCII alphabetic keywords keep a
+// trailing-open match because several are deliberate stems (`оптимизаци`,
+// `рассуждени`). CJK, Hangul and Arabic keywords keep the substring test:
+// those scripts have no word boundaries, or attach particles and articles
+// directly to the word.
 
-const CJK_SCRIPT = /[　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
+const UNSEGMENTED_SCRIPT =
+  /[؀-ۿ　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
 const WORD_CHAR = /[\p{L}\p{N}]/u;
 const ASCII_PHRASE = /^[a-z0-9' -]+$/;
 const BOUNDARY_BEFORE = "(?<![\\p{L}\\p{N}])";
 const BOUNDARY_AFTER = "(?![\\p{L}\\p{N}])";
-const SUFFIXES = "(?:s|es|ed|d|ing|er|ers|ment|ments|ation|ations)?";
+const BOUNDED_LAST_WORD_LENGTH = 6;
+const SHORT_SUFFIXES = "(?:s|ed|ing)?";
+const SIBILANT_PLURAL = "es";
+const MID_SUFFIXES =
+  "(?:s|es|ed|d|ing|er|ers|ly|ment|ments|ation|ations|e|en|n|a|as|o|os|em|et|ung|ungen)?";
 const DROPPED_E_SUFFIXES = "(?:ing|ed|es|er|ers|ation|ations)";
+const DOUBLED_CONSONANT_SUFFIXES = "(?:ing|ed|er|ers)";
 
 type KeywordMatcher = {
   /** Cheap substring pre-check; the regex only runs when this is present. */
@@ -50,7 +63,7 @@ function keywordMatcher(keyword: string): KeywordMatcher {
 
   const kw = keyword.toLowerCase();
   let matcher: KeywordMatcher;
-  if (CJK_SCRIPT.test(kw) || kw.length === 0) {
+  if (UNSEGMENTED_SCRIPT.test(kw) || kw.length === 0) {
     matcher = { needle: kw, pattern: null };
   } else {
     const lead = WORD_CHAR.test(kw[0]) ? BOUNDARY_BEFORE : "";
@@ -58,14 +71,33 @@ function keywordMatcher(keyword: string): KeywordMatcher {
     let body = escaped;
     let trail = "";
     let needle = kw;
-    if (WORD_CHAR.test(kw[kw.length - 1]) && ASCII_PHRASE.test(kw)) {
-      const forms = [`${escaped}${SUFFIXES}`];
-      if (kw.endsWith("e")) {
-        forms.push(`${escaped.slice(0, -1)}${DROPPED_E_SUFFIXES}`);
-        needle = kw.slice(0, -1);
-      } else if (kw.endsWith("y")) {
-        forms.push(`${escaped.slice(0, -1)}(?:ies|ied)`);
-        needle = kw.slice(0, -1);
+    const lastWord = kw.slice(kw.lastIndexOf(" ") + 1);
+    if (
+      WORD_CHAR.test(kw[kw.length - 1]) &&
+      ASCII_PHRASE.test(kw) &&
+      lastWord.length <= BOUNDED_LAST_WORD_LENGTH
+    ) {
+      // ASCII phrases contain no regex metacharacters, so `escaped` slices
+      // align with `kw` slices below.
+      const forms: string[] = [];
+      if (/\d$/.test(kw)) {
+        // "step 1" must not absorb "step 10".
+        forms.push(escaped);
+      } else if (lastWord.length <= 3) {
+        forms.push(`${escaped}${SHORT_SUFFIXES}`);
+        if (/(?:x|s|z|ch|sh)$/.test(kw)) forms.push(`${escaped}${SIBILANT_PLURAL}`);
+      } else {
+        forms.push(`${escaped}${MID_SUFFIXES}`);
+        if (kw.endsWith("e")) {
+          forms.push(`${escaped.slice(0, -1)}${DROPPED_E_SUFFIXES}`);
+          needle = kw.slice(0, -1);
+        } else if (kw.endsWith("y")) {
+          forms.push(`${escaped.slice(0, -1)}(?:ies|ied)`);
+          needle = kw.slice(0, -1);
+        } else if (/[aeiou][bdgmnprt]$/.test(kw)) {
+          // debug → debugging, plan → planned
+          forms.push(`${escaped}${kw[kw.length - 1]}${DOUBLED_CONSONANT_SUFFIXES}`);
+        }
       }
       body = `(?:${forms.join("|")})`;
       trail = BOUNDARY_AFTER;

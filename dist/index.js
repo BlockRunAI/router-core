@@ -1,11 +1,15 @@
 // rules.ts
-var CJK_SCRIPT = /[　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
+var UNSEGMENTED_SCRIPT = /[؀-ۿ　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
 var WORD_CHAR = /[\p{L}\p{N}]/u;
 var ASCII_PHRASE = /^[a-z0-9' -]+$/;
 var BOUNDARY_BEFORE = "(?<![\\p{L}\\p{N}])";
 var BOUNDARY_AFTER = "(?![\\p{L}\\p{N}])";
-var SUFFIXES = "(?:s|es|ed|d|ing|er|ers|ment|ments|ation|ations)?";
+var BOUNDED_LAST_WORD_LENGTH = 6;
+var SHORT_SUFFIXES = "(?:s|ed|ing)?";
+var SIBILANT_PLURAL = "es";
+var MID_SUFFIXES = "(?:s|es|ed|d|ing|er|ers|ly|ment|ments|ation|ations|e|en|n|a|as|o|os|em|et|ung|ungen)?";
 var DROPPED_E_SUFFIXES = "(?:ing|ed|es|er|ers|ation|ations)";
+var DOUBLED_CONSONANT_SUFFIXES = "(?:ing|ed|er|ers)";
 var matcherCache = /* @__PURE__ */ new Map();
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -15,7 +19,7 @@ function keywordMatcher(keyword) {
   if (cached) return cached;
   const kw = keyword.toLowerCase();
   let matcher;
-  if (CJK_SCRIPT.test(kw) || kw.length === 0) {
+  if (UNSEGMENTED_SCRIPT.test(kw) || kw.length === 0) {
     matcher = { needle: kw, pattern: null };
   } else {
     const lead = WORD_CHAR.test(kw[0]) ? BOUNDARY_BEFORE : "";
@@ -23,14 +27,25 @@ function keywordMatcher(keyword) {
     let body = escaped;
     let trail = "";
     let needle = kw;
-    if (WORD_CHAR.test(kw[kw.length - 1]) && ASCII_PHRASE.test(kw)) {
-      const forms = [`${escaped}${SUFFIXES}`];
-      if (kw.endsWith("e")) {
-        forms.push(`${escaped.slice(0, -1)}${DROPPED_E_SUFFIXES}`);
-        needle = kw.slice(0, -1);
-      } else if (kw.endsWith("y")) {
-        forms.push(`${escaped.slice(0, -1)}(?:ies|ied)`);
-        needle = kw.slice(0, -1);
+    const lastWord = kw.slice(kw.lastIndexOf(" ") + 1);
+    if (WORD_CHAR.test(kw[kw.length - 1]) && ASCII_PHRASE.test(kw) && lastWord.length <= BOUNDED_LAST_WORD_LENGTH) {
+      const forms = [];
+      if (/\d$/.test(kw)) {
+        forms.push(escaped);
+      } else if (lastWord.length <= 3) {
+        forms.push(`${escaped}${SHORT_SUFFIXES}`);
+        if (/(?:x|s|z|ch|sh)$/.test(kw)) forms.push(`${escaped}${SIBILANT_PLURAL}`);
+      } else {
+        forms.push(`${escaped}${MID_SUFFIXES}`);
+        if (kw.endsWith("e")) {
+          forms.push(`${escaped.slice(0, -1)}${DROPPED_E_SUFFIXES}`);
+          needle = kw.slice(0, -1);
+        } else if (kw.endsWith("y")) {
+          forms.push(`${escaped.slice(0, -1)}(?:ies|ied)`);
+          needle = kw.slice(0, -1);
+        } else if (/[aeiou][bdgmnprt]$/.test(kw)) {
+          forms.push(`${escaped}${kw[kw.length - 1]}${DOUBLED_CONSONANT_SUFFIXES}`);
+        }
       }
       body = `(?:${forms.join("|")})`;
       trail = BOUNDARY_AFTER;
@@ -1781,7 +1796,8 @@ function classifyTask(prompt, systemPrompt, options) {
   const nativeCodeSignal = /\b(?:programmed|written|implemented?|code)\s+(?:in|using)\s+(?:c\+\+|c|rust|go)\b/i.test(
     scannedPrompt
   );
-  const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal;
+  const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
+  const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools = options.requiresTools ?? (toolsAvailable && inferToolRequirement(scannedPrompt, scannedSystemPrompt));
   const likelyParallelToolCalls = likelyNeedsParallelToolCalls(
@@ -1907,7 +1923,7 @@ function classifyTask(prompt, systemPrompt, options) {
   else if (needsTools) taskType = "tool_agent";
   else if (multipleChoiceSignals >= 3) taskType = "reasoning_mcq";
   else if (compactMathProblem) taskType = "reasoning_math";
-  else if (/\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text))
+  else if (errorClassSignal || /\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text))
     taskType = "debug";
   else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite|重构|实现|修改)\b/i.test(text))
     taskType = "code_edit";
@@ -2346,7 +2362,7 @@ var PortfolioStrategy = class {
     });
     const tierConfigs = base.tierConfigs;
     if (!tierConfigs) return base;
-    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : (features.taskType === "debug" || features.taskType === "code_edit") && base.tier === "SIMPLE" ? "MEDIUM" : base.tier;
+    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : (features.taskType === "debug" || features.taskType === "code_edit") && features.hasCode && base.tier === "SIMPLE" ? "MEDIUM" : base.tier;
     const tierConfig = tierConfigs[targetTier];
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
     const unavailable = new Set(options.unavailableModels ?? []);

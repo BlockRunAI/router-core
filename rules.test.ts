@@ -37,6 +37,32 @@ describe("classifyByRules keyword matching", () => {
     );
   });
 
+  it("keeps inflections of the ASCII keywords of other European languages", () => {
+    // `beweis` and `mathematisch` are German reasoning markers spelled in
+    // ASCII; the end boundary must not require English morphology of them.
+    const result = classifyByRules("Beweise den mathematischen Satz.", undefined, 8, scoring);
+    expect(result.tier).toBe("REASONING");
+  });
+
+  it("matches doubled-consonant English inflections", () => {
+    const result = classifyByRules(
+      "Keep debugging and editing until it works.",
+      undefined,
+      11,
+      scoring,
+    );
+    expect(result.agenticScore).toBe(0.6);
+  });
+
+  it("does not let a short keyword plus a suffix spell a different word", () => {
+    // "pipes" is not `pip`, "defer" is not `def`, "important" is not `import`,
+    // "basic" is not `asic`, "semantic" is not `sem`.
+    const prompt = "It is important to defer the basic semantic check for the pipes";
+    const result = classifyByRules(prompt, undefined, 16, scoring);
+    expect(result.signals.filter((s) => /code|agentic|domain|negation/.test(s))).toEqual([]);
+    expect(signalsFor("Apply the fixes and rerun")).toContainEqual(expect.stringContaining("agentic"));
+  });
+
   it("keeps stem matching for Cyrillic keywords", () => {
     // "оптимизаци" is a deliberate stem that must still hit "оптимизацию".
     expect(signalsFor("Проведи оптимизацию алгоритма для базы данных")).toContainEqual(

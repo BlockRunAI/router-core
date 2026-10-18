@@ -189,7 +189,10 @@ function classifyTask(
     /\b(?:programmed|written|implemented?|code)\s+(?:in|using)\s+(?:c\+\+|c|rust|go)\b/i.test(
       scannedPrompt,
     );
-  const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal;
+  // A CamelCase error class (TypeError, NullPointerException) is a runtime
+  // artifact, not prose about errors; case-sensitive on purpose.
+  const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
+  const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools =
     options.requiresTools ??
@@ -442,6 +445,7 @@ function classifyTask(
   else if (multipleChoiceSignals >= 3) taskType = "reasoning_mcq";
   else if (compactMathProblem) taskType = "reasoning_math";
   else if (
+    errorClassSignal ||
     /\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text)
   )
     taskType = "debug";
@@ -1053,12 +1057,16 @@ export class PortfolioStrategy implements RouterStrategy {
     // floor of their own: a compact reasoning problem belongs on the
     // reasoning chain however short it is, and a code edit or stack trace
     // belongs at least on the MEDIUM chain — the SIMPLE chain is curated for
-    // trivia and translation and has no model with code affinity.
+    // trivia and translation and has no model with code affinity. The code
+    // floor requires actual code evidence: `debug` and `code_edit` are also
+    // assigned from bare verbs ("rewrite this sentence", "margin of error"),
+    // and prose must stay on the cheap chain.
     const targetTier: Tier =
       (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") &&
       (base.tier === "SIMPLE" || base.tier === "MEDIUM")
         ? "REASONING"
         : (features.taskType === "debug" || features.taskType === "code_edit") &&
+            features.hasCode &&
             base.tier === "SIMPLE"
           ? "MEDIUM"
           : base.tier;

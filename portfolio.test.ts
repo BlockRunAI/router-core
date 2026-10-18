@@ -1137,3 +1137,29 @@ describe("PortfolioStrategy code-task tier floor", () => {
     expect(decision.tier).toBe("MEDIUM");
   });
 });
+
+describe("PortfolioStrategy code-task floor gating", () => {
+  it("leaves prose that merely says 'rewrite' or 'error' on the SIMPLE chain", () => {
+    for (const prompt of [
+      "Rewrite this sentence: The weather is nice today.",
+      "What does margin of error mean?",
+    ]) {
+      const decision = route(prompt, undefined, 256, {
+        config: DEFAULT_ROUTING_CONFIG,
+        modelPricing: pricing,
+      });
+      expect(decision.tier, prompt).toBe("SIMPLE");
+    }
+  });
+
+  it("treats a CamelCase error class as code evidence", () => {
+    const decision = route(
+      "NullPointerException at OrderService.java:88 when the cart is empty, why?",
+      undefined,
+      256,
+      { config: DEFAULT_ROUTING_CONFIG, modelPricing: pricing },
+    );
+    expect(decision.taskType).toBe("debug");
+    expect(decision.tier).toBe("MEDIUM");
+  });
+});
