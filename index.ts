@@ -32,6 +32,7 @@ export { RulesStrategy } from "./strategy.js";
 export { PortfolioStrategy } from "./portfolio.js";
 export { classifyByRules } from "./rules.js";
 export { inferToolRequirement } from "./tool-intent.js";
+export { estimateTokens } from "./tokens.js";
 export {
   getFallbackChain,
   getFallbackChainFiltered,

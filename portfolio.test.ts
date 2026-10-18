@@ -1025,3 +1025,115 @@ describe("PortfolioStrategy", () => {
     expect(decision.candidates).not.toContain("anthropic/claude-sonnet-5");
   });
 });
+
+describe("PortfolioStrategy signal hygiene", () => {
+  it("estimates CJK input by character so a long Chinese document is routed as long context", () => {
+    // 200k Chinese characters is far more than 80k tokens on every production
+    // tokenizer; a chars/4 estimate reports 50k and misses both the
+    // long-context task type and the capacity filter.
+    const document = "这是一段很长的中文合同文本，需要总结其中的关键条款。".repeat(8_000);
+    const decision = route(`总结下面的合同：\n${document}`, undefined, 1024, {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+    });
+
+    expect(decision.taskType).toBe("long_context");
+    expect(decision.tier).toBe("COMPLEX");
+  });
+
+  it("ignores stakes and latency cues that only appear in the system prompt", () => {
+    const options = {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+      hasTools: true,
+      requiresTools: true,
+      toolCount: 1,
+      toolNames: ["web_search"],
+      now: new Date("2026-07-21T00:00:00Z"),
+    };
+    const prompt = "search the web for the latest news on solar panels";
+    const bare = route(prompt, undefined, 1024, options);
+    const framed = route(
+      prompt,
+      "Follow security best practices for this production deployment. Be quick.",
+      1024,
+      options,
+    );
+
+    expect(framed.candidateScores).toEqual(bare.candidateScores);
+  });
+
+  it("detects the request language from the user prompt, not the system prompt", () => {
+    const prompt = "Extract orderId, quantity and status from: order A-17, qty 3, shipped. JSON only.";
+    const bare = route(prompt, undefined, 256, { config: DEFAULT_ROUTING_CONFIG, modelPricing: pricing });
+    const zhSystem = route(prompt, "你是一个乐于助人的助手。", 256, {
+      config: DEFAULT_ROUTING_CONFIG,
+      modelPricing: pricing,
+    });
+
+    expect(bare.taskType).toBe("extraction");
+    expect(zhSystem.model).toBe(bare.model);
+    expect(zhSystem.candidates).toEqual(bare.candidates);
+  });
+
+  it("decays a stale speed observation toward neutral, not toward zero", () => {
+    // A model with an old probe must not score below a model nobody has
+    // measured (which gets the neutral 0.5).
+    // Both models share the extraction affinity band, so both are scored.
+    const equalCostPricing = new Map<string, ModelPricing>([
+      ["google/gemini-2.5-flash", { inputPrice: 1, outputPrice: 1 }],
+      ["openai/gpt-4o-mini", { inputPrice: 1, outputPrice: 1 }],
+    ]);
+    const twoCandidateConfig = {
+      ...DEFAULT_ROUTING_CONFIG,
+      tiers: Object.fromEntries(
+        Object.keys(DEFAULT_ROUTING_CONFIG.tiers).map((tier) => [
+          tier,
+          { primary: "google/gemini-2.5-flash", fallback: ["openai/gpt-4o-mini"] },
+        ]),
+      ) as typeof DEFAULT_ROUTING_CONFIG.tiers,
+    };
+    const decision = route("Extract the fields as JSON", undefined, 512, {
+      config: twoCandidateConfig,
+      modelPricing: equalCostPricing,
+      now: new Date("2026-07-21T00:00:00Z"),
+      modelPerformance: {
+        "openai/gpt-4o-mini": {
+          measuredAt: "2025-07-21T00:00:00Z", // a year old: freshness ~0
+          latencyMs: 600,
+          outputTokensPerSecond: 250,
+        },
+        "google/gemini-2.5-flash": {
+          measuredAt: "not-measured", // no usable observation: neutral
+          latencyMs: 0,
+          outputTokensPerSecond: 0,
+        },
+      },
+    });
+
+    const rows = Object.fromEntries(
+      (decision.candidateScores ?? []).map((row) => [row.model, row]),
+    );
+    expect(decision.taskType).toBe("extraction");
+    expect(rows["openai/gpt-4o-mini"].speed).toBeCloseTo(0.5, 2);
+    expect(rows["google/gemini-2.5-flash"].speed).toBeCloseTo(0.5, 2);
+  });
+});
+
+describe("PortfolioStrategy code-task tier floor", () => {
+  it("keeps a stack trace off the SIMPLE chain even when the rules score is low", () => {
+    // Word-boundary keyword matching removed the accidental `def`/`define`
+    // hits inside "undefined" that used to lift this prompt to MEDIUM. The
+    // portfolio classifier still knows it is a debug task, and the SIMPLE
+    // chain is curated for trivia and translation, not for reading a trace.
+    const decision = route(
+      "debug: TypeError: Cannot read properties of undefined (reading 'map') at UserList.render",
+      undefined,
+      1024,
+      { config: DEFAULT_ROUTING_CONFIG, modelPricing: pricing },
+    );
+
+    expect(decision.taskType).toBe("debug");
+    expect(decision.tier).toBe("MEDIUM");
+  });
+});

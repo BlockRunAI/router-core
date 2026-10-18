@@ -362,6 +362,7 @@ declare function registerStrategy(strategy: RouterStrategy): void;
 /** Candidate router used for Auto. Rules still set the capability tier; V3 ranks within it. */
 declare class PortfolioStrategy implements RouterStrategy {
     readonly name = "portfolio";
+    private readonly rules;
     route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
 }
 
@@ -389,6 +390,17 @@ declare function classifyByRules(prompt: string, systemPrompt: string | undefine
 declare function inferToolRequirement(prompt: string, _systemPrompt?: string, toolChoice?: unknown): boolean;
 
 /**
+ * Request-size helpers shared by the rules and portfolio strategies.
+ *
+ * The router never tokenizes — it is on the hot path and model-agnostic — so
+ * sizes are estimates. The estimate only has to be honest enough for the
+ * decisions that consume it: the long-context task type, the COMPLEX
+ * override and the per-model capacity filter.
+ */
+/** Approximate token count: one per CJK character, one per four of anything else. */
+declare function estimateTokens(text: string): number;
+
+/**
  * Default Routing Config
  *
  * All routing parameters as a TypeScript constant.
@@ -412,4 +424,4 @@ declare const DEFAULT_ROUTING_CONFIG: RoutingConfig;
  */
 declare function route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
 
-export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, applyUnavailableModels, calculateModelCost, classifyByRules, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };
+export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, applyUnavailableModels, calculateModelCost, classifyByRules, estimateTokens, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };

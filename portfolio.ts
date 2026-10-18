@@ -17,6 +17,7 @@ import {
 } from "./model-profiles.js";
 import type { RouterOptions, RouterStrategy, TaskType, Tier, TierConfig } from "./types.js";
 import { inferToolRequirement } from "./tool-intent.js";
+import { estimateTokens, sampleForScan, scanLimit } from "./tokens.js";
 
 type TaskFeatures = {
   taskType: TaskType;
@@ -161,18 +162,15 @@ function classifyTask(
   options: RouterOptions,
 ): TaskFeatures {
   const fullText = `${systemPrompt ?? ""} ${prompt}`;
-  const estimatedInputTokens = Math.ceil(fullText.length / 4);
-  // Feature regexes need request shape and intent, not the entire document.
-  // Sample both ends so a long pasted artifact keeps the task instruction at
-  // either boundary, while the full length still drives capacity decisions.
-  const scanLimit = Math.max(1, Math.min(8_000, options.config.classifier.promptTruncationChars));
-  const sample = (value: string): string => {
-    if (value.length <= scanLimit) return value;
-    const prefixLength = Math.ceil(scanLimit / 2);
-    return `${value.slice(0, prefixLength)}\n${value.slice(-(scanLimit - prefixLength))}`;
-  };
-  const scannedPrompt = sample(prompt);
-  const scannedSystemPrompt = sample(systemPrompt ?? "");
+  const estimatedInputTokens = estimateTokens(fullText);
+  const limit = scanLimit(options.config.classifier.promptTruncationChars);
+  const scannedPrompt = sampleForScan(prompt, limit);
+  const scannedSystemPrompt = sampleForScan(systemPrompt ?? "", limit);
+  // Only the deep-web-research clue detectors below read the system prompt,
+  // and they are gated on a web-research tool surface. Every other feature
+  // reads the user turn: a host's standing instructions ("be quick", "follow
+  // security best practices", a Mandarin persona) describe the assistant, not
+  // this request, and must not move its scoring or language band.
   const scannedFullText = `${scannedSystemPrompt} ${scannedPrompt}`;
   const text = scannedPrompt.toLowerCase();
   const explicitCodeSignal =
@@ -328,11 +326,11 @@ function classifyTask(
   const needsStructuredOutput = options.requiresStructuredOutput ?? false;
   const latencySensitive =
     /\b(?:urgent|asap|fast|quick|low latency|real[- ]time)\b|尽快|马上|快速|低延迟/i.test(
-      scannedFullText,
+      scannedPrompt,
     );
   const highStakes =
     /\b(?:production|security|payment|legal|medical|financial|audit)\b|生产|安全|支付|法律|医疗|财务|审计/i.test(
-      scannedFullText,
+      scannedPrompt,
     );
   // Terminal tasks often describe the desired artifact rather than naming a
   // programming language. Treat only small, deterministic local build/file
@@ -421,7 +419,7 @@ function classifyTask(
     numberedSteps < 3 &&
     prompt.length <= 1_000 &&
     simpleTerminalArtifact;
-  const language = /[\u3400-\u9fff]/.test(scannedFullText) ? "zh" : "other";
+  const language = /[\u3400-\u9fff]/.test(scannedPrompt) ? "zh" : "other";
   const multipleChoiceSignals = (scannedPrompt.match(/(?:^|\n)\s*[A-D][.)]\s+/gim) ?? []).length;
   const numericSignals = (scannedPrompt.match(/-?\d+(?:[.,]\d+)?/g) ?? []).length;
   const compactMathProblem =
@@ -1035,6 +1033,8 @@ function profileScore(
 /** Candidate router used for Auto. Rules still set the capability tier; V3 ranks within it. */
 export class PortfolioStrategy implements RouterStrategy {
   readonly name = "portfolio";
+  // Rules set the capability tier; the strategy is stateless, so one instance serves every request.
+  private readonly rules = new RulesStrategy();
 
   route(
     prompt: string,
@@ -1043,17 +1043,25 @@ export class PortfolioStrategy implements RouterStrategy {
     options: RouterOptions,
   ) {
     const features = classifyTask(prompt, systemPrompt, options);
-    const base = new RulesStrategy().route(prompt, systemPrompt, maxOutputTokens, {
+    const base = this.rules.route(prompt, systemPrompt, maxOutputTokens, {
       ...options,
       requiresTools: features.needsTools,
     });
     const tierConfigs = base.tierConfigs;
     if (!tierConfigs) return base;
+    // The rules score sets the capability tier, but two task types carry a
+    // floor of their own: a compact reasoning problem belongs on the
+    // reasoning chain however short it is, and a code edit or stack trace
+    // belongs at least on the MEDIUM chain — the SIMPLE chain is curated for
+    // trivia and translation and has no model with code affinity.
     const targetTier: Tier =
       (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") &&
       (base.tier === "SIMPLE" || base.tier === "MEDIUM")
         ? "REASONING"
-        : base.tier;
+        : (features.taskType === "debug" || features.taskType === "code_edit") &&
+            base.tier === "SIMPLE"
+          ? "MEDIUM"
+          : base.tier;
     const tierConfig = tierConfigs[targetTier];
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
     // Evidence candidates join the configured chain, but the host's
@@ -1083,10 +1091,11 @@ export class PortfolioStrategy implements RouterStrategy {
       (model): model is string =>
         typeof model === "string" && model.length > 0 && !unavailable.has(model),
     );
-    const eligible = chain.filter((model) =>
-      isEligible(model, features, maxOutputTokens, options),
+    const eligible = new Set(
+      chain.filter((model) => isEligible(model, features, maxOutputTokens, options)),
     );
-    const eligibleCandidates = eligible.length > 0 ? eligible : chain;
+    // When nothing is eligible the whole chain competes, scored as incapable.
+    const eligibleCandidates = eligible.size > 0 ? [...eligible] : chain;
     if (eligibleCandidates.length === 0) return base;
     const profileName =
       options.routingProfile === "eco"
@@ -1143,7 +1152,7 @@ export class PortfolioStrategy implements RouterStrategy {
           Number.isFinite(cost) && maxCost > minCost
             ? 1 - (cost - minCost) / (maxCost - minCost)
             : 0.5;
-        const capabilityScore = isEligible(model, features, maxOutputTokens, options) ? 1 : 0;
+        const capabilityScore = eligible.has(model) ? 1 : 0;
         const profile = profileScore(model, options, now);
         // Fresh observations can refine affinity. Historical observations fade
         // quickly and never replace task-level RouterBench evidence.
@@ -1151,8 +1160,16 @@ export class PortfolioStrategy implements RouterStrategy {
           profile?.quality === undefined
             ? getAffinity(model)
             : getAffinity(model) * (1 - profile.freshness) + profile.quality * profile.freshness;
-        const observedSpeed = profile ? profile.speed * profile.freshness : 0.5;
-        const observedTailSpeed = profile ? profile.tailSpeed * profile.freshness : 0.5;
+        // Every observed dimension fades toward its neutral prior as the
+        // observation ages, exactly like reliability below. Fading speed
+        // toward zero instead ranked any model with a stale probe below a
+        // model nobody had measured, which the latter's 0.5 silently won.
+        const observedSpeed = profile
+          ? profile.speed * profile.freshness + 0.5 * (1 - profile.freshness)
+          : 0.5;
+        const observedTailSpeed = profile
+          ? profile.tailSpeed * profile.freshness + 0.5 * (1 - profile.freshness)
+          : 0.5;
         const observedReliability = profile
           ? profile.reliability * profile.freshness + (1 - profile.freshness)
           : 1;

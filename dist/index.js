@@ -1,4 +1,50 @@
 // rules.ts
+var CJK_SCRIPT = /[　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
+var WORD_CHAR = /[\p{L}\p{N}]/u;
+var ASCII_PHRASE = /^[a-z0-9' -]+$/;
+var BOUNDARY_BEFORE = "(?<![\\p{L}\\p{N}])";
+var BOUNDARY_AFTER = "(?![\\p{L}\\p{N}])";
+var SUFFIXES = "(?:s|es|ed|d|ing|er|ers|ment|ments|ation|ations)?";
+var DROPPED_E_SUFFIXES = "(?:ing|ed|es|er|ers|ation|ations)";
+var matcherCache = /* @__PURE__ */ new Map();
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function keywordMatcher(keyword) {
+  const cached = matcherCache.get(keyword);
+  if (cached) return cached;
+  const kw = keyword.toLowerCase();
+  let matcher;
+  if (CJK_SCRIPT.test(kw) || kw.length === 0) {
+    matcher = { needle: kw, pattern: null };
+  } else {
+    const lead = WORD_CHAR.test(kw[0]) ? BOUNDARY_BEFORE : "";
+    const escaped = escapeRegExp(kw);
+    let body = escaped;
+    let trail = "";
+    let needle = kw;
+    if (WORD_CHAR.test(kw[kw.length - 1]) && ASCII_PHRASE.test(kw)) {
+      const forms = [`${escaped}${SUFFIXES}`];
+      if (kw.endsWith("e")) {
+        forms.push(`${escaped.slice(0, -1)}${DROPPED_E_SUFFIXES}`);
+        needle = kw.slice(0, -1);
+      } else if (kw.endsWith("y")) {
+        forms.push(`${escaped.slice(0, -1)}(?:ies|ied)`);
+        needle = kw.slice(0, -1);
+      }
+      body = `(?:${forms.join("|")})`;
+      trail = BOUNDARY_AFTER;
+    }
+    matcher = { needle, pattern: new RegExp(`${lead}${body}${trail}`, "u") };
+  }
+  matcherCache.set(keyword, matcher);
+  return matcher;
+}
+function matchesKeyword(text, keyword) {
+  const { needle, pattern } = keywordMatcher(keyword);
+  if (!text.includes(needle)) return false;
+  return pattern === null ? true : pattern.test(text);
+}
 function scoreTokenCount(estimatedTokens, thresholds) {
   if (estimatedTokens < thresholds.simple) {
     return { name: "tokenCount", score: -1, signal: `short (${estimatedTokens} tokens)` };
@@ -9,7 +55,7 @@ function scoreTokenCount(estimatedTokens, thresholds) {
   return { name: "tokenCount", score: 0, signal: null };
 }
 function scoreKeywordMatch(text, keywords, name, signalLabel, thresholds, scores) {
-  const matches = keywords.filter((kw) => text.includes(kw.toLowerCase()));
+  const matches = keywords.filter((kw) => matchesKeyword(text, kw));
   if (matches.length >= thresholds.high) {
     return {
       name,
@@ -45,7 +91,7 @@ function scoreAgenticTask(text, keywords) {
   let matchCount = 0;
   const signals = [];
   for (const keyword of keywords) {
-    if (text.includes(keyword.toLowerCase())) {
+    if (matchesKeyword(text, keyword)) {
       matchCount++;
       if (signals.length < 3) {
         signals.push(keyword);
@@ -192,9 +238,7 @@ function classifyByRules(prompt, systemPrompt, estimatedTokens, config) {
     const w = weights[d.name] ?? 0;
     weightedScore += d.score * w;
   }
-  const reasoningMatches = config.reasoningKeywords.filter(
-    (kw) => userText.includes(kw.toLowerCase())
-  );
+  const reasoningMatches = config.reasoningKeywords.filter((kw) => matchesKeyword(userText, kw));
   if (reasoningMatches.length >= 2) {
     const confidence2 = calibrateConfidence(
       Math.max(weightedScore, 0.3),
@@ -261,7 +305,7 @@ function selectModel(tier, confidence, method, reasoning, tierConfigs, modelPric
   const baselineInput = estimatedInputTokens / 1e6 * opusInputPrice;
   const baselineOutput = maxOutputTokens / 1e6 * opusOutputPrice;
   const baselineCost = baselineInput + baselineOutput;
-  const savings = routingProfile === "premium" ? 0 : baselineCost > 0 ? Math.max(0, (baselineCost - costEstimate) / baselineCost) : 0;
+  const savings = routingProfile === "premium" || pricing === void 0 ? 0 : baselineCost > 0 ? Math.max(0, (baselineCost - costEstimate) / baselineCost) : 0;
   return {
     model,
     tier,
@@ -342,6 +386,23 @@ function filterCandidatesByCapacity(models, estimatedInputTokens, requestedOutpu
   return filtered;
 }
 
+// tokens.ts
+var CJK_CHARS = /[　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/g;
+function estimateTokens(text) {
+  if (text.length === 0) return 0;
+  const cjk = text.match(CJK_CHARS)?.length ?? 0;
+  return cjk + Math.ceil((text.length - cjk) / 4);
+}
+function scanLimit(promptTruncationChars) {
+  return Math.max(1, Math.min(8e3, promptTruncationChars));
+}
+function sampleForScan(value, limit) {
+  if (value.length <= limit) return value;
+  const prefixLength = Math.ceil(limit / 2);
+  return `${value.slice(0, prefixLength)}
+${value.slice(-(limit - prefixLength))}`;
+}
+
 // strategy.ts
 function applyPromotions(tierConfigs, promotions, profile, now = /* @__PURE__ */ new Date()) {
   if (!promotions || promotions.length === 0) return tierConfigs;
@@ -385,16 +446,10 @@ var RulesStrategy = class {
   route(prompt, systemPrompt, maxOutputTokens, options) {
     const { config, modelPricing } = options;
     const fullText = `${systemPrompt ?? ""} ${prompt}`;
-    const estimatedTokens = Math.ceil(fullText.length / 4);
-    const scanLimit = Math.max(1, Math.min(8e3, config.classifier.promptTruncationChars));
-    const sample = (value) => {
-      if (value.length <= scanLimit) return value;
-      const prefixLength = Math.ceil(scanLimit / 2);
-      return `${value.slice(0, prefixLength)}
-${value.slice(-(scanLimit - prefixLength))}`;
-    };
-    const scannedPrompt = sample(prompt);
-    const scannedSystemPrompt = systemPrompt ? sample(systemPrompt) : void 0;
+    const estimatedTokens = estimateTokens(fullText);
+    const limit = scanLimit(config.classifier.promptTruncationChars);
+    const scannedPrompt = sampleForScan(prompt, limit);
+    const scannedSystemPrompt = systemPrompt ? sampleForScan(systemPrompt, limit) : void 0;
     const ruleResult = classifyByRules(
       scannedPrompt,
       scannedSystemPrompt,
@@ -448,7 +503,7 @@ ${value.slice(-(scanLimit - prefixLength))}`;
       );
       return { ...decision2, tierConfigs, profile };
     }
-    const hasStructuredOutput = options.requiresStructuredOutput === true || (scannedSystemPrompt ? /json|structured|schema/i.test(scannedSystemPrompt) : false);
+    const hasStructuredOutput = options.requiresStructuredOutput === true;
     let tier;
     let confidence;
     const method = "rules";
@@ -1711,16 +1766,10 @@ function likelyNeedsParallelToolCalls(prompt, needsTools, toolCount, toolNames) 
 }
 function classifyTask(prompt, systemPrompt, options) {
   const fullText = `${systemPrompt ?? ""} ${prompt}`;
-  const estimatedInputTokens = Math.ceil(fullText.length / 4);
-  const scanLimit = Math.max(1, Math.min(8e3, options.config.classifier.promptTruncationChars));
-  const sample = (value) => {
-    if (value.length <= scanLimit) return value;
-    const prefixLength = Math.ceil(scanLimit / 2);
-    return `${value.slice(0, prefixLength)}
-${value.slice(-(scanLimit - prefixLength))}`;
-  };
-  const scannedPrompt = sample(prompt);
-  const scannedSystemPrompt = sample(systemPrompt ?? "");
+  const estimatedInputTokens = estimateTokens(fullText);
+  const limit = scanLimit(options.config.classifier.promptTruncationChars);
+  const scannedPrompt = sampleForScan(prompt, limit);
+  const scannedSystemPrompt = sampleForScan(systemPrompt ?? "", limit);
   const scannedFullText = `${scannedSystemPrompt} ${scannedPrompt}`;
   const text = scannedPrompt.toLowerCase();
   const explicitCodeSignal = /```|\b(?:typescript|javascript|python|rust|java|sql|stack trace|traceback|exception)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(
@@ -1804,10 +1853,10 @@ ${value.slice(-(scanLimit - prefixLength))}`;
   const needsVision = options.hasVision ?? false;
   const needsStructuredOutput = options.requiresStructuredOutput ?? false;
   const latencySensitive = /\b(?:urgent|asap|fast|quick|low latency|real[- ]time)\b|尽快|马上|快速|低延迟/i.test(
-    scannedFullText
+    scannedPrompt
   );
   const highStakes = /\b(?:production|security|payment|legal|medical|financial|audit)\b|生产|安全|支付|法律|医疗|财务|审计/i.test(
-    scannedFullText
+    scannedPrompt
   );
   const terminalToolSignal = normalizedToolNames.some(
     (name) => /^(?:terminalexec|terminalinspect|terminalsendkeys)$/.test(name)
@@ -1843,7 +1892,7 @@ ${value.slice(-(scanLimit - prefixLength))}`;
   );
   const terminalSafetySensitive = terminalToolSignal && (highStakes || terminalCredentialSignal);
   const implicitTerminalCode = needsTools && terminalToolSignal && agentRisk === "standard" && !highStakes && !complexTerminalOperation && numberedSteps < 3 && prompt.length <= 1e3 && simpleTerminalArtifact;
-  const language = /[\u3400-\u9fff]/.test(scannedFullText) ? "zh" : "other";
+  const language = /[\u3400-\u9fff]/.test(scannedPrompt) ? "zh" : "other";
   const multipleChoiceSignals = (scannedPrompt.match(/(?:^|\n)\s*[A-D][.)]\s+/gim) ?? []).length;
   const numericSignals = (scannedPrompt.match(/-?\d+(?:[.,]\d+)?/g) ?? []).length;
   const compactMathProblem = !hasCode && prompt.length < 2500 && numericSignals >= 2 && (/[+×÷=%$€£¥]|\b(?:total|each|per|times|half|twice|percent|how many|how much|calculate)\b/i.test(
@@ -2287,15 +2336,17 @@ function profileScore(modelId, options, now) {
 }
 var PortfolioStrategy = class {
   name = "portfolio";
+  // Rules set the capability tier; the strategy is stateless, so one instance serves every request.
+  rules = new RulesStrategy();
   route(prompt, systemPrompt, maxOutputTokens, options) {
     const features = classifyTask(prompt, systemPrompt, options);
-    const base = new RulesStrategy().route(prompt, systemPrompt, maxOutputTokens, {
+    const base = this.rules.route(prompt, systemPrompt, maxOutputTokens, {
       ...options,
       requiresTools: features.needsTools
     });
     const tierConfigs = base.tierConfigs;
     if (!tierConfigs) return base;
-    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : base.tier;
+    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : (features.taskType === "debug" || features.taskType === "code_edit") && base.tier === "SIMPLE" ? "MEDIUM" : base.tier;
     const tierConfig = tierConfigs[targetTier];
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
     const unavailable = new Set(options.unavailableModels ?? []);
@@ -2313,10 +2364,10 @@ var PortfolioStrategy = class {
     ].filter(
       (model2) => typeof model2 === "string" && model2.length > 0 && !unavailable.has(model2)
     );
-    const eligible = chain.filter(
-      (model2) => isEligible(model2, features, maxOutputTokens, options)
+    const eligible = new Set(
+      chain.filter((model2) => isEligible(model2, features, maxOutputTokens, options))
     );
-    const eligibleCandidates = eligible.length > 0 ? eligible : chain;
+    const eligibleCandidates = eligible.size > 0 ? [...eligible] : chain;
     if (eligibleCandidates.length === 0) return base;
     const profileName = options.routingProfile === "eco" ? "eco" : options.routingProfile === "premium" ? "premium" : "auto";
     const portfolio = options.config.portfolio ?? DEFAULT_PORTFOLIO_WEIGHTS;
@@ -2351,11 +2402,11 @@ var PortfolioStrategy = class {
     const rankedEntries = candidates.map((model2, index) => {
       const cost = estimatedCost(model2, options, features.estimatedInputTokens, maxOutputTokens);
       const costScore = Number.isFinite(cost) && maxCost > minCost ? 1 - (cost - minCost) / (maxCost - minCost) : 0.5;
-      const capabilityScore = isEligible(model2, features, maxOutputTokens, options) ? 1 : 0;
+      const capabilityScore = eligible.has(model2) ? 1 : 0;
       const profile = profileScore(model2, options, now);
       const observedQuality = profile?.quality === void 0 ? getAffinity(model2) : getAffinity(model2) * (1 - profile.freshness) + profile.quality * profile.freshness;
-      const observedSpeed = profile ? profile.speed * profile.freshness : 0.5;
-      const observedTailSpeed = profile ? profile.tailSpeed * profile.freshness : 0.5;
+      const observedSpeed = profile ? profile.speed * profile.freshness + 0.5 * (1 - profile.freshness) : 0.5;
+      const observedTailSpeed = profile ? profile.tailSpeed * profile.freshness + 0.5 * (1 - profile.freshness) : 0.5;
       const observedReliability = profile ? profile.reliability * profile.freshness + (1 - profile.freshness) : 1;
       const legacyScore = 1 - index / Math.max(1, candidates.length - 1);
       const qualityWeight = profileWeights.quality + (features.highStakes ? portfolio.highStakesBoost.quality : 0);
@@ -3930,6 +3981,7 @@ export {
   applyUnavailableModels,
   calculateModelCost,
   classifyByRules,
+  estimateTokens,
   filterByExcludeList,
   filterByToolCalling,
   filterByVision,
