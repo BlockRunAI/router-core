@@ -15,6 +15,7 @@ import type {
 } from "./types.js";
 import { classifyByRules } from "./rules.js";
 import { selectModel } from "./selector.js";
+import { estimateTokens, sampleForScan, scanLimit } from "./tokens.js";
 
 /**
  * Apply active time-windowed promotions to tier configs.
@@ -102,17 +103,11 @@ export class RulesStrategy implements RouterStrategy {
   ): RoutingDecision {
     const { config, modelPricing } = options;
 
-    // Estimate input tokens (~4 chars per token)
     const fullText = `${systemPrompt ?? ""} ${prompt}`;
-    const estimatedTokens = Math.ceil(fullText.length / 4);
-    const scanLimit = Math.max(1, Math.min(8_000, config.classifier.promptTruncationChars));
-    const sample = (value: string): string => {
-      if (value.length <= scanLimit) return value;
-      const prefixLength = Math.ceil(scanLimit / 2);
-      return `${value.slice(0, prefixLength)}\n${value.slice(-(scanLimit - prefixLength))}`;
-    };
-    const scannedPrompt = sample(prompt);
-    const scannedSystemPrompt = systemPrompt ? sample(systemPrompt) : undefined;
+    const estimatedTokens = estimateTokens(fullText);
+    const limit = scanLimit(config.classifier.promptTruncationChars);
+    const scannedPrompt = sampleForScan(prompt, limit);
+    const scannedSystemPrompt = systemPrompt ? sampleForScan(systemPrompt, limit) : undefined;
 
     // --- Rule-based classification (runs first to get agenticScore) ---
     const ruleResult = classifyByRules(
@@ -195,10 +190,11 @@ export class RulesStrategy implements RouterStrategy {
       return { ...decision, tierConfigs, profile };
     }
 
-    // Structured output detection
-    const hasStructuredOutput =
-      options.requiresStructuredOutput === true ||
-      (scannedSystemPrompt ? /json|structured|schema/i.test(scannedSystemPrompt) : false);
+    // Structured output is a protocol fact the host states (`response_format`
+    // → requiresStructuredOutput). It used to be inferred from the system
+    // prompt as well, but agent hosts describe their tool schemas there on
+    // every turn, which upgraded every one of their requests off SIMPLE.
+    const hasStructuredOutput = options.requiresStructuredOutput === true;
 
     let tier: Tier;
     let confidence: number;

@@ -309,3 +309,22 @@ describe("Portfolio default", () => {
     expect(decision.taskType).toBe("reasoning_math");
   });
 });
+
+describe("RulesStrategy signal hygiene", () => {
+  it("does not read a structured-output requirement out of the system prompt", () => {
+    // Agent hosts describe their tool schemas in the system prompt on every
+    // turn; that text is not evidence that this request needs structured
+    // output. Hosts state the requirement through `requiresStructuredOutput`.
+    const strategy = new RulesStrategy();
+    const withSchemaPrompt = strategy.route(
+      "hello",
+      "You are a helpful assistant. Tools are described below as a JSON schema.",
+      100,
+      baseOptions,
+    );
+    const bare = strategy.route("hello", undefined, 100, baseOptions);
+
+    expect(withSchemaPrompt.tier).toBe(bare.tier);
+    expect(withSchemaPrompt.reasoning).not.toContain("structured output");
+  });
+});

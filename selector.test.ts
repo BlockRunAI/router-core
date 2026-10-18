@@ -39,6 +39,17 @@ describe("selectModel", () => {
     expect(decision.baselineCost).toBeGreaterThan(0);
     expect(decision.savings).toBeGreaterThan(0);
   });
+
+  it("does not claim savings for a model whose price is unknown", () => {
+    const unpriced: typeof TIER_CONFIGS = {
+      ...TIER_CONFIGS,
+      SIMPLE: { primary: "vendor/unlisted-model", fallback: [] },
+    };
+    const decision = selectModel("SIMPLE", 0.95, "rules", "test", unpriced, MODEL_PRICING, 1000, 1000);
+
+    expect(decision.baselineCost).toBeGreaterThan(0);
+    expect(decision.savings).toBe(0);
+  });
 });
 
 describe("filterByToolCalling", () => {

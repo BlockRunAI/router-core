@@ -25,10 +25,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7870260539502253,
+    "score": 0.8115260539502253,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -76,10 +76,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -106,10 +106,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7024260539502254,
+    "score": 0.7269260539502254,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -144,10 +144,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -178,18 +178,18 @@
   "candidateScores": [
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.9113686326916596,
+    "score": 0.9358686326916595,
     "quality": 0.95,
     "cost": 1,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6758477432793295,
+    "score": 0.7003477432793295,
     "quality": 0.92,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -224,10 +224,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -275,10 +275,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-opus-4.8",
-    "score": 0.8468563440295361,
+    "score": 0.8713563440295362,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09794777185051722,
+    "speed": 0.4479477718505172,
     "reliability": 1
    }
   ],
@@ -305,10 +305,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7024260539502254,
+    "score": 0.7269260539502254,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -322,10 +322,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (5 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
-  "costEstimate": 0.0017297000000000002,
-  "baselineCost": 0.006424999999999999,
-  "savings": 0.7307859922178989,
+  "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "costEstimate": 0.0017732000000000004,
+  "baselineCost": 0.0065,
+  "savings": 0.7272,
   "agenticScore": 0,
   "candidates": [
    "moonshot/kimi-k3",
@@ -345,10 +345,10 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.8419118013428357,
+    "score": 0.8664118013428358,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -362,10 +362,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (16 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
-  "costEstimate": 0.0005584000000000001,
-  "baselineCost": 0.03208,
-  "savings": 0.9825935162094763,
+  "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "costEstimate": 0.0006309000000000001,
+  "baselineCost": 0.032205,
+  "savings": 0.9804098742431301,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
@@ -383,18 +383,18 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8270260539502253,
+    "score": 0.8515260539502253,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6976477432793294,
+    "score": 0.7221477432793294,
     "quality": 0.86,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -406,9 +406,9 @@
   "profile": "auto",
   "model": "google/gemini-3.5-flash",
   "tier": "MEDIUM",
-  "confidence": 0.5,
+  "confidence": 0.7034956909518112,
   "method": "portfolio",
-  "reasoning": "score=-0.02 | short (23 tokens), code (def), simple (define), agentic-light (debug) | ambiguous -> default: MEDIUM | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "reasoning": "score=-0.07 | short (23 tokens), agentic-light (debug) | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
   "costEstimate": 0.015519600000000001,
   "baselineCost": 0.057714999999999995,
   "savings": 0.7310993675820844,
@@ -429,10 +429,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -480,10 +480,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -497,7 +497,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=0.06 | short (32 tokens), code (let), multi-step, references (following) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "reasoning": "score=-0.01 | short (32 tokens), multi-step, references (following) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
   "costEstimate": 0.0018304000000000003,
   "baselineCost": 0.00656,
   "savings": 0.7209756097560975,
@@ -514,10 +514,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -551,42 +551,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8761979445576786,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7931612595363191,
+    "score": 0.8176612595363191,
     "quality": 0.9,
     "cost": 0.6707950805473757,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7683415237361771,
+    "score": 0.7928415237361771,
     "quality": 0.9,
     "cost": 0.3359605058028754,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7509477432793293,
+    "score": 0.7754477432793293,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6551144689333432,
+    "score": 0.6796144689333433,
     "quality": 0.9,
     "cost": 0.001125931058375107,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -623,34 +623,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8791593872835586,
+    "score": 0.9036593872835585,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7808574061523814,
+    "score": 0.8053574061523814,
     "quality": 0.9,
     "cost": 0.6718847839699437,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7164477432793295,
+    "score": 0.7409477432793294,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6717952205744078,
+    "score": 0.6962952205744078,
     "quality": 0.9,
     "cost": 0.001204180916140718,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -661,42 +661,32 @@
   "prompt": 15,
   "profile": "auto",
   "model": "google/gemini-2.5-flash",
-  "tier": "MEDIUM",
-  "confidence": 0.5,
+  "tier": "SIMPLE",
+  "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (29 tokens), imperative (build), agentic-light (pip) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
   "costEstimate": 0.0014153,
   "baselineCost": 0.083345,
   "savings": 0.983018777371168,
-  "agenticScore": 0.2,
+  "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
-   "google/gemini-3.5-flash",
-   "google/gemini-3.6-flash",
-   "zai/glm-5.3-flash",
-   "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
+   "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat",
-   "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
-   "google/gemini-2.5-flash-lite"
+   "openai/gpt-5.4-nano",
+   "google/gemini-2.5-flash-lite",
+   "nvidia/nemotron-3.5-lightning"
   ],
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8270260539502253,
+    "score": 0.8115260539502253,
     "quality": 0.86,
-    "cost": 1,
-    "speed": 0.18322934214607486,
-    "reliability": 1
-   },
-   {
-    "model": "google/gemini-3.5-flash",
-    "score": 0.6976477432793294,
-    "quality": 0.86,
-    "cost": 0,
-    "speed": 0.19211061827613424,
+    "cost": 0.5,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -744,10 +734,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -778,10 +768,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -818,34 +808,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8872869559818712,
+    "score": 0.9397869559818712,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.13969081765691935,
+    "speed": 0.48969081765691935,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7946345209396576,
+    "score": 0.8471345209396577,
     "quality": 0.9,
     "cost": 0.6729268997399596,
-    "speed": 0.1367178599097662,
+    "speed": 0.4867178599097662,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7278627942097315,
+    "score": 0.7803627942097315,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.16575196139820988,
+    "speed": 0.5157519613982099,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6732711638661456,
+    "score": 0.7257711638661457,
     "quality": 0.9,
     "cost": 0.0014446691707599157,
-    "speed": 0.022296378324947415,
+    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -879,42 +869,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8761979445576786,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7931437096989948,
+    "score": 0.8176437096989948,
     "quality": 0.9,
     "cost": 0.6706975814511295,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7683303556578799,
+    "score": 0.7928303556578798,
     "quality": 0.9,
     "cost": 0.335898460923446,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7509477432793293,
+    "score": 0.7754477432793293,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6551096826140731,
+    "score": 0.6796096826140732,
     "quality": 0.9,
     "cost": 0.001099340395762649,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -949,10 +939,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -1000,10 +990,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -1086,50 +1076,50 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9098830643397023,
+    "score": 0.9448830643397024,
     "quality": 1,
     "cost": 1,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.8516673859004991,
+    "score": 0.886667385900499,
     "quality": 0.84,
     "cost": 0.9996096291476904,
-    "speed": 0.13376689739145697,
+    "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8370981461564362,
+    "score": 0.8720981461564362,
     "quality": 0.87,
     "cost": 0.9997397527651268,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6821734068659546,
+    "score": 0.7171734068659547,
     "quality": 0.82,
     "cost": 0.5000650618087183,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5880110618276134,
+    "score": 0.6230110618276133,
     "quality": 0.88,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.552767579388362,
+    "score": 0.5877675793883619,
     "quality": 0.85,
     "cost": 0.00013012361743647283,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1155,10 +1145,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1189,10 +1179,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1221,10 +1211,10 @@
   "candidateScores": [
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7489551895595136,
+    "score": 0.7839551895595136,
     "quality": 0.95,
     "cost": 0.5,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    }
   ],
@@ -1255,10 +1245,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1307,42 +1297,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8310542065109696,
+    "score": 0.8660542065109696,
     "quality": 0.82,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.777790163731183,
+    "score": 0.8127901637311831,
     "quality": 0.84,
     "cost": 0.7518110692552884,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6677551895595135,
+    "score": 0.7027551895595135,
     "quality": 0.78,
     "cost": 0.5,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-opus-4.8",
-    "score": 0.6297947771850518,
+    "score": 0.6647947771850519,
     "quality": 1,
     "cost": 0,
-    "speed": 0.09794777185051722,
+    "speed": 0.4479477718505172,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6215011226795404,
+    "score": 0.6565011226795403,
     "quality": 0.8,
     "cost": 0.24746450304259626,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -1368,10 +1358,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1385,10 +1375,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (5 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | eco | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0001169,
-  "baselineCost": 0.006424999999999999,
-  "savings": 0.9818054474708172,
+  "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | eco | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
+  "costEstimate": 0.0001604,
+  "baselineCost": 0.0065,
+  "savings": 0.975323076923077,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
@@ -1405,34 +1395,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8751229342146075,
+    "score": 0.9101229342146075,
     "quality": 0.88,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7559771310352413,
+    "score": 0.798791498074642,
     "quality": 0.88,
-    "cost": 0.6760502381983543,
-    "speed": 0.09883064339702209,
+    "cost": 0.7039586919104992,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6166708011923991,
+    "score": 0.65347411666303,
     "quality": 1,
-    "cost": 0.002165439584235651,
-    "speed": 0.02731144775479715,
+    "cost": 0.008605851979346046,
+    "speed": 0.37731144775479714,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5826777284942801,
+    "score": 0.61767772849428,
     "quality": 0.88,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -1446,10 +1436,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (16 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
-  "costEstimate": 0.0005584000000000001,
-  "baselineCost": 0.03208,
-  "savings": 0.9825935162094763,
+  "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "costEstimate": 0.0006309000000000001,
+  "baselineCost": 0.032205,
+  "savings": 0.9804098742431301,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
@@ -1463,10 +1453,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7279229342146076,
+    "score": 0.7629229342146076,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -1478,9 +1468,9 @@
   "profile": "eco",
   "model": "zai/glm-5.3-flash",
   "tier": "MEDIUM",
-  "confidence": 0.5,
+  "confidence": 0.7034956909518112,
   "method": "portfolio",
-  "reasoning": "score=-0.02 | short (23 tokens), code (def), simple (define), agentic-light (debug) | ambiguous -> default: MEDIUM | eco | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "reasoning": "score=-0.07 | short (23 tokens), agentic-light (debug) | eco | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
   "costEstimate": 0.020293600000000002,
   "baselineCost": 0.057714999999999995,
   "savings": 0.6483825695226544,
@@ -1497,10 +1487,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1551,50 +1541,50 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9098830643397023,
+    "score": 0.9448830643397024,
     "quality": 1,
     "cost": 1,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.8125382143236466,
+    "score": 0.8475382143236465,
     "quality": 0.84,
     "cost": 0.8598625878017887,
-    "speed": 0.13376689739145697,
+    "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8110120317718679,
+    "score": 0.8460120317718679,
     "quality": 0.87,
     "cost": 0.9065750585345258,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6886949354620967,
+    "score": 0.7236949354620967,
     "quality": 0.82,
     "cost": 0.5233562353663685,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5880110618276134,
+    "score": 0.6230110618276133,
     "quality": 0.88,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5658106365806462,
+    "score": 0.6008106365806462,
     "quality": 0.85,
     "cost": 0.04671247073273721,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1608,7 +1598,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=0.06 | short (32 tokens), code (let), multi-step, references (following) | ambiguous -> default: MEDIUM | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
+  "reasoning": "score=-0.01 | short (32 tokens), multi-step, references (following) | ambiguous -> default: MEDIUM | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
   "costEstimate": 0.0022784000000000003,
   "baselineCost": 0.00656,
   "savings": 0.6526829268292683,
@@ -1621,10 +1611,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1657,42 +1647,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8706542065109696,
+    "score": 0.9056542065109696,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7667056868929675,
+    "score": 0.8017056868929675,
     "quality": 0.9,
     "cost": 0.6707950805473757,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6850241311843186,
+    "score": 0.7200241311843186,
     "quality": 0.9,
     "cost": 0.3359605058028754,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6342110618276136,
+    "score": 0.6692110618276135,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5670464054718248,
+    "score": 0.6020464054718248,
     "quality": 0.9,
     "cost": 0.001125931058375107,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1726,34 +1716,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8823229342146076,
+    "score": 0.9173229342146076,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7620108038512865,
+    "score": 0.7970108038512865,
     "quality": 0.9,
     "cost": 0.6718847839699437,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5898777284942802,
+    "score": 0.6248777284942801,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5804016487653325,
+    "score": 0.6154016487653324,
     "quality": 0.9,
     "cost": 0.001204180916140718,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1763,31 +1753,31 @@
  {
   "prompt": 15,
   "profile": "eco",
-  "model": "google/gemini-2.5-flash",
-  "tier": "MEDIUM",
-  "confidence": 0.5,
+  "model": "nvidia/nemotron-3.5-lightning",
+  "tier": "SIMPLE",
+  "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (29 tokens), imperative (build), agentic-light (pip) | ambiguous -> default: MEDIUM | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
   "costEstimate": 0.0014153,
   "baselineCost": 0.083345,
   "savings": 0.983018777371168,
-  "agenticScore": 0.2,
+  "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "nvidia/nemotron-3.5-lightning",
+   "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+   "google/gemini-2.5-flash-lite",
    "zai/glm-5.3-flash",
-   "deepseek/deepseek-chat",
-   "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
-   "google/gemini-2.5-flash-lite"
+   "google/gemini-3.1-flash-lite"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7279229342146076,
-    "quality": 0.86,
+    "model": "nvidia/nemotron-3.5-lightning",
+    "score": 0.6948000000000001,
+    "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5,
     "reliability": 1
    }
   ],
@@ -1838,50 +1828,50 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9098830643397023,
+    "score": 0.9448830643397024,
     "quality": 1,
     "cost": 1,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.8332830628561794,
+    "score": 0.8682830628561793,
     "quality": 0.84,
     "cost": 0.9339513325608342,
-    "speed": 0.13376689739145697,
+    "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8248419307935564,
+    "score": 0.8598419307935564,
     "quality": 0.87,
     "cost": 0.9559675550405561,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6852374607066745,
+    "score": 0.7202374607066745,
     "quality": 0.82,
     "cost": 0.5110081112398608,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5880110618276134,
+    "score": 0.6230110618276133,
     "quality": 0.88,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5588956870698019,
+    "score": 0.5938956870698018,
     "quality": 0.85,
     "cost": 0.022016222479721792,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1908,10 +1898,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -1945,34 +1935,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8891443471782455,
+    "score": 0.9521443471782456,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.13969081765691935,
+    "speed": 0.48969081765691935,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7770287467109466,
+    "score": 0.8400287467109466,
     "quality": 0.9,
     "cost": 0.6729268997399596,
-    "speed": 0.1367178599097662,
+    "speed": 0.4867178599097662,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6005020197183445,
+    "score": 0.6635020197183445,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.16575196139820988,
+    "speed": 0.5157519613982099,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5817511887996366,
+    "score": 0.6447511887996366,
     "quality": 0.9,
     "cost": 0.0014446691707599157,
-    "speed": 0.022296378324947415,
+    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -2005,42 +1995,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8706542065109696,
+    "score": 0.9056542065109696,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7666783871460185,
+    "score": 0.8016783871460186,
     "quality": 0.9,
     "cost": 0.6706975814511295,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6850067586180785,
+    "score": 0.7200067586180785,
     "quality": 0.9,
     "cost": 0.335898460923446,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6342110618276136,
+    "score": 0.6692110618276135,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.5670389600862934,
+    "score": 0.6020389600862933,
     "quality": 0.9,
     "cost": 0.001099340395762649,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2071,10 +2061,10 @@
   "candidateScores": [
    {
     "model": "zai/glm-5.3-flash",
-    "score": 0.6505854692782567,
+    "score": 0.6855854692782567,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.05785469278256664,
+    "speed": 0.40785469278256664,
     "reliability": 1
    }
   ],
@@ -2125,50 +2115,50 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9098830643397023,
+    "score": 0.9448830643397024,
     "quality": 1,
     "cost": 1,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.735950638165583,
+    "score": 0.7709506381655831,
     "quality": 0.87,
     "cost": 0.6384986527977944,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7074602838636679,
+    "score": 0.7424602838636679,
     "quality": 0.82,
     "cost": 0.5903753368005515,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.6999461239142194,
+    "score": 0.7349461239142193,
     "quality": 0.84,
     "cost": 0.45774797919669175,
-    "speed": 0.13376689739145697,
+    "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6033413333837886,
+    "score": 0.6383413333837885,
     "quality": 0.85,
     "cost": 0.18075067360110297,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.5880110618276134,
+    "score": 0.6230110618276133,
     "quality": 0.88,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2201,10 +2191,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7870260539502253,
+    "score": 0.8115260539502253,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -2252,10 +2242,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -2282,10 +2272,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7024260539502254,
+    "score": 0.7269260539502254,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -2320,10 +2310,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2354,18 +2344,18 @@
   "candidateScores": [
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.9113686326916596,
+    "score": 0.9358686326916595,
     "quality": 0.95,
     "cost": 1,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6758477432793295,
+    "score": 0.7003477432793295,
     "quality": 0.92,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2400,10 +2390,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2451,10 +2441,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-opus-4.8",
-    "score": 0.8468563440295361,
+    "score": 0.8713563440295362,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09794777185051722,
+    "speed": 0.4479477718505172,
     "reliability": 1
    }
   ],
@@ -2481,10 +2471,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.7024260539502254,
+    "score": 0.7269260539502254,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -2498,10 +2488,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (5 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
-  "costEstimate": 0.0017297000000000002,
-  "baselineCost": 0.006424999999999999,
-  "savings": 0.7307859922178989,
+  "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
+  "costEstimate": 0.0017732000000000004,
+  "baselineCost": 0.0065,
+  "savings": 0.7272,
   "agenticScore": 0,
   "candidates": [
    "moonshot/kimi-k3",
@@ -2521,10 +2511,10 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.8419118013428357,
+    "score": 0.8664118013428358,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2538,10 +2528,10 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (16 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
-  "costEstimate": 0.0005584000000000001,
-  "baselineCost": 0.03208,
-  "savings": 0.9825935162094763,
+  "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "costEstimate": 0.0006309000000000001,
+  "baselineCost": 0.032205,
+  "savings": 0.9804098742431301,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
@@ -2559,18 +2549,18 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8270260539502253,
+    "score": 0.8515260539502253,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.6976477432793294,
+    "score": 0.7221477432793294,
     "quality": 0.86,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2582,9 +2572,9 @@
   "profile": "auto",
   "model": "google/gemini-3.5-flash",
   "tier": "MEDIUM",
-  "confidence": 0.5,
+  "confidence": 0.7034956909518112,
   "method": "portfolio",
-  "reasoning": "score=-0.02 | short (23 tokens), code (def), simple (define), agentic-light (debug) | ambiguous -> default: MEDIUM | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "reasoning": "score=-0.07 | short (23 tokens), agentic-light (debug) | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
   "costEstimate": 0.015519600000000001,
   "baselineCost": 0.057714999999999995,
   "savings": 0.7310993675820844,
@@ -2605,10 +2595,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2656,10 +2646,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -2673,7 +2663,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=0.06 | short (32 tokens), code (let), multi-step, references (following) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "reasoning": "score=-0.01 | short (32 tokens), multi-step, references (following) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
   "costEstimate": 0.0018304000000000003,
   "baselineCost": 0.00656,
   "savings": 0.7209756097560975,
@@ -2690,10 +2680,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2727,42 +2717,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8761979445576786,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7931612595363191,
+    "score": 0.8176612595363191,
     "quality": 0.9,
     "cost": 0.6707950805473757,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7683415237361771,
+    "score": 0.7928415237361771,
     "quality": 0.9,
     "cost": 0.3359605058028754,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7509477432793293,
+    "score": 0.7754477432793293,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6551144689333432,
+    "score": 0.6796144689333433,
     "quality": 0.9,
     "cost": 0.001125931058375107,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2799,34 +2789,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8791593872835586,
+    "score": 0.9036593872835585,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7808574061523814,
+    "score": 0.8053574061523814,
     "quality": 0.9,
     "cost": 0.6718847839699437,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7164477432793295,
+    "score": 0.7409477432793294,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6717952205744078,
+    "score": 0.6962952205744078,
     "quality": 0.9,
     "cost": 0.001204180916140718,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2837,42 +2827,32 @@
   "prompt": 15,
   "profile": "auto",
   "model": "google/gemini-2.5-flash",
-  "tier": "MEDIUM",
-  "confidence": 0.5,
+  "tier": "SIMPLE",
+  "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (29 tokens), imperative (build), agentic-light (pip) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=11",
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
   "costEstimate": 0.0014153,
   "baselineCost": 0.083345,
   "savings": 0.983018777371168,
-  "agenticScore": 0.2,
+  "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
-   "google/gemini-3.5-flash",
-   "google/gemini-3.6-flash",
-   "zai/glm-5.3-flash",
-   "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
+   "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat",
-   "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
-   "google/gemini-2.5-flash-lite"
+   "openai/gpt-5.4-nano",
+   "google/gemini-2.5-flash-lite",
+   "nvidia/nemotron-3.5-lightning"
   ],
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8270260539502253,
+    "score": 0.8115260539502253,
     "quality": 0.86,
-    "cost": 1,
-    "speed": 0.18322934214607486,
-    "reliability": 1
-   },
-   {
-    "model": "google/gemini-3.5-flash",
-    "score": 0.6976477432793294,
-    "quality": 0.86,
-    "cost": 0,
-    "speed": 0.19211061827613424,
+    "cost": 0.5,
+    "speed": 0.5332293421460749,
     "reliability": 1
    }
   ],
@@ -2920,10 +2900,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -2954,10 +2934,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -2994,34 +2974,34 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8872869559818712,
+    "score": 0.9397869559818712,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.13969081765691935,
+    "speed": 0.48969081765691935,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7946345209396576,
+    "score": 0.8471345209396577,
     "quality": 0.9,
     "cost": 0.6729268997399596,
-    "speed": 0.1367178599097662,
+    "speed": 0.4867178599097662,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7278627942097315,
+    "score": 0.7803627942097315,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.16575196139820988,
+    "speed": 0.5157519613982099,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6732711638661456,
+    "score": 0.7257711638661457,
     "quality": 0.9,
     "cost": 0.0014446691707599157,
-    "speed": 0.022296378324947415,
+    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -3055,42 +3035,42 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8761979445576786,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7931437096989948,
+    "score": 0.8176437096989948,
     "quality": 0.9,
     "cost": 0.6706975814511295,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7683303556578799,
+    "score": 0.7928303556578798,
     "quality": 0.9,
     "cost": 0.335898460923446,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7509477432793293,
+    "score": 0.7754477432793293,
     "quality": 1,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.6551096826140731,
+    "score": 0.6796096826140732,
     "quality": 0.9,
     "cost": 0.001099340395762649,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -3125,10 +3105,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7030477432793295,
+    "score": 0.7275477432793295,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3176,10 +3156,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8469181450377915,
+    "score": 0.8714181450377915,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -3210,18 +3190,18 @@
   "candidateScores": [
    {
     "model": "google/gemini-2.5-flash",
-    "score": 0.8497937605287644,
+    "score": 0.8707937605287643,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.18322934214607486,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.790326637096568,
+    "score": 0.8113266370965679,
     "quality": 0.86,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3271,10 +3251,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9059298386038215,
+    "score": 0.9269298386038214,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -3302,10 +3282,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7259266370965682,
+    "score": 0.7469266370965681,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3339,10 +3319,10 @@
   "candidateScores": [
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8903822492293204,
+    "score": 0.9113822492293204,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    }
   ],
@@ -3376,34 +3356,34 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9093298386038213,
+    "score": 0.9303298386038215,
     "quality": 0.98,
     "cost": 0.6875,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "xai/grok-4.5",
-    "score": 0.8953791905732483,
+    "score": 0.9163791905732482,
     "quality": 0.94,
     "cost": 1,
-    "speed": 0.05854206510969567,
+    "speed": 0.40854206510969565,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.847328760008195,
+    "score": 0.8683287600081949,
     "quality": 0.98,
     "cost": 0,
-    "speed": 0.09325711124769513,
+    "speed": 0.4432571112476951,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.8423953359579301,
+    "score": 0.8633953359579303,
     "quality": 0.95,
     "cost": 0.3402777777777777,
-    "speed": 0.06955189559513505,
+    "speed": 0.41955189559513506,
     "reliability": 1
    }
   ],
@@ -3437,10 +3417,10 @@
   "candidateScores": [
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8903822492293204,
+    "score": 0.9113822492293204,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    }
   ],
@@ -3490,10 +3470,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-opus-4.8",
-    "score": 0.905876866311031,
+    "score": 0.9268768663110312,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09794777185051722,
+    "speed": 0.4479477718505172,
     "reliability": 1
    }
   ],
@@ -3521,10 +3501,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.7259266370965682,
+    "score": 0.7469266370965681,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3538,9 +3518,9 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (5 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | premium | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0017297000000000002,
-  "baselineCost": 0.006424999999999999,
+  "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | premium | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
+  "costEstimate": 0.0017732000000000004,
+  "baselineCost": 0.0065,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
@@ -3558,10 +3538,10 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.9016386868652879,
+    "score": 0.9226386868652878,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -3575,9 +3555,9 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (16 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.008622400000000002,
-  "baselineCost": 0.03208,
+  "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
+  "costEstimate": 0.008694900000000002,
+  "baselineCost": 0.032205,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
@@ -3595,18 +3575,18 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.8604386868652878,
+    "score": 0.8814386868652877,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.770326637096568,
+    "score": 0.7913266370965679,
     "quality": 0.86,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3618,9 +3598,9 @@
   "profile": "premium",
   "model": "openai/gpt-5.3-codex",
   "tier": "MEDIUM",
-  "confidence": 0.5,
+  "confidence": 0.7034956909518112,
   "method": "portfolio",
-  "reasoning": "score=-0.02 | short (23 tokens), code (def), simple (define), agentic-light (debug) | ambiguous -> default: MEDIUM | premium | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
+  "reasoning": "score=-0.07 | short (23 tokens), agentic-light (debug) | premium | v3 task=debug agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0057945,
   "baselineCost": 0.057714999999999995,
   "savings": 0,
@@ -3640,10 +3620,10 @@
   "candidateScores": [
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8903822492293204,
+    "score": 0.9113822492293204,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    }
   ],
@@ -3693,10 +3673,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9059298386038215,
+    "score": 0.9269298386038214,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -3710,7 +3690,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=0.06 | short (32 tokens), code (let), multi-step, references (following) | ambiguous -> default: MEDIUM | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
+  "reasoning": "score=-0.01 | short (32 tokens), multi-step, references (following) | ambiguous -> default: MEDIUM | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
   "costEstimate": 0.0017856000000000003,
   "baselineCost": 0.00656,
   "savings": 0,
@@ -3728,18 +3708,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8675954266748616,
+    "score": 0.8885954266748617,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.09325711124769513,
+    "speed": 0.4432571112476951,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.8036386868652878,
+    "score": 0.8246386868652877,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -3775,10 +3755,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.9115266370965682,
+    "score": 0.9325266370965681,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3812,34 +3792,34 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8879298386038212,
+    "score": 0.9089298386038214,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.8001933037632348,
+    "score": 0.8211933037632347,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.7971153996523453,
+    "score": 0.8181153996523453,
     "quality": 0.9,
     "cost": 0.0017922431715533538,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.7878821855823102,
+    "score": 0.8088821855823103,
     "quality": 0.9,
     "cost": 0.0035844863431069296,
-    "speed": 0.09325711124769513,
+    "speed": 0.4432571112476951,
     "reliability": 1
    }
   ],
@@ -3849,42 +3829,39 @@
  {
   "prompt": 15,
   "profile": "premium",
-  "model": "moonshot/kimi-k3",
-  "tier": "MEDIUM",
-  "confidence": 0.5,
+  "model": "google/gemini-2.5-flash",
+  "tier": "SIMPLE",
+  "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (29 tokens), imperative (build), agentic-light (pip) | ambiguous -> default: MEDIUM | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0223817,
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
+  "costEstimate": 0.0014153,
   "baselineCost": 0.083345,
   "savings": 0,
-  "agenticScore": 0.2,
+  "agenticScore": 0,
   "candidates": [
-   "moonshot/kimi-k3",
+   "google/gemini-2.5-flash",
    "google/gemini-3.5-flash",
-   "openai/gpt-5.3-codex",
-   "anthropic/claude-sonnet-5",
-   "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
-   "xai/grok-4.5",
-   "anthropic/claude-sonnet-4.6",
-   "openai/gpt-5.6-terra"
+   "anthropic/claude-haiku-4.5",
+   "zai/glm-5.3",
+   "google/gemini-3.5-flash-lite",
+   "deepseek/deepseek-chat"
   ],
   "candidateScores": [
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8604386868652878,
+    "model": "google/gemini-2.5-flash",
+    "score": 0.8707937605287643,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.02731144775479715,
+    "speed": 0.5332293421460749,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.770326637096568,
+    "score": 0.8113266370965679,
     "quality": 0.86,
     "cost": 0,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -3934,10 +3911,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9059298386038215,
+    "score": 0.9269298386038214,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],
@@ -3969,18 +3946,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8675954266748616,
+    "score": 0.8885954266748617,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.09325711124769513,
+    "speed": 0.4432571112476951,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.8036386868652878,
+    "score": 0.8246386868652877,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.02731144775479715,
+    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -4014,34 +3991,34 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9011405003873671,
+    "score": 0.9501405003873673,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.1367178599097662,
+    "speed": 0.4867178599097662,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.8118719412624161,
+    "score": 0.8608719412624161,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.16575196139820988,
+    "speed": 0.5157519613982099,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8011542380866079,
+    "score": 0.8501542380866078,
     "quality": 0.9,
     "cost": 0.004293688278231067,
-    "speed": 0.13436245017392473,
+    "speed": 0.4843624501739247,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3",
-    "score": 0.7986265738299553,
+    "score": 0.8476265738299552,
     "quality": 0.9,
     "cost": 0.002146844139115478,
-    "speed": 0.022296378324947415,
+    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -4077,10 +4054,10 @@
   "candidateScores": [
    {
     "model": "google/gemini-3.5-flash",
-    "score": 0.9115266370965682,
+    "score": 0.9325266370965681,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.19211061827613424,
+    "speed": 0.5421106182761342,
     "reliability": 1
    }
   ],
@@ -4114,10 +4091,10 @@
   "candidateScores": [
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8903822492293204,
+    "score": 0.9113822492293204,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.039714153822005965,
+    "speed": 0.3897141538220059,
     "reliability": 0.79999
    }
   ],
@@ -4167,10 +4144,10 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9059298386038215,
+    "score": 0.9269298386038214,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.09883064339702209,
+    "speed": 0.44883064339702206,
     "reliability": 1
    }
   ],

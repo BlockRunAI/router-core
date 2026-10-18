@@ -69,9 +69,11 @@ export function selectModel(
   const baselineOutput = (maxOutputTokens / 1_000_000) * opusOutputPrice;
   const baselineCost = baselineInput + baselineOutput;
 
-  // Premium profile doesn't calculate savings (it's about quality, not cost)
+  // Premium profile doesn't calculate savings (it's about quality, not cost).
+  // A model the host has no price for costs an unknown amount, not nothing;
+  // reporting its savings as 100% would be a fabricated figure.
   const savings =
-    routingProfile === "premium"
+    routingProfile === "premium" || pricing === undefined
       ? 0
       : baselineCost > 0
         ? Math.max(0, (baselineCost - costEstimate) / baselineCost)
