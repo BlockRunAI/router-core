@@ -38,6 +38,8 @@ type TaskFeatures = {
   terminalToolSignal: boolean;
   terminalSafetySensitive: boolean;
   implicitTerminalCode: boolean;
+  /** A code artifact or coding action is present, not merely a language name. */
+  codeArtifact: boolean;
 };
 
 const DEFAULT_PORTFOLIO_WEIGHTS = {
@@ -193,6 +195,13 @@ function classifyTask(
   // artifact, not prose about errors; case-sensitive on purpose.
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  // Stronger than hasCode: an actual code artifact or coding action, never a
+  // bare language name ("What is Python?" is trivia, not a code task).
+  const codeArtifact =
+    /```|\b(?:stack trace|traceback|exception)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) ||
+    codeConstructSignal ||
+    nativeCodeSignal ||
+    errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools =
     options.requiresTools ??
@@ -477,6 +486,7 @@ function classifyTask(
     terminalToolSignal,
     terminalSafetySensitive,
     implicitTerminalCode,
+    codeArtifact,
   };
 }
 
@@ -1058,15 +1068,16 @@ export class PortfolioStrategy implements RouterStrategy {
     // reasoning chain however short it is, and a code edit or stack trace
     // belongs at least on the MEDIUM chain — the SIMPLE chain is curated for
     // trivia and translation and has no model with code affinity. The code
-    // floor requires actual code evidence: `debug` and `code_edit` are also
-    // assigned from bare verbs ("rewrite this sentence", "margin of error"),
-    // and prose must stay on the cheap chain.
+    // floor requires a code artifact or coding action: `debug` and `code_edit`
+    // are also assigned from bare verbs ("rewrite this sentence", "margin of
+    // error") and bare language names ("What is Python?"), and that prose
+    // must stay on the cheap chain.
     const targetTier: Tier =
       (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") &&
       (base.tier === "SIMPLE" || base.tier === "MEDIUM")
         ? "REASONING"
         : (features.taskType === "debug" || features.taskType === "code_edit") &&
-            features.hasCode &&
+            features.codeArtifact &&
             base.tier === "SIMPLE"
           ? "MEDIUM"
           : base.tier;

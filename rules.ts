@@ -35,8 +35,12 @@ const UNSEGMENTED_SCRIPT =
   /[؀-ۿ　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
 const WORD_CHAR = /[\p{L}\p{N}]/u;
 const ASCII_PHRASE = /^[a-z0-9' -]+$/;
-const BOUNDARY_BEFORE = "(?<![\\p{L}\\p{N}])";
-const BOUNDARY_AFTER = "(?![\\p{L}\\p{N}])";
+// A word boundary is a transition out of the segmented scripts. A CJK
+// character next to a Latin keyword ("请step by step证明") is a boundary, not
+// part of the word: mixed-script prompts carry no spaces between scripts.
+const SEGMENTED_WORD_CHAR = "\\p{Script=Latin}\\p{Script=Cyrillic}\\p{Script=Greek}\\p{N}";
+const BOUNDARY_BEFORE = `(?<![${SEGMENTED_WORD_CHAR}])`;
+const BOUNDARY_AFTER = `(?![${SEGMENTED_WORD_CHAR}])`;
 const BOUNDED_LAST_WORD_LENGTH = 6;
 const SHORT_SUFFIXES = "(?:s|ed|ing)?";
 const SIBILANT_PLURAL = "es";

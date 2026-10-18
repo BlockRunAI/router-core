@@ -2,8 +2,9 @@
 var UNSEGMENTED_SCRIPT = /[؀-ۿ　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
 var WORD_CHAR = /[\p{L}\p{N}]/u;
 var ASCII_PHRASE = /^[a-z0-9' -]+$/;
-var BOUNDARY_BEFORE = "(?<![\\p{L}\\p{N}])";
-var BOUNDARY_AFTER = "(?![\\p{L}\\p{N}])";
+var SEGMENTED_WORD_CHAR = "\\p{Script=Latin}\\p{Script=Cyrillic}\\p{Script=Greek}\\p{N}";
+var BOUNDARY_BEFORE = `(?<![${SEGMENTED_WORD_CHAR}])`;
+var BOUNDARY_AFTER = `(?![${SEGMENTED_WORD_CHAR}])`;
 var BOUNDED_LAST_WORD_LENGTH = 6;
 var SHORT_SUFFIXES = "(?:s|ed|ing)?";
 var SIBILANT_PLURAL = "es";
@@ -1798,6 +1799,7 @@ function classifyTask(prompt, systemPrompt, options) {
   );
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  const codeArtifact = /```|\b(?:stack trace|traceback|exception)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools = options.requiresTools ?? (toolsAvailable && inferToolRequirement(scannedPrompt, scannedSystemPrompt));
   const likelyParallelToolCalls = likelyNeedsParallelToolCalls(
@@ -1949,7 +1951,8 @@ function classifyTask(prompt, systemPrompt, options) {
     agentRisk,
     terminalToolSignal,
     terminalSafetySensitive,
-    implicitTerminalCode
+    implicitTerminalCode,
+    codeArtifact
   };
 }
 function affinity(modelId, task, language = "other", agentDomain = "other", deepWebResearch = false, agentRisk = "standard", terminalToolSignal = false, terminalSafetySensitive = false) {
@@ -2362,7 +2365,7 @@ var PortfolioStrategy = class {
     });
     const tierConfigs = base.tierConfigs;
     if (!tierConfigs) return base;
-    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : (features.taskType === "debug" || features.taskType === "code_edit") && features.hasCode && base.tier === "SIMPLE" ? "MEDIUM" : base.tier;
+    const targetTier = (features.taskType === "reasoning_mcq" || features.taskType === "reasoning_math") && (base.tier === "SIMPLE" || base.tier === "MEDIUM") ? "REASONING" : (features.taskType === "debug" || features.taskType === "code_edit") && features.codeArtifact && base.tier === "SIMPLE" ? "MEDIUM" : base.tier;
     const tierConfig = tierConfigs[targetTier];
     const configuredCandidates = tierConfig ? getFallbackChain(targetTier, tierConfigs) : [];
     const unavailable = new Set(options.unavailableModels ?? []);

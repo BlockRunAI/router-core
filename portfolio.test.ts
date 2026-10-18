@@ -1152,6 +1152,19 @@ describe("PortfolioStrategy code-task floor gating", () => {
     }
   });
 
+  it("does not treat a bare programming-language mention as code evidence for the floor", () => {
+    for (const prompt of [
+      "What is Python?",
+      "Translate this sentence into French: I like Python.",
+    ]) {
+      const decision = route(prompt, undefined, 256, {
+        config: DEFAULT_ROUTING_CONFIG,
+        modelPricing: pricing,
+      });
+      expect(decision.tier, prompt).toBe("SIMPLE");
+    }
+  });
+
   it("treats a CamelCase error class as code evidence", () => {
     const decision = route(
       "NullPointerException at OrderService.java:88 when the cart is empty, why?",

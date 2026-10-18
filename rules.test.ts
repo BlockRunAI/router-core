@@ -63,6 +63,13 @@ describe("classifyByRules keyword matching", () => {
     expect(signalsFor("Apply the fixes and rerun")).toContainEqual(expect.stringContaining("agentic"));
   });
 
+  it("treats a CJK character next to a Latin keyword as a word boundary", () => {
+    // Mixed-script prompts carry no spaces between scripts.
+    const result = classifyByRules("请step by step证明这个结论。", undefined, 8, scoring);
+    expect(result.signals).toContainEqual(expect.stringContaining("step by step"));
+    expect(result.tier).toBe("REASONING");
+  });
+
   it("keeps stem matching for Cyrillic keywords", () => {
     // "оптимизаци" is a deliberate stem that must still hit "оптимизацию".
     expect(signalsFor("Проведи оптимизацию алгоритма для базы данных")).toContainEqual(
