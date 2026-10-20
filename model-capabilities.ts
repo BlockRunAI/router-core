@@ -121,10 +121,10 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: true,
       supportsVision: false,
     },
-    "deepseek/deepseek-v4.1-flash": { // supportsTools: not probed — fails closed
+    "deepseek/deepseek-v4.1-flash": {
       contextWindow: 1_048_576,
       maxOutputTokens: 65_536,
-      supportsTools: false,
+      supportsTools: true,
       supportsVision: false,
     },
     "google/gemini-2.5-flash": {
@@ -403,10 +403,10 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: true,
       supportsVision: true,
     },
-    "openai/gpt-6.1-sol": { // supportsTools: not probed — fails closed
+    "openai/gpt-6.1-sol": {
       contextWindow: 1_050_000,
       maxOutputTokens: 128_000,
-      supportsTools: false,
+      supportsTools: true,
       supportsVision: true,
     },
     "openai/o1": {

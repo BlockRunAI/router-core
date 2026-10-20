@@ -64,6 +64,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "deepseek/deepseek-v4.1-flash": {
+    "supportsTools": true,
+    "probedAt": "2026-10-20T18:12:51Z"
+  },
   "google/gemini-2.5-flash": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -252,6 +256,11 @@
   "openai/gpt-6-sol": {
     "supportsTools": true,
     "probedAt": "2026-10-03T04:27:21Z"
+  },
+  "openai/gpt-6.1-sol": {
+    "supportsTools": true,
+    "probedAt": "2026-10-20T18:12:51Z",
+    "emptyCompletionSeen": true
   },
   "openai/o1": {
     "supportsTools": true,
