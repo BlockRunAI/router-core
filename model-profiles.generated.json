@@ -95,6 +95,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "deepseek/deepseek-v4.1-flash": {
+    "measuredAt": "2026-10-20T18:12:51Z",
+    "latencyMs": 2383.5,
+    "p95LatencyMs": 2547.8,
+    "outputTokensPerSecond": 216.53,
+    "errorRate": 0,
+    "samples": 3
+  },
   "google/gemini-2.5-flash": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 5416.4,
@@ -380,6 +388,14 @@
     "latencyMs": 3574.1,
     "p95LatencyMs": 4126.3,
     "outputTokensPerSecond": 133.59,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-6.1-sol": {
+    "measuredAt": "2026-10-20T18:12:51Z",
+    "latencyMs": 11324,
+    "p95LatencyMs": 12747.6,
+    "outputTokensPerSecond": 45.11,
     "errorRate": 0,
     "samples": 3
   },
