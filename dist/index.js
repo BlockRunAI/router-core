@@ -676,6 +676,13 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: false
   },
+  "deepseek/deepseek-v4.1-flash": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1048576,
+    maxOutputTokens: 65536,
+    supportsTools: false,
+    supportsVision: false
+  },
   "google/gemini-2.5-flash": {
     contextWindow: 1048576,
     maxOutputTokens: 65536,

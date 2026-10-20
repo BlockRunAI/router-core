@@ -121,6 +121,12 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: true,
       supportsVision: false,
     },
+    "deepseek/deepseek-v4.1-flash": { // supportsTools: not probed — fails closed
+      contextWindow: 1_048_576,
+      maxOutputTokens: 65_536,
+      supportsTools: false,
+      supportsVision: false,
+    },
     "google/gemini-2.5-flash": {
       contextWindow: 1_048_576,
       maxOutputTokens: 65_536,
