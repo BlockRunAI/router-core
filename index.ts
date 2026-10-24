@@ -33,6 +33,10 @@ export { PortfolioStrategy } from "./portfolio.js";
 export { classifyByRules } from "./rules.js";
 export { inferToolRequirement } from "./tool-intent.js";
 export { estimateTokens } from "./tokens.js";
+export { MODEL_KINDS, parseModelCatalog, toRoutingCatalog } from "./catalog.js";
+export type {
+  ModelKind, CatalogPricing, CatalogModel, ModelCatalog, CatalogRoutingOptions, RoutingCatalog,
+} from "./catalog.js";
 export {
   getFallbackChain,
   getFallbackChainFiltered,
