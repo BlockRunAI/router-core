@@ -400,6 +400,83 @@ declare function inferToolRequirement(prompt: string, _systemPrompt?: string, to
 /** Approximate token count: one per CJK character, one per four of anything else. */
 declare function estimateTokens(text: string): number;
 
+/** Pure public-catalog parsing. Fetching, caching and UI ordering belong to hosts. */
+
+declare const MODEL_KINDS: readonly ["chat", "image", "video", "music"];
+type ModelKind = (typeof MODEL_KINDS)[number];
+/** Gateway units are preserved: token prices per 1M tokens; media per unit. */
+interface CatalogPricing {
+    input?: number;
+    output?: number;
+    per_image?: number;
+    per_second?: number;
+    per_track?: number;
+    cache_read?: number;
+    cache_write?: number;
+    transaction_fee?: number;
+    per_call_surcharge?: number;
+    default_duration_seconds?: number;
+    max_duration_seconds?: number;
+}
+interface CatalogModel {
+    id: string;
+    name: string;
+    categories: readonly string[];
+    kinds: readonly ModelKind[];
+    billingMode?: string;
+    /** Zero pricing alone does not imply a free model. */
+    free: boolean;
+    pricing: CatalogPricing;
+    contextWindow?: number;
+    maxOutputTokens?: number;
+}
+interface ModelCatalog {
+    models: readonly CatalogModel[];
+    chat: readonly CatalogModel[];
+    image: readonly CatalogModel[];
+    video: readonly CatalogModel[];
+    music: readonly CatalogModel[];
+    /**
+     * IDs whose authoritative row says `available: false`. The gateway does not
+     * reject these; it substitutes another model. Absence from the listing is
+     * not unavailability: hidden IDs are still served.
+     */
+    unavailable: readonly string[];
+}
+/**
+ * Normalize GET /api/v1/models without a model-ID allowlist. New provider IDs
+ * appear immediately. Hidden/unavailable rows and invalid per-kind prices are
+ * omitted. A malformed envelope throws so a host can retain its last good list;
+ * an explicitly empty `data` array is a valid empty catalog.
+ *
+ * IDs explicitly marked `available: false` are also listed in `unavailable`.
+ * Rows outside MODEL_KINDS (speech, sound effects) are omitted.
+ *
+ * Last duplicate wins, including a final unavailable/invalid row. No sorting,
+ * price markup, network request, capability probe or media routing is performed.
+ */
+declare function parseModelCatalog(value: unknown): ModelCatalog;
+interface CatalogRoutingOptions {
+    /** Host evidence, merged over (and overriding per ID) the bundled verified table. */
+    verifiedCapabilities?: Readonly<Record<string, ModelCapabilities>>;
+}
+interface RoutingCatalog {
+    modelPricing: Map<string, ModelPricing>;
+    modelCapabilities: Record<string, ModelCapabilities>;
+    unavailableModels: string[];
+}
+/**
+ * Adapt only the chat catalog for route(). Media never enters LLM candidate
+ * chains. Tool support comes from verified evidence, never a name or category.
+ * Unknown capacities are zero, rather than invented defaults.
+ *
+ * Only rows the gateway explicitly marks `available: false` become
+ * unavailableModels. Configured IDs that are merely absent from the listing
+ * stay routable: the gateway serves hidden IDs, and only the configured chain
+ * knows about them.
+ */
+declare function toRoutingCatalog(catalog: ModelCatalog, options?: CatalogRoutingOptions): RoutingCatalog;
+
 /**
  * Default Routing Config
  *
@@ -424,4 +501,4 @@ declare const DEFAULT_ROUTING_CONFIG: RoutingConfig;
  */
 declare function route(prompt: string, systemPrompt: string | undefined, maxOutputTokens: number, options: RouterOptions): RoutingDecision;
 
-export { DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, type ModelCapabilities, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, applyUnavailableModels, calculateModelCost, classifyByRules, estimateTokens, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, registerStrategy, route };
+export { type CatalogModel, type CatalogPricing, type CatalogRoutingOptions, DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, HISTORICAL_MODEL_PROFILES, LIVE_MODEL_PROFILES, MODEL_KINDS, type ModelCapabilities, type ModelCatalog, type ModelKind, type ModelPerformanceProfile, type ModelPricing, PortfolioStrategy, type RouterOptions, type RouterStrategy, type RoutingCatalog, type RoutingConfig, type RoutingDecision, RulesStrategy, type TaskType, type Tier, applyUnavailableModels, calculateModelCost, classifyByRules, estimateTokens, filterByExcludeList, filterByToolCalling, filterByVision, filterCandidatesByCapacity, getFallbackChain, getFallbackChainFiltered, getStrategy, inferToolRequirement, parseModelCatalog, registerStrategy, route, toRoutingCatalog };

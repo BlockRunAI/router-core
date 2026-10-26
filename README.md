@@ -263,9 +263,72 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 66 live performance profiles (2026-08-29, three samples per model), 9 auditable historical seeds, 74 function-calling probe results, and a built-in snapshot of all 90 text models in the public catalog (2026-10-20 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol, Mistral Large 4, DeepSeek V4.1 Flash and Gemini 4 Argon, listed since the last probe, have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
+The repository ships 66 live performance profiles (2026-08-29, three samples per model), 9 auditable historical seeds, 74 function-calling probe results, and a built-in snapshot of all 90 text models in the public catalog (2026-10-20 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Mistral Large 4 and Gemini 4 Argon have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
 
 Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
+
+---
+
+## One catalog for chat, image, video and music
+
+`parseModelCatalog()` normalizes the same public gateway catalog for every
+consumer. A new model ID is discovered from its categories and valid prices;
+there is no model-ID allowlist or product-specific picker order in Core.
+GPT-6.1 Sol, image generators, video generators and music generators all appear
+in one result, grouped by `chat`, `image`, `video` and `music`.
+
+```ts
+import {
+  parseModelCatalog, toRoutingCatalog, route, DEFAULT_ROUTING_CONFIG,
+} from "@blockrun/router-core";
+
+// The host selects the gateway (Base or Solana), performs I/O and keeps its
+// last successful catalog on refresh errors. Core never fetches or caches it.
+const response = await fetch("https://blockrun.ai/api/v1/models");
+if (!response.ok) throw new Error(`Catalog unavailable: ${response.status}`);
+const catalog = parseModelCatalog(await response.json());
+
+catalog.chat;   // GPT-6.1 Sol and the other currently available chat models
+catalog.image; // GPT Image, Nano Banana, Grok Imagine, CogView, Seedream, ...
+catalog.video; // Seedance, Grok Imagine Video, Sora (where available), ...
+catalog.music; // MiniMax Music and subsequent music listings
+
+// Optional adapter: only chat entries enter the LLM router.
+const routing = toRoutingCatalog(catalog);
+const decision = route(prompt, undefined, 4096, { config: DEFAULT_ROUTING_CONFIG, ...routing });
+// route() keeps a tier's configured chain when every rung is unavailable.
+// Hidden IDs absent from the listing are still served, so check only the
+// gateway's explicit unavailable list, not catalog.chat membership.
+if (catalog.unavailable.includes(decision.model)) {
+  throw new Error("Every configured model for this request is unavailable");
+}
+```
+
+- `models` is the deduplicated full list; the four category arrays preserve
+  gateway order. A model can belong to more than one category. Products own
+  display names, grouping, preferred order and default selections.
+- Hidden/unavailable entries and rows with invalid per-kind prices are omitted.
+  IDs explicitly marked `available: false` are listed in `catalog.unavailable`
+  (the gateway substitutes another model for them rather than returning 4xx).
+  Speech and sound-effect rows are outside the four kinds and omitted.
+  Last duplicate wins, including a final retirement. Malformed envelopes throw;
+  an explicit `data: []` produces an empty catalog. Hosts decide how to handle
+  an empty or stale response and keep Base/Solana caches separate.
+- Prices retain gateway units (chat per 1M tokens; media per image/second/track).
+  The parser carries base prices and known cache, surcharge and duration fields;
+  it is not a billing quote engine or a media parameter schema. It does not add
+  margins, infer image sizes, or assume reference-image support.
+- The routing adapter uses live context/output limits and vision categories.
+  Tool support comes from the bundled verified table or explicit host evidence
+  via `verifiedCapabilities`; a newly listed model is not automatically declared
+  tool-capable; host evidence is merged over the bundled table per ID. Missing
+  capacities fall back to verified limits, then zero.
+- `unavailableModels` contains only explicitly unavailable IDs. A configured ID
+  that is merely absent from `/v1/models` stays routable: the gateway serves
+  hidden IDs, so listing absence is never treated as an outage.
+- Discovering a model makes it available to a picker. It does not promote it to
+  an Auto primary or add media generation to the LLM router. Existing routing
+  chains, scoring and decision snapshots are unchanged.
 
 ---
 
@@ -333,6 +396,9 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 | Export | Purpose |
 |---|---|
 | `route(prompt, systemPrompt, maxOutputTokens, options)` | The entry point. Returns a `RoutingDecision`. |
+| `parseModelCatalog(payload)` | Pure normalization of the public chat/image/video/music catalog. |
+| `toRoutingCatalog(catalog, options?)` | Chat-only pricing/capability/availability adapter for `route()`. |
+| `MODEL_KINDS` | The four supported catalog kinds. |
 | `DEFAULT_ROUTING_CONFIG` | Router Core V3.5 config: tiers, profiles, weights, promotions. |
 | `DEFAULT_MODEL_CAPABILITIES` | Built-in capability snapshot (context, max output, tools, vision). |
 | `LIVE_MODEL_PROFILES` / `HISTORICAL_MODEL_PROFILES` | Performance priors. |
@@ -371,7 +437,7 @@ npm run sync:capabilities                        # → model-capabilities.ts fro
 UPDATE_DECISION_SNAPSHOT=1 npm test              # then review the snapshot diff
 ```
 
-The two scripts are the only place the catalog enters this repository. `probe:profiles` pays for real, uncached completions (three samples plus one function-calling request per model, ≈$1 for the whole catalog) and writes the speed/reliability priors; `sync:capabilities` rebuilds the built-in capability snapshot from the public model list, taking `supportsTools` **only** from that probe. Hidden gateway ids are never written — the router should only name a model a user can see on [blockrun.ai/models](https://blockrun.ai/models).
+These two scripts update the committed capability and performance snapshots. Runtime catalogs enter through the pure `parseModelCatalog` API described above. `probe:profiles` pays for real, uncached completions (three samples plus one function-calling request per model, ≈$1 for the whole catalog) and writes the speed/reliability priors; `sync:capabilities` rebuilds the built-in capability snapshot from the public model list, taking `supportsTools` **only** from that probe. Hidden gateway ids are never written — the router should only name a model a user can see on [blockrun.ai/models](https://blockrun.ai/models).
 
 Three rules keep consumers safe:
 
