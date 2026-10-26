@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-  DEFAULT_ROUTING_CONFIG, MODEL_KINDS, parseModelCatalog, route, toRoutingCatalog,
+  DEFAULT_MODEL_CAPABILITIES, DEFAULT_ROUTING_CONFIG, MODEL_KINDS, parseModelCatalog, route, toRoutingCatalog,
 } from "./index.js";
 import type { ModelCapabilities } from "./index.js";
 
@@ -96,7 +96,7 @@ describe("unified model catalog", () => {
 });
 
 describe("chat routing catalog adapter", () => {
-  it("feeds GPT-6.1 Sol's verified tools and live limits into the existing router", () => {
+  it("feeds GPT-6.1 Sol's verified tools and live limits into the existing router without retiring absent IDs", () => {
     const catalog = parseModelCatalog({ data: [chat(), media("image")] });
     const routing = toRoutingCatalog(catalog);
     expect(routing.modelPricing.size).toBe(1);
@@ -106,9 +106,8 @@ describe("chat routing catalog adapter", () => {
     const decision = route("Search the latest news using web_search", undefined, 256, {
       config: DEFAULT_ROUTING_CONFIG, ...routing, hasTools: true, requiresTools: true, toolNames: ["web_search"],
     });
-    expect(decision.model).toBe("openai/gpt-6.1-sol");
-    expect(decision.candidates?.every(id => id === "openai/gpt-6.1-sol")).toBe(true);
-    expect(routing.unavailableModels).toContain("openai/gpt-6-astra");
+    expect(DEFAULT_MODEL_CAPABILITIES[decision.model]?.supportsTools).toBe(true);
+    expect(routing.unavailableModels).toEqual([]);
   });
 
   it("does not infer tool support from a new model's name or categories", () => {
@@ -120,6 +119,14 @@ describe("chat routing catalog adapter", () => {
     expect(routing.modelCapabilities["future/tool-agent"].contextWindow).toBe(1_050_000);
   });
 
+  it("merges host evidence over the bundled table instead of replacing it", () => {
+    const catalog = parseModelCatalog({ data: [chat(), chat("future/tool-agent")] });
+    const capabilities: ModelCapabilities = { contextWindow: 500_000, maxOutputTokens: 32_000, supportsTools: true, supportsVision: false };
+    const routing = toRoutingCatalog(catalog, { verifiedCapabilities: { "future/tool-agent": capabilities } });
+    expect(routing.modelCapabilities["openai/gpt-6.1-sol"].supportsTools).toBe(true);
+    expect(routing.modelCapabilities["future/tool-agent"].supportsTools).toBe(true);
+  });
+
   it("uses verified fallback limits only when the live catalog lacks valid limits", () => {
     const routing = toRoutingCatalog(parseModelCatalog({ data: [
       chat("openai/gpt-6.1-sol", { context_window: -1, max_output: 0 }),
@@ -129,13 +136,26 @@ describe("chat routing catalog adapter", () => {
     expect(routing.modelCapabilities["future/unknown"]).toMatchObject({ contextWindow: 0, maxOutputTokens: 0, supportsTools: false });
   });
 
-  it("removes absent custom chain and promotion IDs without injecting media into chat", () => {
-    const config = structuredClone(DEFAULT_ROUTING_CONFIG);
-    config.tiers.SIMPLE = { primary: "custom/offline", fallback: ["openai/gpt-6.1-sol"] };
-    config.promotions = [{ name: "test", startDate: "2026-01-01", endDate: "2027-01-01", tierOverrides: { SIMPLE: { primary: "custom/promo" } } }];
-    const routing = toRoutingCatalog(parseModelCatalog({ data: [chat(), media("image"), media("video"), media("music")] }), { config });
-    expect(routing.unavailableModels).toEqual(expect.arrayContaining(["custom/offline", "custom/promo"]));
+  it("retires only explicitly unavailable IDs, never hidden or uncategorized ones", () => {
+    const catalog = parseModelCatalog({ data: [
+      chat(), media("image"), media("video"), media("music"),
+      chat("nvidia/offline", { available: false, billing_mode: "free", pricing: { input: 0, output: 0 } }),
+      chat("openai/o4-mini", { categories: ["reasoning", "coding"] }),
+      chat("acme/hidden", { hidden: true }),
+      chat("acme/retired"), chat("acme/retired", { available: false }),
+    ] });
+    expect(catalog.unavailable).toEqual(["nvidia/offline", "acme/retired"]);
+    const routing = toRoutingCatalog(catalog);
+    expect(routing.unavailableModels).toEqual(["nvidia/offline", "acme/retired"]);
     expect([...routing.modelPricing.keys()]).toEqual(["openai/gpt-6.1-sol"]);
+  });
+
+  it("keeps configured IDs absent from the listing routable", () => {
+    const routing = toRoutingCatalog(parseModelCatalog({ data: [chat()] }));
+    const decision = route("hello", undefined, 256, { config: DEFAULT_ROUTING_CONFIG, ...routing });
+    const plain = route("hello", undefined, 256, { config: DEFAULT_ROUTING_CONFIG, modelPricing: routing.modelPricing });
+    expect(decision.model).toBe(plain.model);
+    expect(decision.model).not.toBe("openai/gpt-6.1-sol");
   });
 
   it("performs no network requests during parsing, adaptation or routing", () => {

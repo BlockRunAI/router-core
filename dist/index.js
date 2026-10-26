@@ -2540,6 +2540,83 @@ var PortfolioStrategy = class {
   }
 };
 
+// catalog.ts
+var MODEL_KINDS = ["chat", "image", "video", "music"];
+var PRICE_KEYS = [
+  "input",
+  "output",
+  "per_image",
+  "per_second",
+  "per_track",
+  "cache_read",
+  "cache_write",
+  "transaction_fee",
+  "per_call_surcharge",
+  "default_duration_seconds",
+  "max_duration_seconds"
+];
+var UNIT_PRICE = { image: "per_image", video: "per_second", music: "per_track" };
+var MODEL_ID = /^[a-z0-9][a-z0-9._-]*\/[a-zA-Z0-9][a-zA-Z0-9._:+-]*$/;
+var record = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+var price = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0;
+var capacity = (value) => typeof value === "number" && Number.isSafeInteger(value) && value > 0 ? value : void 0;
+function parseModelCatalog(value) {
+  if (!record(value) || !Array.isArray(value.data)) {
+    throw new TypeError("Model catalog must contain a data array");
+  }
+  const entries = /* @__PURE__ */ new Map();
+  for (const entry of value.data) {
+    if (record(entry) && typeof entry.id === "string" && entry.id.length <= 200 && MODEL_ID.test(entry.id)) {
+      entries.set(entry.id, entry);
+    }
+  }
+  const result = { models: [], chat: [], image: [], video: [], music: [], unavailable: [] };
+  const models = [];
+  const unavailable = [];
+  for (const [id, entry] of entries) {
+    if (entry.available === false) unavailable.push(id);
+    if (entry.available !== void 0 && entry.available !== true || entry.hidden !== void 0 && entry.hidden !== false || !Array.isArray(entry.categories) || !record(entry.pricing)) continue;
+    const categories = [...new Set(entry.categories.filter((c) => typeof c === "string"))];
+    const rawPricing = entry.pricing;
+    const pricing = {};
+    for (const key of PRICE_KEYS) if (price(rawPricing[key])) pricing[key] = rawPricing[key];
+    const kinds = MODEL_KINDS.filter((kind) => categories.includes(kind) && (kind === "chat" ? price(rawPricing.input) && price(rawPricing.output) : price(rawPricing[UNIT_PRICE[kind]])));
+    if (!kinds.length) continue;
+    const model = {
+      id,
+      name: typeof entry.name === "string" && entry.name.trim() ? entry.name : id,
+      categories,
+      kinds,
+      pricing,
+      free: kinds.includes("chat") && entry.billing_mode === "free" && pricing.input === 0 && pricing.output === 0,
+      ...typeof entry.billing_mode === "string" ? { billingMode: entry.billing_mode } : {},
+      ...capacity(entry.context_window) !== void 0 ? { contextWindow: capacity(entry.context_window) } : {},
+      ...capacity(entry.max_output) !== void 0 ? { maxOutputTokens: capacity(entry.max_output) } : {}
+    };
+    models.push(model);
+  }
+  result.models = models;
+  result.unavailable = unavailable;
+  for (const kind of MODEL_KINDS) result[kind] = models.filter((model) => model.kinds.includes(kind));
+  return result;
+}
+function toRoutingCatalog(catalog, options = {}) {
+  const verified = { ...DEFAULT_MODEL_CAPABILITIES, ...options.verifiedCapabilities };
+  const modelPricing = /* @__PURE__ */ new Map();
+  const modelCapabilities = {};
+  for (const model of catalog.chat) {
+    modelPricing.set(model.id, { inputPrice: model.pricing.input, outputPrice: model.pricing.output });
+    const evidence = verified[model.id];
+    modelCapabilities[model.id] = {
+      contextWindow: model.contextWindow ?? evidence?.contextWindow ?? 0,
+      maxOutputTokens: model.maxOutputTokens ?? evidence?.maxOutputTokens ?? 0,
+      supportsTools: evidence?.supportsTools === true,
+      supportsVision: model.categories.includes("vision")
+    };
+  }
+  return { modelPricing, modelCapabilities, unavailableModels: [...catalog.unavailable] };
+}
+
 // config.ts
 var DEFAULT_ROUTING_CONFIG = {
   version: "3.5",
@@ -4027,94 +4104,6 @@ var DEFAULT_ROUTING_CONFIG = {
     // Set to `true` to force agentic tiers; `false` to disable them entirely.
   }
 };
-
-// catalog.ts
-var MODEL_KINDS = ["chat", "image", "video", "music"];
-var PRICE_KEYS = [
-  "input",
-  "output",
-  "per_image",
-  "per_second",
-  "per_track",
-  "cache_read",
-  "cache_write",
-  "transaction_fee",
-  "per_call_surcharge",
-  "default_duration_seconds",
-  "max_duration_seconds"
-];
-var UNIT_PRICE = { image: "per_image", video: "per_second", music: "per_track" };
-var MODEL_ID = /^[a-z0-9][a-z0-9._-]*\/[a-zA-Z0-9][a-zA-Z0-9._:+-]*$/;
-var record = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
-var price = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0;
-var capacity = (value) => typeof value === "number" && Number.isSafeInteger(value) && value > 0 ? value : void 0;
-function parseModelCatalog(value) {
-  if (!record(value) || !Array.isArray(value.data)) {
-    throw new TypeError("Model catalog must contain a data array");
-  }
-  const entries = /* @__PURE__ */ new Map();
-  for (const entry of value.data) {
-    if (record(entry) && typeof entry.id === "string" && entry.id.length <= 200 && MODEL_ID.test(entry.id)) {
-      entries.set(entry.id, entry);
-    }
-  }
-  const result = { models: [], chat: [], image: [], video: [], music: [] };
-  const models = [];
-  for (const [id, entry] of entries) {
-    if (entry.available !== void 0 && entry.available !== true || entry.hidden !== void 0 && entry.hidden !== false || !Array.isArray(entry.categories) || !record(entry.pricing)) continue;
-    const categories = [...new Set(entry.categories.filter((c) => typeof c === "string"))];
-    const rawPricing = entry.pricing;
-    const pricing = {};
-    for (const key of PRICE_KEYS) if (price(rawPricing[key])) pricing[key] = rawPricing[key];
-    const kinds = MODEL_KINDS.filter((kind) => categories.includes(kind) && (kind === "chat" ? price(rawPricing.input) && price(rawPricing.output) : price(rawPricing[UNIT_PRICE[kind]])));
-    if (!kinds.length) continue;
-    const model = {
-      id,
-      name: typeof entry.name === "string" && entry.name.trim() ? entry.name : id,
-      categories,
-      kinds,
-      pricing,
-      free: kinds.includes("chat") && entry.billing_mode === "free" && pricing.input === 0 && pricing.output === 0,
-      ...typeof entry.billing_mode === "string" ? { billingMode: entry.billing_mode } : {},
-      ...capacity(entry.context_window) !== void 0 ? { contextWindow: capacity(entry.context_window) } : {},
-      ...capacity(entry.max_output) !== void 0 ? { maxOutputTokens: capacity(entry.max_output) } : {}
-    };
-    models.push(model);
-  }
-  result.models = models;
-  for (const kind of MODEL_KINDS) result[kind] = models.filter((model) => model.kinds.includes(kind));
-  return result;
-}
-function toRoutingCatalog(catalog, options = {}) {
-  const config = options.config ?? DEFAULT_ROUTING_CONFIG;
-  const verified = options.verifiedCapabilities ?? DEFAULT_MODEL_CAPABILITIES;
-  const modelPricing = /* @__PURE__ */ new Map();
-  const modelCapabilities = {};
-  const active = /* @__PURE__ */ new Set();
-  for (const model of catalog.chat) {
-    active.add(model.id);
-    modelPricing.set(model.id, { inputPrice: model.pricing.input, outputPrice: model.pricing.output });
-    const evidence = verified[model.id];
-    modelCapabilities[model.id] = {
-      contextWindow: model.contextWindow ?? evidence?.contextWindow ?? 0,
-      maxOutputTokens: model.maxOutputTokens ?? evidence?.maxOutputTokens ?? 0,
-      supportsTools: evidence?.supportsTools === true,
-      supportsVision: model.categories.includes("vision")
-    };
-  }
-  const known = /* @__PURE__ */ new Set([...Object.keys(DEFAULT_MODEL_CAPABILITIES), ...Object.keys(verified)]);
-  const addTier = (tier) => {
-    if (tier.primary) known.add(tier.primary);
-    for (const id of tier.fallback ?? []) known.add(id);
-  };
-  for (const tiers of [config.tiers, config.agenticTiers, config.ecoTiers, config.premiumTiers]) {
-    if (tiers) for (const tier of Object.values(tiers)) addTier(tier);
-  }
-  for (const promotion of config.promotions ?? []) {
-    for (const tier of Object.values(promotion.tierOverrides)) addTier(tier);
-  }
-  return { modelPricing, modelCapabilities, unavailableModels: [...known].filter((id) => !active.has(id)) };
-}
 
 // index.ts
 registerStrategy(new PortfolioStrategy());

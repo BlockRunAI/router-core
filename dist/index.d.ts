@@ -400,6 +400,8 @@ declare function inferToolRequirement(prompt: string, _systemPrompt?: string, to
 /** Approximate token count: one per CJK character, one per four of anything else. */
 declare function estimateTokens(text: string): number;
 
+/** Pure public-catalog parsing. Fetching, caching and UI ordering belong to hosts. */
+
 declare const MODEL_KINDS: readonly ["chat", "image", "video", "music"];
 type ModelKind = (typeof MODEL_KINDS)[number];
 /** Gateway units are preserved: token prices per 1M tokens; media per unit. */
@@ -434,6 +436,12 @@ interface ModelCatalog {
     image: readonly CatalogModel[];
     video: readonly CatalogModel[];
     music: readonly CatalogModel[];
+    /**
+     * IDs whose authoritative row says `available: false`. The gateway does not
+     * reject these; it substitutes another model. Absence from the listing is
+     * not unavailability: hidden IDs are still served.
+     */
+    unavailable: readonly string[];
 }
 /**
  * Normalize GET /api/v1/models without a model-ID allowlist. New provider IDs
@@ -441,13 +449,15 @@ interface ModelCatalog {
  * omitted. A malformed envelope throws so a host can retain its last good list;
  * an explicitly empty `data` array is a valid empty catalog.
  *
+ * IDs explicitly marked `available: false` are also listed in `unavailable`.
+ * Rows outside MODEL_KINDS (speech, sound effects) are omitted.
+ *
  * Last duplicate wins, including a final unavailable/invalid row. No sorting,
  * price markup, network request, capability probe or media routing is performed.
  */
 declare function parseModelCatalog(value: unknown): ModelCatalog;
 interface CatalogRoutingOptions {
-    config?: RoutingConfig;
-    /** Explicit host evidence may override the bundled verified capability table. */
+    /** Host evidence, merged over (and overriding per ID) the bundled verified table. */
     verifiedCapabilities?: Readonly<Record<string, ModelCapabilities>>;
 }
 interface RoutingCatalog {
@@ -459,9 +469,11 @@ interface RoutingCatalog {
  * Adapt only the chat catalog for route(). Media never enters LLM candidate
  * chains. Tool support comes from verified evidence, never a name or category.
  * Unknown capacities are zero, rather than invented defaults.
- * Pass `config` when using custom chains so absent custom IDs are excluded too.
- * As with route() itself, hosts must check the winner against their active
- * catalog: the legacy router can return its configured chain on total loss.
+ *
+ * Only rows the gateway explicitly marks `available: false` become
+ * unavailableModels. Configured IDs that are merely absent from the listing
+ * stay routable: the gateway serves hidden IDs, and only the configured chain
+ * knows about them.
  */
 declare function toRoutingCatalog(catalog: ModelCatalog, options?: CatalogRoutingOptions): RoutingCatalog;
 

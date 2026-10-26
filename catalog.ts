@@ -1,8 +1,6 @@
 /** Pure public-catalog parsing. Fetching, caching and UI ordering belong to hosts. */
-import { DEFAULT_ROUTING_CONFIG } from "./config.js";
 import { DEFAULT_MODEL_CAPABILITIES, type ModelCapabilities } from "./model-capabilities.js";
 import type { ModelPricing } from "./selector.js";
-import type { RoutingConfig, TierConfig } from "./types.js";
 
 export const MODEL_KINDS = ["chat", "image", "video", "music"] as const;
 export type ModelKind = (typeof MODEL_KINDS)[number];
@@ -41,6 +39,12 @@ export interface ModelCatalog {
   image: readonly CatalogModel[];
   video: readonly CatalogModel[];
   music: readonly CatalogModel[];
+  /**
+   * IDs whose authoritative row says `available: false`. The gateway does not
+   * reject these; it substitutes another model. Absence from the listing is
+   * not unavailability: hidden IDs are still served.
+   */
+  unavailable: readonly string[];
 }
 
 const PRICE_KEYS = [
@@ -62,6 +66,9 @@ const capacity = (value: unknown): number | undefined =>
  * omitted. A malformed envelope throws so a host can retain its last good list;
  * an explicitly empty `data` array is a valid empty catalog.
  *
+ * IDs explicitly marked `available: false` are also listed in `unavailable`.
+ * Rows outside MODEL_KINDS (speech, sound effects) are omitted.
+ *
  * Last duplicate wins, including a final unavailable/invalid row. No sorting,
  * price markup, network request, capability probe or media routing is performed.
  */
@@ -75,9 +82,11 @@ export function parseModelCatalog(value: unknown): ModelCatalog {
       entries.set(entry.id, entry);
     }
   }
-  const result: ModelCatalog = { models: [], chat: [], image: [], video: [], music: [] };
+  const result: ModelCatalog = { models: [], chat: [], image: [], video: [], music: [], unavailable: [] };
   const models: CatalogModel[] = [];
+  const unavailable: string[] = [];
   for (const [id, entry] of entries) {
+    if (entry.available === false) unavailable.push(id);
     if ((entry.available !== undefined && entry.available !== true) ||
         (entry.hidden !== undefined && entry.hidden !== false) ||
         !Array.isArray(entry.categories) || !record(entry.pricing)) continue;
@@ -100,13 +109,13 @@ export function parseModelCatalog(value: unknown): ModelCatalog {
     models.push(model);
   }
   result.models = models;
+  result.unavailable = unavailable;
   for (const kind of MODEL_KINDS) result[kind] = models.filter(model => model.kinds.includes(kind));
   return result;
 }
 
 export interface CatalogRoutingOptions {
-  config?: RoutingConfig;
-  /** Explicit host evidence may override the bundled verified capability table. */
+  /** Host evidence, merged over (and overriding per ID) the bundled verified table. */
   verifiedCapabilities?: Readonly<Record<string, ModelCapabilities>>;
 }
 
@@ -120,18 +129,17 @@ export interface RoutingCatalog {
  * Adapt only the chat catalog for route(). Media never enters LLM candidate
  * chains. Tool support comes from verified evidence, never a name or category.
  * Unknown capacities are zero, rather than invented defaults.
- * Pass `config` when using custom chains so absent custom IDs are excluded too.
- * As with route() itself, hosts must check the winner against their active
- * catalog: the legacy router can return its configured chain on total loss.
+ *
+ * Only rows the gateway explicitly marks `available: false` become
+ * unavailableModels. Configured IDs that are merely absent from the listing
+ * stay routable: the gateway serves hidden IDs, and only the configured chain
+ * knows about them.
  */
 export function toRoutingCatalog(catalog: ModelCatalog, options: CatalogRoutingOptions = {}): RoutingCatalog {
-  const config = options.config ?? DEFAULT_ROUTING_CONFIG;
-  const verified = options.verifiedCapabilities ?? DEFAULT_MODEL_CAPABILITIES;
+  const verified = { ...DEFAULT_MODEL_CAPABILITIES, ...options.verifiedCapabilities };
   const modelPricing = new Map<string, ModelPricing>();
   const modelCapabilities: Record<string, ModelCapabilities> = {};
-  const active = new Set<string>();
   for (const model of catalog.chat) {
-    active.add(model.id);
     modelPricing.set(model.id, { inputPrice: model.pricing.input!, outputPrice: model.pricing.output! });
     const evidence = verified[model.id];
     modelCapabilities[model.id] = {
@@ -141,16 +149,5 @@ export function toRoutingCatalog(catalog: ModelCatalog, options: CatalogRoutingO
       supportsVision: model.categories.includes("vision"),
     };
   }
-  const known = new Set([...Object.keys(DEFAULT_MODEL_CAPABILITIES), ...Object.keys(verified)]);
-  const addTier = (tier: Partial<TierConfig>) => {
-    if (tier.primary) known.add(tier.primary);
-    for (const id of tier.fallback ?? []) known.add(id);
-  };
-  for (const tiers of [config.tiers, config.agenticTiers, config.ecoTiers, config.premiumTiers]) {
-    if (tiers) for (const tier of Object.values(tiers)) addTier(tier);
-  }
-  for (const promotion of config.promotions ?? []) {
-    for (const tier of Object.values(promotion.tierOverrides)) addTier(tier);
-  }
-  return { modelPricing, modelCapabilities, unavailableModels: [...known].filter(id => !active.has(id)) };
+  return { modelPricing, modelCapabilities, unavailableModels: [...catalog.unavailable] };
 }

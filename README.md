@@ -293,15 +293,14 @@ catalog.image; // GPT Image, Nano Banana, Grok Imagine, CogView, Seedream, ...
 catalog.video; // Seedance, Grok Imagine Video, Sora (where available), ...
 catalog.music; // MiniMax Music and subsequent music listings
 
-// Optional adapter: only chat entries enter the LLM router. Pass the same
-// config to both functions if you use custom chains or promotions.
-const config = DEFAULT_ROUTING_CONFIG;
-const routing = toRoutingCatalog(catalog, { config });
-const decision = route(prompt, undefined, 4096, { config, ...routing });
-// route() retains its existing total-outage recovery behavior. Do not submit
-// a configured fallback that the current gateway no longer advertises.
-if (!catalog.chat.some(model => model.id === decision.model)) {
-  throw new Error("No routed model is available in the current catalog");
+// Optional adapter: only chat entries enter the LLM router.
+const routing = toRoutingCatalog(catalog);
+const decision = route(prompt, undefined, 4096, { config: DEFAULT_ROUTING_CONFIG, ...routing });
+// route() keeps a tier's configured chain when every rung is unavailable.
+// Hidden IDs absent from the listing are still served, so check only the
+// gateway's explicit unavailable list, not catalog.chat membership.
+if (catalog.unavailable.includes(decision.model)) {
+  throw new Error("Every configured model for this request is unavailable");
 }
 ```
 
@@ -309,6 +308,9 @@ if (!catalog.chat.some(model => model.id === decision.model)) {
   gateway order. A model can belong to more than one category. Products own
   display names, grouping, preferred order and default selections.
 - Hidden/unavailable entries and rows with invalid per-kind prices are omitted.
+  IDs explicitly marked `available: false` are listed in `catalog.unavailable`
+  (the gateway substitutes another model for them rather than returning 4xx).
+  Speech and sound-effect rows are outside the four kinds and omitted.
   Last duplicate wins, including a final retirement. Malformed envelopes throw;
   an explicit `data: []` produces an empty catalog. Hosts decide how to handle
   an empty or stale response and keep Base/Solana caches separate.
@@ -319,7 +321,11 @@ if (!catalog.chat.some(model => model.id === decision.model)) {
 - The routing adapter uses live context/output limits and vision categories.
   Tool support comes from the bundled verified table or explicit host evidence
   via `verifiedCapabilities`; a newly listed model is not automatically declared
-  tool-capable. Missing capacities fall back to verified limits, then zero.
+  tool-capable; host evidence is merged over the bundled table per ID. Missing
+  capacities fall back to verified limits, then zero.
+- `unavailableModels` contains only explicitly unavailable IDs. A configured ID
+  that is merely absent from `/v1/models` stays routable: the gateway serves
+  hidden IDs, so listing absence is never treated as an outage.
 - Discovering a model makes it available to a picker. It does not promote it to
   an Auto primary or add media generation to the LLM router. Existing routing
   chains, scoring and decision snapshots are unchanged.
