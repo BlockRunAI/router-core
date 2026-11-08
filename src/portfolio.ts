@@ -7,8 +7,9 @@
  * RouterBench evaluation before health telemetry / an optional judge are added.
  */
 
+import { DEFAULT_ROUTING_CONFIG } from "./config.js";
 import { DEFAULT_MODEL_CAPABILITIES } from "./model-capabilities.js";
-import { getFallbackChain, selectModel } from "./selector.js";
+import { getFallbackChain, selectModel, usablePricing } from "./selector.js";
 import { RulesStrategy } from "./strategy.js";
 import {
   HISTORICAL_MODEL_PROFILES,
@@ -42,28 +43,9 @@ type TaskFeatures = {
   codeArtifact: boolean;
 };
 
-const DEFAULT_PORTFOLIO_WEIGHTS = {
-  auto: {
-    quality: 0.47,
-    capability: 0.2,
-    cost: 0.18,
-    speed: 0.07,
-    reliability: 0.03,
-    legacy: 0.05,
-  },
-  eco: { quality: 0.36, capability: 0.2, cost: 0.28, speed: 0.1, reliability: 0.04, legacy: 0.02 },
-  premium: {
-    quality: 0.58,
-    capability: 0.2,
-    cost: 0.08,
-    speed: 0.06,
-    reliability: 0.06,
-    legacy: 0.02,
-  },
-  highStakesBoost: { quality: 0.08, reliability: 0.05 },
-  latencySensitiveSpeedBoost: 0.08,
-  affinityFloorGap: { auto: 0.1, eco: 0.22, premium: 0.05 },
-} as const;
+// The bundled config carries the calibrated weights; a host config that omits
+// `portfolio` scores with the same numbers rather than a second copy of them.
+const DEFAULT_PORTFOLIO_WEIGHTS = DEFAULT_ROUTING_CONFIG.portfolio!;
 
 /**
  * Detect turns that probably need several tool calls. This is a
@@ -119,11 +101,18 @@ function likelyNeedsParallelToolCalls(
     "create",
     "close",
   ]);
+  // Whole words only, with an optional inflection: a substring test read
+  // "add" out of "address", "book" out of "facebook" and "close" out of
+  // "closet" (the same failure rules.ts fixed for its keyword lists).
   const lowered = text.toLowerCase();
   const matchedOperationTokens = new Set(
     (toolNames ?? [])
       .flatMap((name) => name.toLowerCase().split(/[^a-z0-9\u3400-\u9fff]+/))
-      .filter((token) => operationTokens.has(token) && lowered.includes(token)),
+      .filter(
+        (token) =>
+          operationTokens.has(token) &&
+          new RegExp(`\\b${token}(?:s|es|d|ed|ing)?\\b`).test(lowered),
+      ),
   );
   // A single workflow naturally mentions domain nouns like order/item plus
   // one action. Upgrade only when two different visible operation verbs are
@@ -148,7 +137,8 @@ function likelyNeedsParallelToolCalls(
     /\b(?:weather|climate|clima|tiempo|temperature|snow|news|report)\b|天气|气象|温度|降雪|新闻|报告/i.test(
       text,
     );
-  const multiLocationConnector = /\b(?:and also|both|y|e)\b|还有|以及|和|、/i.test(text);
+  const multiLocationConnector =
+    /\b(?:and also|both)\b|\s(?:y|e)\s|还有|以及|和|、/i.test(text);
   const commaSeparatedLocations = (text.match(/[,，]/g) ?? []).length >= 2;
   if (repeatedLookup && (multiLocationConnector || commaSeparatedLocations)) return true;
 
@@ -195,6 +185,13 @@ function classifyTask(
   // artifact, not prose about errors; case-sensitive on purpose.
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  // A language name alone ("java coffee prices", "python snake habitat") is
+  // not code work, even on a tool turn. It joins the code-agent pool only
+  // together with a coding action.
+  const codingAction =
+    /\b(?:write|implement|refactor|debug|fix|patch|compile|build|run|test|script|program|code|function|class|module|repo(?:sitory)?)\b|编写|实现|重构|调试|修复|编译|脚本|代码/i.test(
+      scannedPrompt,
+    );
   // Stronger than hasCode: an actual code artifact or coding action, never a
   // bare language name ("What is Python?" is trivia, not a code task) and
   // never the English word "exception" on its own ("please make an
@@ -266,7 +263,11 @@ function classifyTask(
     /\b(?:another|other|different|previous)\s+(?:order|reservation|booking|account|address)\b|另一(?:个)?(?:订单|预订|账户|地址)|其他(?:订单|预订|账户|地址)/i.test(
       scannedPrompt,
     );
-  const reservationIds = scannedPrompt.match(/\b[A-Z0-9]{6}\b/g) ?? [];
+  // Reservation locators mix letters and digits (ZFA04Y, 4WQ150). Requiring
+  // both keeps shouted words ("CANCEL MY FLIGHT") and plain six-digit numbers
+  // from reading as two reservations.
+  const reservationIds =
+    scannedPrompt.match(/\b(?=[A-Z0-9]*\d)(?=[A-Z0-9]*[A-Z])[A-Z0-9]{6}\b/g) ?? [];
   const crossReservationBatchSignal =
     agentDomain === "airline" &&
     (/\b(?:two|three|multiple|several)(?:\s+of\s+(?:my|our|the))?\s+(?:upcoming\s+)?(?:reservations?|bookings?)\b|\b(?:a\s+)?(?:second|third)\s+(?:reservation|booking)\b/i.test(
@@ -433,7 +434,12 @@ function classifyTask(
     numberedSteps < 3 &&
     prompt.length <= 1_000 &&
     simpleTerminalArtifact;
-  const language = /[\u3400-\u9fff]/.test(scannedPrompt) ? "zh" : "other";
+  // Han characters alone also spell Japanese; kana marks the prompt as not
+  // Mandarin, so it does not get the Mandarin-native extraction band.
+  const language =
+    /[\u3400-\u9fff]/.test(scannedPrompt) && !/[\u3040-\u30ff]/.test(scannedPrompt)
+      ? "zh"
+      : "other";
   const multipleChoiceSignals = (scannedPrompt.match(/(?:^|\n)\s*[A-D][.)]\s+/gim) ?? []).length;
   const numericSignals = (scannedPrompt.match(/-?\d+(?:[.,]\d+)?/g) ?? []).length;
   const compactMathProblem =
@@ -449,7 +455,8 @@ function classifyTask(
   let taskType: TaskType = "chat";
   if (needsVision) taskType = "vision";
   else if (estimatedInputTokens > 80_000) taskType = "long_context";
-  else if (needsTools && (hasCode || implicitTerminalCode)) taskType = "code_agent";
+  else if (needsTools && (codeArtifact || (hasCode && codingAction) || implicitTerminalCode))
+    taskType = "code_agent";
   else if (needsTools && likelyParallelToolCalls && !complexMultiToolPlan)
     taskType = "tool_agent_parallel";
   else if (needsTools) taskType = "tool_agent";
@@ -457,15 +464,15 @@ function classifyTask(
   else if (compactMathProblem) taskType = "reasoning_math";
   else if (
     errorClassSignal ||
-    /\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text)
+    /\b(?:bug|debug|error|failure|failing|regression|crash)\b|修复|报错|错误|调试/i.test(text)
   )
     taskType = "debug";
-  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite|重构|实现|修改)\b/i.test(text))
+  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite)\b|重构|实现|修改/i.test(text))
     taskType = "code_edit";
-  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv|字段|提取)\b/i.test(text))
+  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv)\b|字段|提取/i.test(text))
     taskType = "extraction";
   else if (
-    /\b(?:prove|derive|theorem|formal|mathematical|reasoning|证明|推导|定理|数学)\b/i.test(text)
+    /\b(?:prove|derive|theorem|formal|mathematical|reasoning)\b|证明|推导|定理|数学/i.test(text)
   )
     taskType = "reasoning";
 
@@ -492,397 +499,347 @@ function classifyTask(
   };
 }
 
-function affinity(
-  modelId: string,
-  task: TaskType,
-  language: TaskFeatures["language"] = "other",
-  agentDomain: TaskFeatures["agentDomain"] = "other",
-  deepWebResearch = false,
-  agentRisk: TaskFeatures["agentRisk"] = "standard",
-  terminalToolSignal = false,
-  terminalSafetySensitive = false,
-): number {
-  const id = modelId.toLowerCase();
-  // Model family names are intentionally similar (for example
-  // `gemini-2.5-flash` vs `gemini-2.5-flash-lite`).  A substring match lets a
-  // smaller sibling inherit a capability claim that was measured only for the
-  // flagship. Keep these assignments model-exact; a sibling can be added only
-  // with its own evidence.
-  const modelName = id.slice(id.indexOf("/") + 1);
-  const match = (values: string[], score: number) =>
-    values.some((value) => modelName === value) ? score : 0;
-  const base = 0.68;
+/**
+ * Task-affinity bands. Each table maps a model name (the id after the
+ * provider slash) to its calibrated affinity for one request shape; anything
+ * absent scores the neutral `NEUTRAL_AFFINITY`. Names are matched exactly:
+ * model family names are intentionally similar (`gemini-2.5-flash` vs
+ * `gemini-2.5-flash-lite`), and a substring match would let a smaller sibling
+ * inherit a capability claim measured only for the flagship. A sibling joins a
+ * band only with its own evidence.
+ */
+type AffinityBand = Readonly<Record<string, number>>;
 
-  switch (task) {
+/** Affinity of a model with no task-specific evidence. */
+const NEUTRAL_AFFINITY = 0.68;
+
+// Strong native tool loop until the Responses function-output fix is deployed
+// on both gateways; Codex stays available below auto's affinity floor. Sonnet
+// has a verified native multi-turn tool loop and is the safe strong default.
+const TERMINAL_COMPLEX_HIGH: AffinityBand = {
+  "claude-sonnet-5": 1,
+  "gpt-5.3-codex": 0.87,
+  "gpt-5-mini": 0.78,
+  "gemini-3.5-flash": 0.76,
+};
+
+// Complete-session BrowseComp calibration supersedes the earlier single-case
+// Opus promotion: strict deduplicated evidence has Sonnet 5 at 2/9 versus Opus
+// 5 at 0/3, while Opus also costs more and has a much longer tail. Opus stays
+// an availability fallback until a larger stable-provider sample supports it.
+const WEB_RESEARCH_DEEP: AffinityBand = {
+  "claude-sonnet-5": 1,
+  "gpt-5-mini": 0.88,
+  "gemini-3.5-flash": 0.84,
+  "claude-opus-5": 0.8,
+  "claude-opus-4.8": 0.78,
+};
+const WEB_RESEARCH: AffinityBand = {
+  "claude-sonnet-5": 1,
+  "gpt-5-mini": 0.88,
+  "gemini-3.5-flash": 0.86,
+  "claude-opus-5": 0.84,
+  "claude-opus-4.8": 0.82,
+};
+
+const RETAIL_POLICY_EXCEPTION: AffinityBand = {
+  "gpt-4.1": 1,
+  "claude-sonnet-5": 0.9,
+  "deepseek-v4-pro": 0.82,
+  "gpt-5-mini": 0.8,
+  "gpt-4o-mini": 0.76,
+};
+const RETAIL_POLICY_EXCEPTION_SIMPLE: AffinityBand = {
+  "gpt-5-mini": 1,
+  "gpt-4.1": 0.86,
+  "deepseek-v4-pro": 0.82,
+  "gpt-4o-mini": 0.8,
+};
+
+const AFFINITY = {
+  // Seven valid full agent + official Terminal-Bench trajectories (2026-07-28)
+  // gave GPT-5 Mini 4/7 resolved tasks versus 1/7 for the prior dynamic
+  // code-agent choice. Its token-normalized total cost was higher in this small
+  // calibration, so Codex and Sonnet keep quality priors above it; admitting
+  // Mini to the scoring band lets the normal quality/cost profile choose it
+  // without erasing stronger fallbacks. DeepSeek V4 Pro is kept below the
+  // primary band after two consecutive mid-trajectory provider timeouts
+  // contaminated its calibration runs.
+  codeAgent: {
+    "gpt-5.3-codex": 1,
+    "claude-sonnet-5": 0.98,
+    "gpt-5-mini": 0.96,
+    "gemini-3.5-flash": 0.92,
+    "kimi-k3": 0.9,
+    "deepseek-v4-pro": 0.88,
+    "glm-5.2": 0.88,
+  },
+  // Seven official Terminal-Bench calibration trajectories favoured GPT-5 Mini
+  // over the prior dynamic choice. Codex/Sonnet are close fallbacks; actual
+  // request cost breaks the tie.
+  terminalTool: {
+    "gpt-5-mini": 1,
+    "gpt-5.3-codex": 0.98,
+    "claude-sonnet-5": 0.9,
+    "gemini-3.5-flash": 0.89,
+  },
+  // Two complete agent observations on the public Terminal-Bench
+  // new-encrypt-command task ended in Codex repeating the same TerminalExec
+  // input until the loop guard fired. Codex stays an availability fallback,
+  // below the safety-band affinity floor, until its Responses function-output
+  // path is verified on both gateways.
+  terminalToolSafety: {
+    "claude-sonnet-5": 1,
+    "claude-opus-4.8": 0.9,
+    "gpt-5.3-codex": 0.84,
+  },
+  // Full-session calibration: GPT-5 Mini completed two local/single retail
+  // workflows at a fraction of Sonnet's token cost. It stays ineligible for
+  // promotion when the prompt asks for multiple actions, cross-record
+  // discovery or a global optimum; those trajectories exposed unstable write
+  // arguments. DeepSeek V4 Pro completed all three high-risk retail calibration
+  // trajectories (global-choice, cross-record, multi-write); Sonnet one.
+  retailStandard: {
+    "gpt-5-mini": 1,
+    "claude-sonnet-5": 0.88,
+    "gemini-3.5-flash": 0.82,
+    "gpt-5.3-codex": 0.81,
+    "kimi-k3": 0.78,
+    "deepseek-v4-pro": 0.76,
+  },
+  retailHigh: {
+    "deepseek-v4-pro": 1,
+    "claude-sonnet-5": 0.88,
+    "gemini-3.5-flash": 0.82,
+    "gpt-5.3-codex": 0.81,
+    "kimi-k3": 0.78,
+    "gpt-5-mini": 0.76,
+  },
+  // Standard airline workflows stay on GPT-5 Mini: six full-session
+  // development trajectories gave it the same 5/6 success as Sonnet at roughly
+  // one order of magnitude lower normalized token cost. A held-out high-risk
+  // cabin/date negotiation then produced a persistent empty assistant turn on
+  // Mini even after a semantic retry, while Sonnet 5 completed the identical
+  // official tau2 trajectory with reward 1.0. Only global optimization /
+  // conditional-global work is promoted. A known batch of reservations is
+  // operationally high-risk but still a structured tool workflow: current Tau
+  // evidence has Mini and Sonnet at equal task reward there, while Sonnet costs
+  // roughly two orders of magnitude more on the long-tail case.
+  airlineComplex: {
+    "claude-sonnet-5": 1,
+    "gpt-5-mini": 0.78,
+    "gemini-3.5-flash": 0.76,
+    "deepseek-v4-pro": 0.74,
+  },
+  airlineStandard: {
+    "gpt-5-mini": 1,
+    "claude-sonnet-5": 0.9,
+    "gemini-3.5-flash": 0.8,
+    "deepseek-v4-pro": 0.76,
+  },
+  // Full-trajectory tau2 calibration (2026-07-28, official gpt-4.1 simulator):
+  // Sonnet 5 completed both an airline policy task and a retail multi-write
+  // task with reward 1.0. Gemini 3.5 Flash emitted function calls as plain text
+  // after the first structured calls and looped to the 100-step ceiling on the
+  // airline task.
+  toolAgent: {
+    "claude-sonnet-5": 1,
+    "gemini-3.5-flash": 0.88,
+    "gpt-5.3-codex": 0.87,
+    "kimi-k3": 0.85,
+    "gpt-5-mini": 0.84,
+    "deepseek-v4-pro": 0.82,
+  },
+  // Multi-file Terminal work is not equivalent to a one-turn parallel
+  // function-call benchmark. Sonnet is the strongest trajectory-tested
+  // cost-controlled default; Opus remains a close safety fallback.
+  parallelTerminalSafety: {
+    "claude-sonnet-5": 1,
+    "claude-opus-4.8": 0.9,
+    "gpt-5.3-codex": 0.86,
+  },
+  parallelTerminal: {
+    "gpt-5-mini": 1,
+    "gpt-5.3-codex": 0.98,
+    "claude-sonnet-5": 0.92,
+    "gemini-3.5-flash": 0.88,
+  },
+  parallelRetail: {
+    "deepseek-v4-pro": 1,
+    "claude-sonnet-5": 0.88,
+    "claude-opus-4.8": 0.84,
+    "gpt-5-mini": 0.78,
+    "gemini-3.5-flash": 0.76,
+  },
+  parallelAirlineComplex: {
+    "claude-sonnet-5": 1,
+    "gpt-5-mini": 0.78,
+    "claude-opus-4.8": 0.76,
+    "gemini-3.5-flash": 0.74,
+  },
+  parallelAirline: {
+    "gpt-5-mini": 1,
+    "claude-sonnet-5": 0.9,
+    "gemini-3.5-flash": 0.8,
+  },
+  // RouterBench calibration, 2026-07-26: Opus 4.8 produced complete multi-call
+  // payloads on 2/3 multilingual BFCL parallel cases. Gemini 3.5 Flash, Sonnet
+  // 5, DeepSeek V4 Pro and Grok 4.5 were 0/3. This narrow prior only applies
+  // after the conservative prompt feature in likelyNeedsParallelToolCalls.
+  parallel: {
+    "claude-opus-4.8": 1,
+    "claude-sonnet-5": 0.84,
+    "grok-4.5": 0.82,
+    "gemini-3.5-flash": 0.8,
+    "deepseek-v4-pro": 0.78,
+  },
+  codeEdit: {
+    "gpt-5.3-codex": 1,
+    "claude-sonnet-4.6": 0.94,
+    "glm-5.2": 0.9,
+    "deepseek-v4-pro": 0.86,
+  },
+  reasoning: {
+    "claude-sonnet-5": 0.98,
+    "claude-sonnet-4.6": 0.98,
+    "deepseek-v4-pro": 0.95,
+    "grok-4.5": 0.94,
+    "gemini-3.1-pro": 0.92,
+    "gemini-3.5-flash": 0.92,
+  },
+  // RouterBench calibration (2026-07-28, six stratified GPQA Diamond tasks,
+  // identical agent adapter and 512-token budget): Gemini 3 Flash Preview
+  // scored 5/6, Gemini 3.5 Flash 4/6, and Gemini 3.1 Pro 3/6 while costing
+  // ~170x more than Flash. The measured winner is the narrow default; version
+  // recency alone is not a quality signal. Unused host tools must not change
+  // this reasoning-only model choice.
+  reasoningMcq: {
+    "gemini-3-flash-preview": 1,
+    "gemini-3.5-flash": 0.91,
+    "grok-4.5": 0.9,
+    "claude-sonnet-5": 0.88,
+    "deepseek-v4-pro": 0.84,
+  },
+  // Same calibration, five multilingual MGSM tasks: Gemini 3.5 Flash was 5/5
+  // with the lowest cost and latency; four current flagships were 4/5 and Kimi
+  // K2.7 was 3/5.
+  reasoningMath: {
+    "gemini-3.5-flash": 1,
+    "grok-4.5": 0.93,
+    "claude-sonnet-5": 0.9,
+    "deepseek-v4-pro": 0.9,
+    "kimi-k3": 0.9,
+  },
+  vision: {
+    "gemini-3.1-pro": 0.96,
+    "qwen3.7-max": 0.9,
+    "claude-sonnet-4.6": 0.9,
+    "kimi-k3": 0.9,
+    "grok-4.3": 0.9,
+  },
+  // Long-context eligibility is necessary but not sufficient: a provider can
+  // advertise a 1M window yet return an empty completion near that boundary.
+  // The proven long-context flagship leads, and less-established alternatives
+  // sit in a separate band so price alone cannot displace it.
+  longContext: {
+    "gemini-3.1-pro": 1,
+    "qwen3.7-max": 0.89,
+    "glm-5.2": 0.89,
+    "gemini-3.5-flash": 0.88,
+    "deepseek-v4-pro": 0.85,
+  },
+  // A structured extraction must preserve both the output contract and the
+  // source-language fields. For Mandarin input the language-native Kimi
+  // candidate gets a distinct band — a candidate-pool decision, not a post-hoc
+  // override, so it still falls back normally when Kimi is unavailable. Kimi
+  // K3 costs ~5x its retired sibling K2.7, so the band must be wider than the
+  // auto affinityFloorGap (0.10) or price alone re-selects a non-native model
+  // for Mandarin input; 0.12 keeps K3 alone in the primary band for zh and
+  // leaves every other language untouched.
+  extractionZh: {
+    "kimi-k3": 1,
+    "gemini-3.5-flash": 0.88,
+    "gemini-2.5-flash": 0.88,
+    "gpt-4o-mini": 0.88,
+    "claude-sonnet-5": 0.88,
+    "claude-sonnet-4.6": 0.88,
+  },
+  extraction: {
+    "kimi-k3": 0.9,
+    "gemini-3.5-flash": 0.9,
+    "gemini-2.5-flash": 0.9,
+    "gpt-4o-mini": 0.9,
+    "claude-sonnet-5": 0.9,
+    "claude-sonnet-4.6": 0.9,
+  },
+  chat: {
+    "gemini-3.5-flash": 0.86,
+    "gemini-2.5-flash": 0.86,
+    "kimi-k3": 0.86,
+  },
+} as const satisfies Record<string, AffinityBand>;
+
+/** The affinity band that applies to a classified request. */
+function affinityBand(features: TaskFeatures): AffinityBand {
+  const { taskType, agentDomain, agentRisk, deepWebResearch, terminalToolSignal } = features;
+  const terminalSafety = features.terminalSafetySensitive;
+  switch (taskType) {
     case "code_agent":
-      if (terminalToolSignal && agentRisk === "complex_high") {
-        // Strong native tool loop until the Responses function-output fix is
-        // deployed on both gateways; keep Codex available below the floor.
-        return Math.max(
-          base,
-          match(["claude-sonnet-5"], 1),
-          match(["gpt-5.3-codex"], 0.87),
-          match(["gpt-5-mini"], 0.78),
-          match(["gemini-3.5-flash"], 0.76),
-        );
-      }
-      // Seven valid full agent + official Terminal-Bench trajectories
-      // (2026-07-28) gave GPT-5 Mini 4/7 resolved tasks versus 1/7 for the
-      // prior dynamic code-agent choice. Its token-normalized total cost was
-      // higher in this small calibration, so keep Codex and Sonnet's quality
-      // priors above it; admitting Mini to the scoring band lets the normal
-      // quality/cost profile choose it without erasing stronger fallbacks.
-      // DeepSeek V4 Pro is kept below the primary band after two consecutive
-      // mid-trajectory provider timeouts contaminated its calibration runs.
-      return Math.max(
-        base,
-        match(["gpt-5.3-codex"], 1),
-        match(["claude-sonnet-5"], 0.98),
-        match(["gpt-5-mini"], 0.96),
-        match(["gemini-3.5-flash"], 0.92),
-        match(["kimi-k3"], 0.9),
-        match(["deepseek-v4-pro", "glm-5.2"], 0.88),
-      );
+      return terminalToolSignal && agentRisk === "complex_high"
+        ? TERMINAL_COMPLEX_HIGH
+        : AFFINITY.codeAgent;
     case "tool_agent":
-      if (terminalToolSignal && agentRisk === "complex_high") {
-        // Keep the Responses-API Codex path outside auto's affinity floor
-        // until the gateway fix that preserves function_call_output is live
-        // on both chains. Sonnet has a verified native multi-turn tool loop
-        // and is the safe strong default for this band today.
-        return Math.max(
-          base,
-          match(["claude-sonnet-5"], 1),
-          match(["gpt-5.3-codex"], 0.87),
-          match(["gpt-5-mini"], 0.78),
-          match(["gemini-3.5-flash"], 0.76),
-        );
-      }
-      if (terminalToolSignal && !terminalSafetySensitive) {
-        // Seven official Terminal-Bench calibration trajectories favoured
-        // GPT-5 Mini over the prior dynamic choice. Admit Codex/Sonnet as
-        // close fallbacks, but let actual request cost break the tie.
-        return Math.max(
-          base,
-          match(["gpt-5-mini"], 1),
-          match(["gpt-5.3-codex"], 0.98),
-          match(["claude-sonnet-5"], 0.9),
-          match(["gemini-3.5-flash"], 0.89),
-        );
-      }
-      if (terminalToolSignal && terminalSafetySensitive) {
-        // Two complete agent observations on the public
-        // Terminal-Bench new-encrypt-command task ended in Codex repeating
-        // the same TerminalExec input until the loop guard fired. Keep Codex
-        // as an availability fallback, but below the safety-band affinity
-        // floor until its Responses function-output path is verified on both
-        // gateways. This does not change explicit code-agent routing.
-        return Math.max(
-          base,
-          match(["claude-sonnet-5"], 1),
-          match(["claude-opus-4.8"], 0.9),
-          match(["gpt-5.3-codex"], 0.84),
-        );
-      }
-      if (agentDomain === "web_research") {
-        // Complete-session BrowseComp calibration supersedes the earlier
-        // single-case Opus promotion: strict deduplicated evidence has Sonnet
-        // 5 at 2/9 versus Opus 5 at 0/3, while Opus also costs more and has a
-        // much longer tail. Keep Opus as an availability fallback until a
-        // larger stable-provider sample supports promotion.
-        return deepWebResearch
-          ? Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["gpt-5-mini"], 0.88),
-              match(["gemini-3.5-flash"], 0.84),
-              match(["claude-opus-5"], 0.8),
-              match(["claude-opus-4.8"], 0.78),
-            )
-          : Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["gpt-5-mini"], 0.88),
-              match(["gemini-3.5-flash"], 0.86),
-              match(["claude-opus-5"], 0.84),
-              match(["claude-opus-4.8"], 0.82),
-            );
-      }
-      // Full-trajectory tau2 calibration (2026-07-28, official gpt-4.1
-      // simulator): Sonnet 5 completed both an airline policy task and a
-      // retail multi-write task with reward 1.0. Gemini 3.5 Flash emitted
-      // function calls as plain text after the first structured calls and
-      // looped to the 100-step ceiling on the airline task. Keep only the
-      // trajectory-validated primary inside the scoring band; the remaining
-      // eligible models are retained below as availability fallbacks.
+      if (terminalToolSignal && agentRisk === "complex_high") return TERMINAL_COMPLEX_HIGH;
+      if (terminalToolSignal) return terminalSafety ? AFFINITY.terminalToolSafety : AFFINITY.terminalTool;
+      if (agentDomain === "web_research") return deepWebResearch ? WEB_RESEARCH_DEEP : WEB_RESEARCH;
       if (agentDomain === "retail") {
-        // Full-session calibration: GPT-5 Mini completed two local/single
-        // retail workflows at a fraction of Sonnet's token cost. It remains
-        // ineligible for promotion when the prompt asks for multiple actions,
-        // cross-record discovery, or a global optimum; those trajectories
-        // exposed unstable write arguments in prior calibration. DeepSeek V4
-        // Pro completed all three high-risk retail calibration trajectories
-        // that included global-choice, cross-record, and multi-write behavior;
-        // Sonnet completed one of the same three.
-        if (agentRisk === "standard") {
-          return Math.max(
-            base,
-            match(["gpt-5-mini"], 1),
-            match(["claude-sonnet-5"], 0.88),
-            match(["gemini-3.5-flash"], 0.82),
-            match(["gpt-5.3-codex"], 0.81),
-            match(["kimi-k3"], 0.78),
-            match(["deepseek-v4-pro"], 0.76),
-          );
-        }
-        if (agentRisk === "policy_exception") {
-          return Math.max(
-            base,
-            match(["gpt-4.1"], 1),
-            match(["claude-sonnet-5"], 0.9),
-            match(["deepseek-v4-pro"], 0.82),
-            match(["gpt-5-mini"], 0.8),
-            match(["gpt-4o-mini"], 0.76),
-          );
-        }
-        if (agentRisk === "policy_exception_simple") {
-          return Math.max(
-            base,
-            match(["gpt-5-mini"], 1),
-            match(["gpt-4.1"], 0.86),
-            match(["deepseek-v4-pro"], 0.82),
-            match(["gpt-4o-mini"], 0.8),
-          );
-        }
-        return Math.max(
-          base,
-          match(["deepseek-v4-pro"], 1),
-          match(["claude-sonnet-5"], 0.88),
-          match(["gemini-3.5-flash"], 0.82),
-          match(["gpt-5.3-codex"], 0.81),
-          match(["kimi-k3"], 0.78),
-          match(["gpt-5-mini"], 0.76),
-        );
+        if (agentRisk === "standard") return AFFINITY.retailStandard;
+        if (agentRisk === "policy_exception") return RETAIL_POLICY_EXCEPTION;
+        if (agentRisk === "policy_exception_simple") return RETAIL_POLICY_EXCEPTION_SIMPLE;
+        return AFFINITY.retailHigh;
       }
-      // Standard airline workflows stay on GPT-5 Mini: six full-session
-      // development trajectories gave it the same 5/6 success as Sonnet at
-      // roughly one order of magnitude lower normalized token cost. A held-out
-      // high-risk cabin/date negotiation then produced a persistent empty
-      // assistant turn on Mini even after a semantic retry, while Sonnet 5
-      // completed the identical official tau2 trajectory with reward 1.0.
-      // Promote only global optimization / conditional-global work. A known
-      // batch of reservations is operationally high-risk but still a
-      // structured tool workflow: current Tau evidence has Mini and Sonnet at
-      // equal task reward there, while Sonnet costs roughly two orders of
-      // magnitude more on the long-tail case.
       if (agentDomain === "airline") {
-        if (agentRisk === "complex_high") {
-          return Math.max(
-            base,
-            match(["claude-sonnet-5"], 1),
-            match(["gpt-5-mini"], 0.78),
-            match(["gemini-3.5-flash"], 0.76),
-            match(["deepseek-v4-pro"], 0.74),
-          );
-        }
-        return Math.max(
-          base,
-          match(["gpt-5-mini"], 1),
-          match(["claude-sonnet-5"], 0.9),
-          match(["gemini-3.5-flash"], 0.8),
-          match(["deepseek-v4-pro"], 0.76),
-        );
+        return agentRisk === "complex_high" ? AFFINITY.airlineComplex : AFFINITY.airlineStandard;
       }
-      return Math.max(
-        base,
-        match(["claude-sonnet-5"], 1),
-        match(["gemini-3.5-flash"], 0.88),
-        match(["gpt-5.3-codex"], 0.87),
-        match(["gpt-5-mini"], 0.84),
-        match(["kimi-k3"], 0.85),
-        match(["deepseek-v4-pro"], 0.82),
-      );
+      return AFFINITY.toolAgent;
     case "tool_agent_parallel":
       if (terminalToolSignal) {
-        // Multi-file Terminal work is not equivalent to a one-turn parallel
-        // function-call benchmark. Sonnet is the strongest trajectory-tested
-        // cost-controlled default; Opus remains a close safety fallback.
-        return terminalSafetySensitive
-          ? Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["claude-opus-4.8"], 0.9),
-              match(["gpt-5.3-codex"], 0.86),
-            )
-          : Math.max(
-              base,
-              match(["gpt-5-mini"], 1),
-              match(["gpt-5.3-codex"], 0.98),
-              match(["claude-sonnet-5"], 0.92),
-              match(["gemini-3.5-flash"], 0.88),
-            );
+        return terminalSafety ? AFFINITY.parallelTerminalSafety : AFFINITY.parallelTerminal;
       }
-      if (agentDomain === "web_research") {
-        return deepWebResearch
-          ? Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["gpt-5-mini"], 0.88),
-              match(["gemini-3.5-flash"], 0.84),
-              match(["claude-opus-5"], 0.8),
-              match(["claude-opus-4.8"], 0.78),
-            )
-          : Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["gpt-5-mini"], 0.88),
-              match(["gemini-3.5-flash"], 0.86),
-              match(["claude-opus-5"], 0.84),
-              match(["claude-opus-4.8"], 0.82),
-            );
-      }
+      if (agentDomain === "web_research") return deepWebResearch ? WEB_RESEARCH_DEEP : WEB_RESEARCH;
       if (agentDomain === "retail") {
-        if (agentRisk === "policy_exception") {
-          return Math.max(
-            base,
-            match(["gpt-4.1"], 1),
-            match(["claude-sonnet-5"], 0.9),
-            match(["deepseek-v4-pro"], 0.82),
-            match(["gpt-5-mini"], 0.8),
-            match(["gpt-4o-mini"], 0.76),
-          );
-        }
-        if (agentRisk === "policy_exception_simple") {
-          return Math.max(
-            base,
-            match(["gpt-5-mini"], 1),
-            match(["gpt-4.1"], 0.86),
-            match(["deepseek-v4-pro"], 0.82),
-            match(["gpt-4o-mini"], 0.8),
-          );
-        }
-        return Math.max(
-          base,
-          match(["deepseek-v4-pro"], 1),
-          match(["claude-sonnet-5"], 0.88),
-          match(["claude-opus-4.8"], 0.84),
-          match(["gpt-5-mini"], 0.78),
-          match(["gemini-3.5-flash"], 0.76),
-        );
+        if (agentRisk === "policy_exception") return RETAIL_POLICY_EXCEPTION;
+        if (agentRisk === "policy_exception_simple") return RETAIL_POLICY_EXCEPTION_SIMPLE;
+        return AFFINITY.parallelRetail;
       }
       if (agentDomain === "airline") {
-        return agentRisk === "complex_high"
-          ? Math.max(
-              base,
-              match(["claude-sonnet-5"], 1),
-              match(["gpt-5-mini"], 0.78),
-              match(["claude-opus-4.8"], 0.76),
-              match(["gemini-3.5-flash"], 0.74),
-            )
-          : Math.max(
-              base,
-              match(["gpt-5-mini"], 1),
-              match(["claude-sonnet-5"], 0.9),
-              match(["gemini-3.5-flash"], 0.8),
-            );
+        return agentRisk === "complex_high" ? AFFINITY.parallelAirlineComplex : AFFINITY.parallelAirline;
       }
-      // RouterBench calibration, 2026-07-26: Opus 4.8 produced complete
-      // multi-call payloads on 2/3 multilingual BFCL parallel cases. Gemini
-      // 3.5 Flash, Sonnet 5, DeepSeek V4 Pro, and Grok 4.5 were 0/3. This
-      // narrow prior only applies after the conservative prompt feature above.
-      return Math.max(
-        base,
-        match(["claude-opus-4.8"], 1),
-        match(["claude-sonnet-5"], 0.84),
-        match(["grok-4.5"], 0.82),
-        match(["gemini-3.5-flash"], 0.8),
-        match(["deepseek-v4-pro"], 0.78),
-      );
+      return AFFINITY.parallel;
     case "code_edit":
     case "debug":
-      return Math.max(
-        base,
-        match(["gpt-5.3-codex"], 1),
-        match(["claude-sonnet-4.6"], 0.94),
-        match(["glm-5.2"], 0.9),
-        match(["deepseek-v4-pro"], 0.86),
-      );
+      return AFFINITY.codeEdit;
     case "reasoning":
-      return Math.max(
-        base,
-        match(["claude-sonnet-5", "claude-sonnet-4.6"], 0.98),
-        match(["deepseek-v4-pro"], 0.95),
-        match(["grok-4.5"], 0.94),
-        match(["gemini-3.1-pro", "gemini-3.5-flash"], 0.92),
-      );
+      return AFFINITY.reasoning;
     case "reasoning_mcq":
-      // RouterBench calibration (2026-07-28, six stratified GPQA Diamond
-      // tasks, identical agent adapter and 512-token budget): Gemini 3
-      // Flash Preview scored 5/6, Gemini 3.5 Flash 4/6, and Gemini 3.1 Pro
-      // 3/6 while costing ~170x more than Flash. Keep the measured winner as
-      // the narrow default; version recency alone is not a quality signal.
-      // Unused host tools must not change this reasoning-only model choice.
-      return Math.max(
-        base,
-        match(["gemini-3-flash-preview"], 1),
-        match(["gemini-3.5-flash"], 0.91),
-        match(["grok-4.5"], 0.9),
-        match(["claude-sonnet-5"], 0.88),
-        match(["deepseek-v4-pro"], 0.84),
-      );
+      return AFFINITY.reasoningMcq;
     case "reasoning_math":
-      // Same calibration, five multilingual MGSM tasks: Gemini 3.5 Flash was
-      // 5/5 with the lowest cost and latency; four current flagships were 4/5
-      // and Kimi K2.7 was 3/5.
-      return Math.max(
-        base,
-        match(["gemini-3.5-flash"], 1),
-        match(["grok-4.5"], 0.93),
-        match(["claude-sonnet-5", "deepseek-v4-pro", "kimi-k3"], 0.9),
-      );
+      return AFFINITY.reasoningMath;
     case "vision":
-      return Math.max(
-        base,
-        match(["gemini-3.1-pro"], 0.96),
-        match(["qwen3.7-max", "claude-sonnet-4.6", "kimi-k3", "grok-4.3"], 0.9),
-      );
+      return AFFINITY.vision;
     case "long_context":
-      // Long-context eligibility is necessary but not sufficient: a provider
-      // can advertise a 1M window yet return an empty completion near that
-      // boundary. Keep the proven long-context flagship in the lead and put
-      // less-established alternatives in a separate affinity band so price
-      // alone cannot displace it.
-      return Math.max(
-        base,
-        match(["gemini-3.1-pro"], 1),
-        match(["qwen3.7-max", "glm-5.2"], 0.89),
-        match(["gemini-3.5-flash"], 0.88),
-        match(["deepseek-v4-pro"], 0.85),
-      );
-    case "extraction": {
-      // A structured extraction must preserve both the output contract and the
-      // source-language fields.  For Mandarin input, keep the language-native
-      // Kimi candidate in a distinct affinity band.  This is deliberately a
-      // candidate-pool decision (rather than a brittle post-hoc override): it
-      // still falls back normally if that model is unavailable or ineligible.
-      // Kimi K3 costs ~5x its retired sibling K2.7, so the band must be wider
-      // than the auto affinityFloorGap (0.10) or price alone re-selects a
-      // non-native model for Mandarin input; 0.12 keeps K3 alone in the
-      // primary band for zh and leaves every other language untouched.
-      const kimiExtractionAffinity = language === "zh" ? 1 : 0.9;
-      const otherExtractionAffinity = language === "zh" ? 0.88 : 0.9;
-      return Math.max(
-        base,
-        match(["gemini-3.5-flash", "gemini-2.5-flash", "gpt-4o-mini"], otherExtractionAffinity),
-        match(["claude-sonnet-5", "claude-sonnet-4.6"], otherExtractionAffinity),
-        match(["kimi-k3"], kimiExtractionAffinity),
-      );
-    }
-    default:
-      return Math.max(
-        base,
-        match(["gemini-3.5-flash", "gemini-2.5-flash", "kimi-k3"], 0.86),
-      );
+      return AFFINITY.longContext;
+    case "extraction":
+      return features.language === "zh" ? AFFINITY.extractionZh : AFFINITY.extraction;
+    case "chat":
+      return AFFINITY.chat;
   }
+}
+
+/** A model's affinity within a band: its calibrated score, never below neutral. */
+function affinityIn(band: AffinityBand, modelId: string): number {
+  const name = modelId.toLowerCase().slice(modelId.indexOf("/") + 1);
+  return Math.max(NEUTRAL_AFFINITY, band[name] ?? 0);
 }
 
 function evidenceCandidates(task: TaskType): string[] {
@@ -942,7 +899,7 @@ function evidenceCandidates(task: TaskType): string[] {
   }
   if (task === "extraction") {
     // Kimi K3 is no longer on the auto MEDIUM chain (K2.7 was); the
-    // language-native extraction band in affinity() needs it in the pool.
+    // language-native extraction band (AFFINITY.extractionZh) needs it in the pool.
     return ["moonshot/kimi-k3", "google/gemini-3.5-flash", "anthropic/claude-sonnet-5"];
   }
   if (task === "reasoning_math") {
@@ -963,7 +920,7 @@ function evidenceCandidates(task: TaskType): string[] {
  * Tool compliance is enough to make these models safe availability fallbacks,
  * but it is not evidence that they should displace a trajectory-benchmarked
  * primary. Keep them after the configured and benchmark-backed chains until a
- * full agent evaluation earns a task-specific affinity above the neutral 0.68
+ * full agent evaluation earns a task-specific affinity above NEUTRAL_AFFINITY
  * floor. `isEligible` still applies every host capability override, context
  * limit, vision constraint, and unavailable-model guard before they are used.
  */
@@ -1006,7 +963,7 @@ function estimatedCost(
   inputTokens: number,
   outputTokens: number,
 ): number {
-  const price = options.modelPricing.get(modelId);
+  const price = usablePricing(options.modelPricing.get(modelId));
   if (!price) return Number.POSITIVE_INFINITY;
   if (price.flatPrice !== undefined) return price.flatPrice;
   return (inputTokens * price.inputPrice + outputTokens * price.outputPrice) / 1_000_000;
@@ -1026,6 +983,21 @@ function profileScore(
   if (!profile) return undefined;
   const measuredAt = Date.parse(profile.measuredAt);
   if (!Number.isFinite(measuredAt)) return undefined;
+  // A host-injected observation with a missing or non-numeric field would
+  // turn the whole score into NaN, and NaN compares as "equal" in the sort,
+  // freezing that candidate wherever it landed. Treat it as no observation.
+  const finite = (value: number | undefined, optional: boolean) =>
+    value === undefined ? optional : Number.isFinite(value) && value >= 0;
+  if (
+    !finite(profile.latencyMs, false) ||
+    !finite(profile.outputTokensPerSecond, false) ||
+    !finite(profile.p95LatencyMs, true) ||
+    !finite(profile.intelligenceIndex, true) ||
+    !finite(profile.errorRate, true) ||
+    !finite(profile.samples, true)
+  ) {
+    return undefined;
+  }
   const ageDays = Math.max(0, (now.getTime() - measuredAt) / 86_400_000);
   // A 30-day half-life makes old data a tie-breaker only. Small probe runs are
   // also weak evidence: three quick samples should not overturn a curated
@@ -1127,19 +1099,18 @@ export class PortfolioStrategy implements RouterStrategy {
           ? "premium"
           : "auto";
     const portfolio = options.config.portfolio ?? DEFAULT_PORTFOLIO_WEIGHTS;
-    const getAffinity = (model: string) =>
-      affinity(
-        model,
-        features.taskType,
-        features.language,
-        features.agentDomain,
-        features.deepWebResearch,
-        features.agentRisk,
-        features.terminalToolSignal,
-        features.terminalSafetySensitive,
-      );
+    const band = affinityBand(features);
+    const affinityCache = new Map<string, number>();
+    const getAffinity = (model: string) => {
+      let value = affinityCache.get(model);
+      if (value === undefined) {
+        value = affinityIn(band, model);
+        affinityCache.set(model, value);
+      }
+      return value;
+    };
     const bestAffinity = Math.max(...eligibleCandidates.map(getAffinity));
-    const specificAffinity = eligibleCandidates.filter((model) => getAffinity(model) > 0.68);
+    const specificAffinity = eligibleCandidates.filter((model) => getAffinity(model) > NEUTRAL_AFFINITY);
     // A tier's fallback list is primarily an availability/recovery chain, not a
     // set of equally validated substitutes.  Re-ranking every fallback lets a
     // cheap generic model displace the curated primary merely because it has a
@@ -1170,9 +1141,13 @@ export class PortfolioStrategy implements RouterStrategy {
     const profileWeights = portfolio[profileName];
     const rankedEntries = candidates
       .map((model, index) => {
-        const cost = estimatedCost(model, options, features.estimatedInputTokens, maxOutputTokens);
-        const costScore =
-          Number.isFinite(cost) && maxCost > minCost
+        const cost = costs[index];
+        // An unpriced candidate costs an unknown amount, so it scores as the
+        // most expensive rather than a neutral 0.5 that let it outrank
+        // priced models. Pricing presence still never filters a candidate.
+        const costScore = !Number.isFinite(cost)
+          ? 0
+          : maxCost > minCost
             ? 1 - (cost - minCost) / (maxCost - minCost)
             : 0.5;
         const capabilityScore = eligible.has(model) ? 1 : 0;

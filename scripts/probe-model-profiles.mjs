@@ -243,7 +243,7 @@ const toolsOut = Object.fromEntries(
 const partial = ONLY.length > 0 || SKIP.size > 0;
 const readJson = (path) => (existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {});
 const sortKeys = (obj) => Object.fromEntries(Object.entries(obj).sort(([a], [b]) => a.localeCompare(b)));
-const profilesPath = resolve(ROOT, "model-profiles.generated.json");
+const profilesPath = resolve(ROOT, "src/model-profiles.generated.json");
 const toolsPath = resolve(ROOT, "scripts/probe-tools.json");
 const mergedProfiles = partial ? sortKeys({ ...readJson(profilesPath), ...profiles }) : profiles;
 const mergedTools = partial ? sortKeys({ ...readJson(toolsPath), ...toolsOut }) : toolsOut;

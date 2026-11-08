@@ -22,10 +22,14 @@ export function estimateTokens(text: string): number {
   return cjk + Math.ceil((text.length - cjk) / 4);
 }
 
+const MAX_SCAN_CHARS = 8_000;
+
 /** The scan window the feature regexes read, bounded so a pasted document cannot stall routing. */
 export function scanLimit(promptTruncationChars: number): number {
-  return Math.max(1, Math.min(8_000, promptTruncationChars));
+  if (!Number.isFinite(promptTruncationChars)) return MAX_SCAN_CHARS;
+  return Math.max(1, Math.min(MAX_SCAN_CHARS, Math.floor(promptTruncationChars)));
 }
+
 
 /**
  * Feature regexes need request shape and intent, not the entire document.
@@ -35,5 +39,8 @@ export function scanLimit(promptTruncationChars: number): number {
 export function sampleForScan(value: string, limit: number): string {
   if (value.length <= limit) return value;
   const prefixLength = Math.ceil(limit / 2);
-  return `${value.slice(0, prefixLength)}\n${value.slice(-(limit - prefixLength))}`;
+  const suffixLength = limit - prefixLength;
+  // slice(-0) is the whole string, so a one-character limit needs its own case.
+  if (suffixLength <= 0) return value.slice(0, prefixLength);
+  return `${value.slice(0, prefixLength)}\n${value.slice(-suffixLength)}`;
 }

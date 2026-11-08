@@ -146,7 +146,10 @@ export function toRoutingCatalog(catalog: ModelCatalog, options: CatalogRoutingO
       contextWindow: model.contextWindow ?? evidence?.contextWindow ?? 0,
       maxOutputTokens: model.maxOutputTokens ?? evidence?.maxOutputTokens ?? 0,
       supportsTools: evidence?.supportsTools === true,
-      supportsVision: model.categories.includes("vision"),
+      // Verified evidence wins over the category tag in both directions: the
+      // catalog omits "vision" for some models that accept images and tags
+      // others whose image input does not hold up (see capability-overrides).
+      supportsVision: evidence?.supportsVision ?? model.categories.includes("vision"),
     };
   }
   return { modelPricing, modelCapabilities, unavailableModels: [...catalog.unavailable] };

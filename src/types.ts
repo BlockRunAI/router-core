@@ -1,11 +1,12 @@
 /**
  * Smart Router Types
  *
- * Four classification tiers — REASONING is distinct from COMPLEX because
- * reasoning tasks need different models (o3, gemini-pro) than general
- * complex tasks (gpt-4o, sonnet-4).
+ * Four capability tiers. REASONING is distinct from COMPLEX because proof,
+ * derivation and multi-step math reward a different model set than broad
+ * complex work; the configured chains in config.ts carry the current picks.
  *
- * Scoring uses weighted float dimensions with sigmoid confidence calibration.
+ * Tier scoring uses weighted float dimensions with sigmoid confidence
+ * calibration (rules.ts); the portfolio strategy ranks within a tier.
  */
 
 export type Tier = "SIMPLE" | "MEDIUM" | "COMPLEX" | "REASONING";
@@ -23,6 +24,7 @@ export type RoutingDecision = {
   model: string;
   tier: Tier;
   confidence: number;
+  /** `"llm"` is reserved for a host-side classifier; core strategies emit `"rules"` or `"portfolio"`. */
   method: "rules" | "llm" | "portfolio";
   reasoning: string;
   costEstimate: number;
@@ -101,6 +103,9 @@ export type RouterOptions = {
    * selection and never restored by an eligibility fail-open — the operational
    * kill-switch for a dead chain rung, usable the moment the host observes the
    * failure instead of waiting on a core release and two consumer repins.
+   * One exception: a tier whose every rung is listed keeps its configured
+   * chain, because inventing a substitute would hide the outage from the host
+   * that reported it (see `applyUnavailableModels`).
    * Distinct from user-preference exclusion (`filterByExcludeList`), which
    * deliberately fail-opens rather than empty a chain.
    */

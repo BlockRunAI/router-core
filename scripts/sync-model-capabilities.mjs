@@ -21,9 +21,13 @@
  *                     so the exception stays visible in review.
  *
  * Only text models are emitted (image/video/music/speech rows carry no
- * context window). Ids the catalog withholds — `hidden: true` on the gateway —
- * are deliberately absent: the router should only ever name a model a user
- * can see on blockrun.ai/models.
+ * context window). An id that is merely absent from the listing is NOT
+ * treated as dead: the gateway keeps serving aliased and hidden ids, so a
+ * model that a routing chain still names (src/config.ts, src/portfolio.ts)
+ * keeps its previous entry, annotated, until a direct call proves it gone.
+ * Dropping it would leave the eligibility stage with no context window or
+ * tool flag for a model the router keeps selecting. Only an explicit
+ * `available: false` row removes a routed id.
  *
  * Usage:
  *   node scripts/sync-model-capabilities.mjs [--catalog path/to/models.json]
@@ -35,6 +39,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const SRC = resolve(ROOT, "src");
+const SNAPSHOT_PATH = resolve(SRC, "model-capabilities.ts");
 const CATALOG_URL = "https://blockrun.ai/api/v1/models";
 
 const args = process.argv.slice(2);
@@ -58,10 +64,58 @@ for (const [id, o] of Object.entries(overrides)) {
   }
 }
 
+if (!catalog || !Array.isArray(catalog.data)) {
+  throw new Error("Catalog response has no data array — refusing to overwrite the snapshot");
+}
+
 const textModels = catalog.data
   .filter((m) => typeof m.context_window === "number" && typeof m.max_output === "number")
   .filter((m) => m.billing_mode === "paid" || m.billing_mode === "free")
-  .sort((a, b) => a.id.localeCompare(b.id));
+  .map((m) => ({
+    id: m.id,
+    contextWindow: m.context_window,
+    maxOutputTokens: m.max_output,
+    catalogVision: Array.isArray(m.categories) && m.categories.includes("vision"),
+  }));
+
+// Ids any routing chain or evidence list names. Read from source text so the
+// script needs no build step.
+const ID_LITERAL = /"([a-z0-9][a-z0-9._-]*\/[a-zA-Z0-9][a-zA-Z0-9._:+-]*)"/g;
+const routedIds = new Set(
+  ["config.ts", "portfolio.ts"].flatMap((file) =>
+    [...readFileSync(resolve(SRC, file), "utf8").matchAll(ID_LITERAL)].map((match) => match[1]),
+  ),
+);
+
+// The previous snapshot, so a routed id absent from this listing keeps the
+// capability evidence it already had.
+const previous = new Map();
+if (existsSync(SNAPSHOT_PATH)) {
+  const ENTRY =
+    /"([^"]+)": \{[^\n]*\n\s*contextWindow: ([\d_]+),\n\s*maxOutputTokens: ([\d_]+),\n\s*supportsTools: (true|false),\n\s*supportsVision: (true|false),/g;
+  for (const m of readFileSync(SNAPSHOT_PATH, "utf8").matchAll(ENTRY)) {
+    previous.set(m[1], {
+      contextWindow: Number(m[2].replace(/_/g, "")),
+      maxOutputTokens: Number(m[3].replace(/_/g, "")),
+      supportsTools: m[4] === "true",
+      supportsVision: m[5] === "true",
+    });
+  }
+}
+
+const listed = new Set(catalog.data.map((m) => m.id));
+const explicitlyUnavailable = new Set(
+  catalog.data.filter((m) => m.available === false).map((m) => m.id),
+);
+const retained = [];
+for (const id of routedIds) {
+  if (listed.has(id) || explicitlyUnavailable.has(id)) continue;
+  const prior = previous.get(id);
+  if (!prior) continue;
+  retained.push(id);
+  textModels.push({ id, ...prior, retained: true });
+}
+textModels.sort((a, b) => a.id.localeCompare(b.id));
 
 const fmt = (n) => n.toLocaleString("en-US").replace(/,/g, "_");
 const today = new Date().toISOString().slice(0, 10);
@@ -69,17 +123,22 @@ const today = new Date().toISOString().slice(0, 10);
 const entries = textModels.map((m) => {
   const probe = toolProbe[m.id];
   const override = overrides[m.id] ?? {};
-  const supportsTools = override.supportsTools ?? probe?.supportsTools === true;
-  const supportsVision =
-    override.supportsVision ?? (Array.isArray(m.categories) && m.categories.includes("vision"));
+  const supportsTools = m.retained
+    ? (override.supportsTools ?? m.supportsTools)
+    : (override.supportsTools ?? probe?.supportsTools === true);
+  const supportsVision = m.retained
+    ? (override.supportsVision ?? m.supportsVision)
+    : (override.supportsVision ?? m.catalogVision);
   const notes = [];
-  if (probe === undefined) notes.push("supportsTools: not probed — fails closed");
+  if (m.retained) {
+    notes.push(`absent from the ${today} listing but still routed — previous entry retained; probe before removing`);
+  } else if (probe === undefined) notes.push("supportsTools: not probed — fails closed");
   else if (probe.unavailable) notes.push("supportsTools: gateway unavailable at probe time — fails closed");
   if (override.reason) notes.push(`override: ${override.reason}`);
   const note = notes.length ? ` // ${notes.join("; ")}` : "";
   return `    "${m.id}": {${note}
-      contextWindow: ${fmt(m.context_window)},
-      maxOutputTokens: ${fmt(m.max_output)},
+      contextWindow: ${fmt(m.contextWindow)},
+      maxOutputTokens: ${fmt(m.maxOutputTokens)},
       supportsTools: ${supportsTools},
       supportsVision: ${supportsVision},
     },`;
@@ -110,10 +169,13 @@ ${entries.join("\n")}
   });
 `;
 
-writeFileSync(resolve(ROOT, "model-capabilities.ts"), out);
+writeFileSync(SNAPSHOT_PATH, out);
 const probed = textModels.filter((m) => toolProbe[m.id] !== undefined).length;
 console.log(
   `Wrote ${textModels.length} models to model-capabilities.ts (${probed} with tool-probe evidence, ${
     textModels.filter((m) => toolProbe[m.id]?.supportsTools).length
   } tool-capable).`,
 );
+if (retained.length > 0) {
+  console.log(`Retained ${retained.length} routed id(s) absent from the listing: ${retained.join(", ")}`);
+}

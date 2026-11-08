@@ -57,7 +57,7 @@ Four properties are, and each one is a design constraint in this repository rath
 
 | Property | What it rules out | Where it is enforced |
 |---|---|---|
-| **Fails closed** | A cheap model winning a request it cannot physically serve — no tools, no vision, no context room | Hard filters run *before* scoring, and never fail open ([stage 2](#2--apply-hard-eligibility)) |
+| **Fails closed** | A cheap model winning a request it cannot physically serve — no tools, no vision, no context room | Hard filters run *before* scoring; the only fail-open is a request no listed model can serve at all, and it is visible in the decision ([stage 2](#2--apply-hard-eligibility)) |
 | **No inference on the hot path** | Paying a model, a vendor or a round trip to decide which model to pay | Deterministic feature extraction only: ~0.05 ms, $0.00, zero network calls |
 | **One decision everywhere** | Six products quietly disagreeing about the same request | Single engine, plus a line-by-line Python port held to cross-language parity |
 | **Auditable by construction** | "The router picked it" as the whole explanation | `tier`, `taskType`, `confidence`, per-candidate `candidateScores` and a `reasoning` string on every decision, and an 88-request snapshot that fails CI when any of them move |
@@ -183,9 +183,14 @@ Candidates that cannot satisfy the request are removed before anything is scored
 - insufficient context window for the conversation
 - insufficient max-output capacity for the requested length
 - incompatible structured-output path
-- absent from the active model catalog
+- reported dead by the host (`unavailableModels`)
 
 **Capability errors never enter the preference stage.** This is what "constraint-first" means, and it is why the router fails closed rather than optimistically cheap.
+
+Two deliberate edges, so they are not mistaken for bugs:
+
+- **Absence from the catalog listing is not a filter.** The gateway keeps serving hidden and aliased ids, so a configured model that is missing from `GET /api/v1/models` stays routable; only an explicit `available: false` row or a host-observed failure removes it. A model with no capability entry passes eligibility, and a model with no price ranks as the most expensive candidate rather than being dropped.
+- **When nothing survives, nothing is invented.** If every candidate fails a hard filter, the configured chain still competes (scored as incapable) instead of returning an empty decision; if every rung of a tier is in `unavailableModels`, the tier keeps its original chain so the outage stays visible to the host that reported it. In both cases the host sees a model it knows is wrong and can stop, rather than a substitute it never configured.
 
 ### 3 · Rank the survivors
 
@@ -263,7 +268,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 66 live performance profiles (2026-08-29, three samples per model), 9 auditable historical seeds, 74 function-calling probe results, and a built-in snapshot of all 90 text models in the public catalog (2026-10-20 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Mistral Large 4 and Gemini 4 Argon have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
+The repository ships 68 live performance profiles (three samples per model), 9 auditable historical seeds, 82 function-calling probe results, and a built-in snapshot of the 92 text models in the public catalog (2026-11-08 sync, plus routed ids the listing omits). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Mistral Large 4 and Gemini 4 Argon have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
 
 Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
 
@@ -340,7 +345,7 @@ The engine never makes a network call. Everything current is **injected** by the
 const decision = route(prompt, systemPrompt, maxOutputTokens, {
   config: DEFAULT_ROUTING_CONFIG,
   modelPricing,          // required — current prices from your catalog
-  modelCapabilities,     // optional — overrides the built-in 86-model snapshot
+  modelCapabilities,     // optional — overrides the built-in 92-model snapshot
   modelPerformance,      // optional — fresh speed/reliability, e.g. the Observatory feed
   routingProfile: "auto",
   hasTools, toolCount, toolNames, requiresTools,
@@ -414,7 +419,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ### Escape hatches
 
 - **One-line rollback.** `config.strategy = "rules"` reverts to the V2 tier selector without a code change.
-- **Shadow evaluation.** `config.shadow = { strategy: "rules", sampleRate: 0.1 }` recomputes a comparison decision locally without changing the model that serves the request. The host emits decision metadata only — it never persists prompt content and never makes a second call.
+- **Shadow evaluation.** `config.shadow = { strategy: "rules", sampleRate: 0.1 }` tells the host to recompute a comparison decision locally (`getStrategy(config.shadow.strategy).route(...)`) without changing the model that serves the request. Core's `route()` does not read this field; the sampling and the emission belong to the host. The host emits decision metadata only — it never persists prompt content and never makes a second call.
 - **Promotions.** Time-windowed `tierOverrides` that apply themselves inside their date range and are ignored outside it, so a launch promo needs no release.
 - **Dead-rung kill-switch.** `options.unavailableModels` hard-removes models the host has observed dead at the gateway (a 400/404/410 on a direct call, a provider EOL) from every chain before selection — never restored by an eligibility fail-open. Effective on the next request, no core release or consumer repin required; the committed chains then catch up in their own time.
 - **Custom strategies.** Implement `RouterStrategy`, `registerStrategy(yours)`, point `config.strategy` at it.
@@ -426,14 +431,14 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 122 tests across 7 files
+npm test            # vitest — 189 tests across 11 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 
 # Catalog refresh (needs network; the probe needs a funded Base wallet)
 npm i --no-save @blockrun/llm
-BLOCKRUN_WALLET_KEY=0x… npm run probe:profiles   # → model-profiles.generated.json + scripts/probe-tools.json
-npm run sync:capabilities                        # → model-capabilities.ts from GET /api/v1/models
+BLOCKRUN_WALLET_KEY=0x… npm run probe:profiles   # → src/model-profiles.generated.json + scripts/probe-tools.json
+npm run sync:capabilities                        # → src/model-capabilities.ts from GET /api/v1/models
 UPDATE_DECISION_SNAPSHOT=1 npm test              # then review the snapshot diff
 ```
 
@@ -442,7 +447,7 @@ These two scripts update the committed capability and performance snapshots. Run
 Three rules keep consumers safe:
 
 1. **`dist/` is committed and must match source.** Tarball installs run no build step, so a source edit without a rebuild would silently ship a stale artifact to every pinned consumer. CI runs `git diff --exit-code -- dist`.
-2. **Routing changes need test coverage.** The decision path is the product for six downstream packages; `portfolio.test.ts`, `selector.test.ts`, `strategy.test.ts` and `tool-intent.test.ts` are the contract.
+2. **Routing changes need test coverage.** The decision path is the product for six downstream packages; `portfolio.test.ts`, `selector.test.ts`, `strategy.test.ts`, `tool-intent.test.ts` and `hardening.test.ts` (malformed-input and multilingual regressions) are the contract. Sources and tests live under `src/`, and tests are typechecked with the library.
 3. **Refactors must not move a decision.** `decisions.snapshot.test.ts` routes a frozen 88-request corpus (22 prompts × 4 profiles, mixed tool/vision/structured-output shapes) and compares full decisions byte-for-byte against `decisions.snapshot.json`. A behavior-preserving change leaves it green untouched; a deliberate routing change regenerates it with `UPDATE_DECISION_SNAPSHOT=1 npm test`, and the fixture diff in review shows exactly which requests moved.
 
 When the routing logic changes, the [Python port](https://github.com/BlockRunAI/blockrun-llm) has to follow — it is pinned to an upstream commit and its tests assert cross-language parity.
