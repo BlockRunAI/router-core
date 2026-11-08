@@ -26,6 +26,19 @@ const BASELINE_MODEL_ID = "anthropic/claude-opus-4.7";
 const BASELINE_INPUT_PRICE = 5.0;
 const BASELINE_OUTPUT_PRICE = 25.0;
 
+/**
+ * The pricing entry, or undefined when any field it carries is not a finite,
+ * non-negative number. A hand-built price map with a NaN would otherwise put
+ * NaN into costEstimate and savings; a malformed price is an unknown price.
+ */
+export function usablePricing(pricing: ModelPricing | undefined): ModelPricing | undefined {
+  if (!pricing) return undefined;
+  const ok = (value: number | undefined) =>
+    value === undefined || (Number.isFinite(value) && value >= 0);
+  if (pricing.flatPrice !== undefined) return ok(pricing.flatPrice) ? pricing : undefined;
+  return ok(pricing.inputPrice) && ok(pricing.outputPrice) ? pricing : undefined;
+}
+
 /** Raw token cost (no margin, no floor), or the flat promo price when one is set. */
 function rawCost(
   pricing: ModelPricing | undefined,
@@ -44,7 +57,7 @@ function baselineCostFor(
   estimatedInputTokens: number,
   maxOutputTokens: number,
 ): number {
-  const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
+  const opusPricing = usablePricing(modelPricing.get(BASELINE_MODEL_ID));
   const inputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
   const outputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
   return (estimatedInputTokens / 1_000_000) * inputPrice + (maxOutputTokens / 1_000_000) * outputPrice;
@@ -89,7 +102,7 @@ export function selectModel(
 ): RoutingDecision {
   const tierConfig = tierConfigs[tier];
   const model = tierConfig.primary;
-  const pricing = modelPricing.get(model);
+  const pricing = usablePricing(modelPricing.get(model));
 
   const costEstimate = rawCost(pricing, estimatedInputTokens, maxOutputTokens);
   const baselineCost = baselineCostFor(modelPricing, estimatedInputTokens, maxOutputTokens);
@@ -133,7 +146,7 @@ export function calculateModelCost(
   maxOutputTokens: number,
   routingProfile?: "free" | "eco" | "auto" | "premium",
 ): { costEstimate: number; baselineCost: number; savings: number } {
-  const pricing = modelPricing.get(model);
+  const pricing = usablePricing(modelPricing.get(model));
 
   // Server margin + minimum payment, to match the actual x402 charge.
   const costEstimate = Math.max(

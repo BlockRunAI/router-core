@@ -162,7 +162,9 @@ function scoreKeywordMatch(
 }
 
 function scoreMultiStep(text: string): DimensionScore {
-  const patterns = [/first.*then/i, /step \d/i, /\d\.\s/];
+  // A numbered list item must start a line: a bare "\d\.\s" also matched
+  // every sentence that ends in a number ("born in 1990. How old…").
+  const patterns = [/first.*then/i, /step \d/i, /(?:^|\n)\s*\d+[.)]\s/];
   const hits = patterns.filter((p) => p.test(text));
   if (hits.length > 0) {
     return { name: "multiStepPatterns", score: 0.5, signal: "multi-step" };
@@ -171,7 +173,7 @@ function scoreMultiStep(text: string): DimensionScore {
 }
 
 function scoreQuestionComplexity(prompt: string): DimensionScore {
-  const count = (prompt.match(/\?/g) || []).length;
+  const count = (prompt.match(/[?？]/g) || []).length;
   if (count > 3) {
     return { name: "questionComplexity", score: 0.5, signal: `${count} questions` };
   }

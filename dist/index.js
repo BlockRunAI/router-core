@@ -89,7 +89,7 @@ function scoreKeywordMatch(text, keywords, name, signalLabel, thresholds, scores
   return { name, score: scores.none, signal: null };
 }
 function scoreMultiStep(text) {
-  const patterns = [/first.*then/i, /step \d/i, /\d\.\s/];
+  const patterns = [/first.*then/i, /step \d/i, /(?:^|\n)\s*\d+[.)]\s/];
   const hits = patterns.filter((p) => p.test(text));
   if (hits.length > 0) {
     return { name: "multiStepPatterns", score: 0.5, signal: "multi-step" };
@@ -97,7 +97,7 @@ function scoreMultiStep(text) {
   return { name: "multiStepPatterns", score: 0, signal: null };
 }
 function scoreQuestionComplexity(prompt) {
-  const count = (prompt.match(/\?/g) || []).length;
+  const count = (prompt.match(/[?？]/g) || []).length;
   if (count > 3) {
     return { name: "questionComplexity", score: 0.5, signal: `${count} questions` };
   }
@@ -303,6 +303,12 @@ function calibrateConfidence(distance, steepness) {
 var BASELINE_MODEL_ID = "anthropic/claude-opus-4.7";
 var BASELINE_INPUT_PRICE = 5;
 var BASELINE_OUTPUT_PRICE = 25;
+function usablePricing(pricing) {
+  if (!pricing) return void 0;
+  const ok = (value) => value === void 0 || Number.isFinite(value) && value >= 0;
+  if (pricing.flatPrice !== void 0) return ok(pricing.flatPrice) ? pricing : void 0;
+  return ok(pricing.inputPrice) && ok(pricing.outputPrice) ? pricing : void 0;
+}
 function rawCost(pricing, estimatedInputTokens, maxOutputTokens) {
   if (pricing?.flatPrice !== void 0) return pricing.flatPrice;
   const inputPrice = pricing?.inputPrice ?? 0;
@@ -310,7 +316,7 @@ function rawCost(pricing, estimatedInputTokens, maxOutputTokens) {
   return estimatedInputTokens / 1e6 * inputPrice + maxOutputTokens / 1e6 * outputPrice;
 }
 function baselineCostFor(modelPricing, estimatedInputTokens, maxOutputTokens) {
-  const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
+  const opusPricing = usablePricing(modelPricing.get(BASELINE_MODEL_ID));
   const inputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
   const outputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
   return estimatedInputTokens / 1e6 * inputPrice + maxOutputTokens / 1e6 * outputPrice;
@@ -322,7 +328,7 @@ function savingsFor(costEstimate, baselineCost, pricing, routingProfile) {
 function selectModel(tier, confidence, method, reasoning, tierConfigs, modelPricing, estimatedInputTokens, maxOutputTokens, routingProfile, agenticScore) {
   const tierConfig = tierConfigs[tier];
   const model = tierConfig.primary;
-  const pricing = modelPricing.get(model);
+  const pricing = usablePricing(modelPricing.get(model));
   const costEstimate = rawCost(pricing, estimatedInputTokens, maxOutputTokens);
   const baselineCost = baselineCostFor(modelPricing, estimatedInputTokens, maxOutputTokens);
   const savings = savingsFor(costEstimate, baselineCost, pricing, routingProfile);
@@ -345,7 +351,7 @@ function getFallbackChain(tier, tierConfigs) {
 var SERVER_MARGIN_PERCENT = 5;
 var MIN_PAYMENT_USD = 1e-3;
 function calculateModelCost(model, modelPricing, estimatedInputTokens, maxOutputTokens, routingProfile) {
-  const pricing = modelPricing.get(model);
+  const pricing = usablePricing(modelPricing.get(model));
   const costEstimate = Math.max(
     rawCost(pricing, estimatedInputTokens, maxOutputTokens) * (1 + SERVER_MARGIN_PERCENT / 100),
     MIN_PAYMENT_USD
@@ -398,14 +404,18 @@ function estimateTokens(text) {
   const cjk = text.match(CJK_CHARS)?.length ?? 0;
   return cjk + Math.ceil((text.length - cjk) / 4);
 }
+var MAX_SCAN_CHARS = 8e3;
 function scanLimit(promptTruncationChars) {
-  return Math.max(1, Math.min(8e3, promptTruncationChars));
+  if (!Number.isFinite(promptTruncationChars)) return MAX_SCAN_CHARS;
+  return Math.max(1, Math.min(MAX_SCAN_CHARS, Math.floor(promptTruncationChars)));
 }
 function sampleForScan(value, limit) {
   if (value.length <= limit) return value;
   const prefixLength = Math.ceil(limit / 2);
+  const suffixLength = limit - prefixLength;
+  if (suffixLength <= 0) return value.slice(0, prefixLength);
   return `${value.slice(0, prefixLength)}
-${value.slice(-(limit - prefixLength))}`;
+${value.slice(-suffixLength)}`;
 }
 
 // src/strategy.ts
@@ -413,9 +423,10 @@ function applyPromotions(tierConfigs, promotions, profile, now = /* @__PURE__ */
   if (!promotions || promotions.length === 0) return tierConfigs;
   let result = tierConfigs;
   for (const promo of promotions) {
-    const start = new Date(promo.startDate);
-    const end = new Date(promo.endDate);
-    if (now < start || now >= end) continue;
+    const start = Date.parse(promo.startDate);
+    const end = Date.parse(promo.endDate);
+    if (!Number.isFinite(start) || !Number.isFinite(end)) continue;
+    if (now.getTime() < start || now.getTime() >= end) continue;
     if (promo.profiles && !promo.profiles.includes(profile)) continue;
     if (result === tierConfigs) {
       result = { ...tierConfigs };
@@ -3260,7 +3271,9 @@ function likelyNeedsParallelToolCalls(prompt, needsTools, toolCount, toolNames) 
   ]);
   const lowered = text.toLowerCase();
   const matchedOperationTokens = new Set(
-    (toolNames ?? []).flatMap((name) => name.toLowerCase().split(/[^a-z0-9\u3400-\u9fff]+/)).filter((token) => operationTokens.has(token) && lowered.includes(token))
+    (toolNames ?? []).flatMap((name) => name.toLowerCase().split(/[^a-z0-9\u3400-\u9fff]+/)).filter(
+      (token) => operationTokens.has(token) && new RegExp(`\\b${token}(?:s|es|d|ed|ing)?\\b`).test(lowered)
+    )
   );
   if (matchedOperationTokens.size >= 2) return true;
   const nonEmptyLines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
@@ -3271,7 +3284,7 @@ function likelyNeedsParallelToolCalls(prompt, needsTools, toolCount, toolNames) 
   const repeatedLookup = /\b(?:weather|climate|clima|tiempo|temperature|snow|news|report)\b|天气|气象|温度|降雪|新闻|报告/i.test(
     text
   );
-  const multiLocationConnector = /\b(?:and also|both|y|e)\b|还有|以及|和|、/i.test(text);
+  const multiLocationConnector = /\b(?:and also|both)\b|\s(?:y|e)\s|还有|以及|和|、/i.test(text);
   const commaSeparatedLocations = (text.match(/[,，]/g) ?? []).length >= 2;
   if (repeatedLookup && (multiLocationConnector || commaSeparatedLocations)) return true;
   const distinctOrderParts = /\b(?:food|meal)\b[\s\S]*\bdrink\b|\bdrink\b[\s\S]*\b(?:food|meal)\b/i.test(text);
@@ -3297,6 +3310,9 @@ function classifyTask(prompt, systemPrompt, options) {
   );
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  const codingAction = /\b(?:write|implement|refactor|debug|fix|patch|compile|build|run|test|script|program|code|function|class|module|repo(?:sitory)?)\b|编写|实现|重构|调试|修复|编译|脚本|代码/i.test(
+    scannedPrompt
+  );
   const codeArtifact = /```|\b(?:stack trace|traceback)\b|\.(?:ts|tsx|js|py|go|rs)\b/i.test(scannedPrompt) || codeConstructSignal || nativeCodeSignal || errorClassSignal;
   const toolsAvailable = options.hasTools ?? false;
   const needsTools = options.requiresTools ?? (toolsAvailable && inferToolRequirement(scannedPrompt, scannedSystemPrompt));
@@ -3337,7 +3353,7 @@ function classifyTask(prompt, systemPrompt, options) {
   const crossRecordSignal = /\b(?:another|other|different|previous)\s+(?:order|reservation|booking|account|address)\b|另一(?:个)?(?:订单|预订|账户|地址)|其他(?:订单|预订|账户|地址)/i.test(
     scannedPrompt
   );
-  const reservationIds = scannedPrompt.match(/\b[A-Z0-9]{6}\b/g) ?? [];
+  const reservationIds = scannedPrompt.match(/\b(?=[A-Z0-9]*\d)(?=[A-Z0-9]*[A-Z])[A-Z0-9]{6}\b/g) ?? [];
   const crossReservationBatchSignal = agentDomain === "airline" && (/\b(?:two|three|multiple|several)(?:\s+of\s+(?:my|our|the))?\s+(?:upcoming\s+)?(?:reservations?|bookings?)\b|\b(?:a\s+)?(?:second|third)\s+(?:reservation|booking)\b/i.test(
     scannedPrompt
   ) || new Set(reservationIds).size >= 2);
@@ -3408,7 +3424,7 @@ function classifyTask(prompt, systemPrompt, options) {
   );
   const terminalSafetySensitive = terminalToolSignal && (highStakes || terminalCredentialSignal);
   const implicitTerminalCode = needsTools && terminalToolSignal && agentRisk === "standard" && !highStakes && !complexTerminalOperation && numberedSteps < 3 && prompt.length <= 1e3 && simpleTerminalArtifact;
-  const language = /[\u3400-\u9fff]/.test(scannedPrompt) ? "zh" : "other";
+  const language = /[\u3400-\u9fff]/.test(scannedPrompt) && !/[\u3040-\u30ff]/.test(scannedPrompt) ? "zh" : "other";
   const multipleChoiceSignals = (scannedPrompt.match(/(?:^|\n)\s*[A-D][.)]\s+/gim) ?? []).length;
   const numericSignals = (scannedPrompt.match(/-?\d+(?:[.,]\d+)?/g) ?? []).length;
   const compactMathProblem = !hasCode && prompt.length < 2500 && numericSignals >= 2 && (/[+×÷=%$€£¥]|\b(?:total|each|per|times|half|twice|percent|how many|how much|calculate)\b/i.test(
@@ -3417,19 +3433,20 @@ function classifyTask(prompt, systemPrompt, options) {
   let taskType = "chat";
   if (needsVision) taskType = "vision";
   else if (estimatedInputTokens > 8e4) taskType = "long_context";
-  else if (needsTools && (hasCode || implicitTerminalCode)) taskType = "code_agent";
+  else if (needsTools && (codeArtifact || hasCode && codingAction || implicitTerminalCode))
+    taskType = "code_agent";
   else if (needsTools && likelyParallelToolCalls && !complexMultiToolPlan)
     taskType = "tool_agent_parallel";
   else if (needsTools) taskType = "tool_agent";
   else if (multipleChoiceSignals >= 3) taskType = "reasoning_mcq";
   else if (compactMathProblem) taskType = "reasoning_math";
-  else if (errorClassSignal || /\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text))
+  else if (errorClassSignal || /\b(?:bug|debug|error|failure|failing|regression|crash)\b|修复|报错|错误|调试/i.test(text))
     taskType = "debug";
-  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite|重构|实现|修改)\b/i.test(text))
+  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite)\b|重构|实现|修改/i.test(text))
     taskType = "code_edit";
-  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv|字段|提取)\b/i.test(text))
+  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv)\b|字段|提取/i.test(text))
     taskType = "extraction";
-  else if (/\b(?:prove|derive|theorem|formal|mathematical|reasoning|证明|推导|定理|数学)\b/i.test(text))
+  else if (/\b(?:prove|derive|theorem|formal|mathematical|reasoning)\b|证明|推导|定理|数学/i.test(text))
     taskType = "reasoning";
   return {
     taskType,
@@ -3860,7 +3877,7 @@ function isEligible(modelId, features, maxOutputTokens, options) {
   return model.contextWindow >= (features.estimatedInputTokens + maxOutputTokens) * 1.1;
 }
 function estimatedCost(modelId, options, inputTokens, outputTokens) {
-  const price2 = options.modelPricing.get(modelId);
+  const price2 = usablePricing(options.modelPricing.get(modelId));
   if (!price2) return Number.POSITIVE_INFINITY;
   if (price2.flatPrice !== void 0) return price2.flatPrice;
   return (inputTokens * price2.inputPrice + outputTokens * price2.outputPrice) / 1e6;
@@ -3870,6 +3887,10 @@ function profileScore(modelId, options, now) {
   if (!profile) return void 0;
   const measuredAt = Date.parse(profile.measuredAt);
   if (!Number.isFinite(measuredAt)) return void 0;
+  const finite = (value, optional) => value === void 0 ? optional : Number.isFinite(value) && value >= 0;
+  if (!finite(profile.latencyMs, false) || !finite(profile.outputTokensPerSecond, false) || !finite(profile.p95LatencyMs, true) || !finite(profile.intelligenceIndex, true) || !finite(profile.errorRate, true) || !finite(profile.samples, true)) {
+    return void 0;
+  }
   const ageDays = Math.max(0, (now.getTime() - measuredAt) / 864e5);
   const sampleConfidence = profile.samples === void 0 ? 1 : Math.min(1, Math.max(0, profile.samples) / 10);
   const freshness = Math.pow(0.5, ageDays / 30) * sampleConfidence;
@@ -3949,7 +3970,7 @@ var PortfolioStrategy = class {
     const profileWeights = portfolio[profileName];
     const rankedEntries = candidates.map((model2, index) => {
       const cost = costs[index];
-      const costScore = Number.isFinite(cost) && maxCost > minCost ? 1 - (cost - minCost) / (maxCost - minCost) : 0.5;
+      const costScore = !Number.isFinite(cost) ? 0 : maxCost > minCost ? 1 - (cost - minCost) / (maxCost - minCost) : 0.5;
       const capabilityScore = eligible.has(model2) ? 1 : 0;
       const profile = profileScore(model2, options, now);
       const observedQuality = profile?.quality === void 0 ? getAffinity(model2) : getAffinity(model2) * (1 - profile.freshness) + profile.quality * profile.freshness;
@@ -4096,7 +4117,10 @@ function toRoutingCatalog(catalog, options = {}) {
       contextWindow: model.contextWindow ?? evidence?.contextWindow ?? 0,
       maxOutputTokens: model.maxOutputTokens ?? evidence?.maxOutputTokens ?? 0,
       supportsTools: evidence?.supportsTools === true,
-      supportsVision: model.categories.includes("vision")
+      // Verified evidence wins over the category tag in both directions: the
+      // catalog omits "vision" for some models that accept images and tags
+      // others whose image input does not hold up (see capability-overrides).
+      supportsVision: evidence?.supportsVision ?? model.categories.includes("vision")
     };
   }
   return { modelPricing, modelCapabilities, unavailableModels: [...catalog.unavailable] };

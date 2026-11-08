@@ -33,9 +33,12 @@ function applyPromotions(
   let result = tierConfigs;
   for (const promo of promotions) {
     // Check time window
-    const start = new Date(promo.startDate);
-    const end = new Date(promo.endDate);
-    if (now < start || now >= end) continue;
+    // An unparseable date compares false both ways, which used to make the
+    // promotion active forever. A window that cannot be read is not a window.
+    const start = Date.parse(promo.startDate);
+    const end = Date.parse(promo.endDate);
+    if (!Number.isFinite(start) || !Number.isFinite(end)) continue;
+    if (now.getTime() < start || now.getTime() >= end) continue;
 
     // Check profile filter
     if (promo.profiles && !promo.profiles.includes(profile)) continue;
@@ -121,7 +124,7 @@ export class RulesStrategy implements RouterStrategy {
     const { routingProfile } = options;
     let tierConfigs: Record<Tier, { primary: string; fallback: string[] }>;
     let profileSuffix: string;
-    let profile: RoutingDecision["profile"];
+    let profile: NonNullable<RoutingDecision["profile"]>;
 
     if (routingProfile === "eco") {
       // `ecoTiers: null` explicitly disables the special eco tier set while
@@ -165,7 +168,7 @@ export class RulesStrategy implements RouterStrategy {
     }
 
     // Apply time-windowed promotions
-    tierConfigs = applyPromotions(tierConfigs, config.promotions, profile!, options.now);
+    tierConfigs = applyPromotions(tierConfigs, config.promotions, profile, options.now);
 
     // Hard-remove models the host has observed dead at the gateway. After
     // promotions, so a promo cannot resurrect a rung the host just killed.

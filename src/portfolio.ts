@@ -9,7 +9,7 @@
 
 import { DEFAULT_ROUTING_CONFIG } from "./config.js";
 import { DEFAULT_MODEL_CAPABILITIES } from "./model-capabilities.js";
-import { getFallbackChain, selectModel } from "./selector.js";
+import { getFallbackChain, selectModel, usablePricing } from "./selector.js";
 import { RulesStrategy } from "./strategy.js";
 import {
   HISTORICAL_MODEL_PROFILES,
@@ -101,11 +101,18 @@ function likelyNeedsParallelToolCalls(
     "create",
     "close",
   ]);
+  // Whole words only, with an optional inflection: a substring test read
+  // "add" out of "address", "book" out of "facebook" and "close" out of
+  // "closet" (the same failure rules.ts fixed for its keyword lists).
   const lowered = text.toLowerCase();
   const matchedOperationTokens = new Set(
     (toolNames ?? [])
       .flatMap((name) => name.toLowerCase().split(/[^a-z0-9\u3400-\u9fff]+/))
-      .filter((token) => operationTokens.has(token) && lowered.includes(token)),
+      .filter(
+        (token) =>
+          operationTokens.has(token) &&
+          new RegExp(`\\b${token}(?:s|es|d|ed|ing)?\\b`).test(lowered),
+      ),
   );
   // A single workflow naturally mentions domain nouns like order/item plus
   // one action. Upgrade only when two different visible operation verbs are
@@ -130,7 +137,8 @@ function likelyNeedsParallelToolCalls(
     /\b(?:weather|climate|clima|tiempo|temperature|snow|news|report)\b|天气|气象|温度|降雪|新闻|报告/i.test(
       text,
     );
-  const multiLocationConnector = /\b(?:and also|both|y|e)\b|还有|以及|和|、/i.test(text);
+  const multiLocationConnector =
+    /\b(?:and also|both)\b|\s(?:y|e)\s|还有|以及|和|、/i.test(text);
   const commaSeparatedLocations = (text.match(/[,，]/g) ?? []).length >= 2;
   if (repeatedLookup && (multiLocationConnector || commaSeparatedLocations)) return true;
 
@@ -177,6 +185,13 @@ function classifyTask(
   // artifact, not prose about errors; case-sensitive on purpose.
   const errorClassSignal = /\b[A-Z][A-Za-z]*(?:Error|Exception)\b/.test(scannedPrompt);
   const hasCode = explicitCodeSignal || codeConstructSignal || nativeCodeSignal || errorClassSignal;
+  // A language name alone ("java coffee prices", "python snake habitat") is
+  // not code work, even on a tool turn. It joins the code-agent pool only
+  // together with a coding action.
+  const codingAction =
+    /\b(?:write|implement|refactor|debug|fix|patch|compile|build|run|test|script|program|code|function|class|module|repo(?:sitory)?)\b|编写|实现|重构|调试|修复|编译|脚本|代码/i.test(
+      scannedPrompt,
+    );
   // Stronger than hasCode: an actual code artifact or coding action, never a
   // bare language name ("What is Python?" is trivia, not a code task) and
   // never the English word "exception" on its own ("please make an
@@ -248,7 +263,11 @@ function classifyTask(
     /\b(?:another|other|different|previous)\s+(?:order|reservation|booking|account|address)\b|另一(?:个)?(?:订单|预订|账户|地址)|其他(?:订单|预订|账户|地址)/i.test(
       scannedPrompt,
     );
-  const reservationIds = scannedPrompt.match(/\b[A-Z0-9]{6}\b/g) ?? [];
+  // Reservation locators mix letters and digits (ZFA04Y, 4WQ150). Requiring
+  // both keeps shouted words ("CANCEL MY FLIGHT") and plain six-digit numbers
+  // from reading as two reservations.
+  const reservationIds =
+    scannedPrompt.match(/\b(?=[A-Z0-9]*\d)(?=[A-Z0-9]*[A-Z])[A-Z0-9]{6}\b/g) ?? [];
   const crossReservationBatchSignal =
     agentDomain === "airline" &&
     (/\b(?:two|three|multiple|several)(?:\s+of\s+(?:my|our|the))?\s+(?:upcoming\s+)?(?:reservations?|bookings?)\b|\b(?:a\s+)?(?:second|third)\s+(?:reservation|booking)\b/i.test(
@@ -415,7 +434,12 @@ function classifyTask(
     numberedSteps < 3 &&
     prompt.length <= 1_000 &&
     simpleTerminalArtifact;
-  const language = /[\u3400-\u9fff]/.test(scannedPrompt) ? "zh" : "other";
+  // Han characters alone also spell Japanese; kana marks the prompt as not
+  // Mandarin, so it does not get the Mandarin-native extraction band.
+  const language =
+    /[\u3400-\u9fff]/.test(scannedPrompt) && !/[\u3040-\u30ff]/.test(scannedPrompt)
+      ? "zh"
+      : "other";
   const multipleChoiceSignals = (scannedPrompt.match(/(?:^|\n)\s*[A-D][.)]\s+/gim) ?? []).length;
   const numericSignals = (scannedPrompt.match(/-?\d+(?:[.,]\d+)?/g) ?? []).length;
   const compactMathProblem =
@@ -431,7 +455,8 @@ function classifyTask(
   let taskType: TaskType = "chat";
   if (needsVision) taskType = "vision";
   else if (estimatedInputTokens > 80_000) taskType = "long_context";
-  else if (needsTools && (hasCode || implicitTerminalCode)) taskType = "code_agent";
+  else if (needsTools && (codeArtifact || (hasCode && codingAction) || implicitTerminalCode))
+    taskType = "code_agent";
   else if (needsTools && likelyParallelToolCalls && !complexMultiToolPlan)
     taskType = "tool_agent_parallel";
   else if (needsTools) taskType = "tool_agent";
@@ -439,15 +464,15 @@ function classifyTask(
   else if (compactMathProblem) taskType = "reasoning_math";
   else if (
     errorClassSignal ||
-    /\b(?:bug|debug|error|failure|failing|regression|crash|修复|报错|错误|调试)\b/i.test(text)
+    /\b(?:bug|debug|error|failure|failing|regression|crash)\b|修复|报错|错误|调试/i.test(text)
   )
     taskType = "debug";
-  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite|重构|实现|修改)\b/i.test(text))
+  else if (hasCode || /\b(?:refactor|implement|patch|edit|rewrite)\b|重构|实现|修改/i.test(text))
     taskType = "code_edit";
-  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv|字段|提取)\b/i.test(text))
+  else if (needsStructuredOutput || /\b(?:extract|json|schema|csv)\b|字段|提取/i.test(text))
     taskType = "extraction";
   else if (
-    /\b(?:prove|derive|theorem|formal|mathematical|reasoning|证明|推导|定理|数学)\b/i.test(text)
+    /\b(?:prove|derive|theorem|formal|mathematical|reasoning)\b|证明|推导|定理|数学/i.test(text)
   )
     taskType = "reasoning";
 
@@ -938,7 +963,7 @@ function estimatedCost(
   inputTokens: number,
   outputTokens: number,
 ): number {
-  const price = options.modelPricing.get(modelId);
+  const price = usablePricing(options.modelPricing.get(modelId));
   if (!price) return Number.POSITIVE_INFINITY;
   if (price.flatPrice !== undefined) return price.flatPrice;
   return (inputTokens * price.inputPrice + outputTokens * price.outputPrice) / 1_000_000;
@@ -958,6 +983,21 @@ function profileScore(
   if (!profile) return undefined;
   const measuredAt = Date.parse(profile.measuredAt);
   if (!Number.isFinite(measuredAt)) return undefined;
+  // A host-injected observation with a missing or non-numeric field would
+  // turn the whole score into NaN, and NaN compares as "equal" in the sort,
+  // freezing that candidate wherever it landed. Treat it as no observation.
+  const finite = (value: number | undefined, optional: boolean) =>
+    value === undefined ? optional : Number.isFinite(value) && value >= 0;
+  if (
+    !finite(profile.latencyMs, false) ||
+    !finite(profile.outputTokensPerSecond, false) ||
+    !finite(profile.p95LatencyMs, true) ||
+    !finite(profile.intelligenceIndex, true) ||
+    !finite(profile.errorRate, true) ||
+    !finite(profile.samples, true)
+  ) {
+    return undefined;
+  }
   const ageDays = Math.max(0, (now.getTime() - measuredAt) / 86_400_000);
   // A 30-day half-life makes old data a tie-breaker only. Small probe runs are
   // also weak evidence: three quick samples should not overturn a curated
@@ -1102,8 +1142,12 @@ export class PortfolioStrategy implements RouterStrategy {
     const rankedEntries = candidates
       .map((model, index) => {
         const cost = costs[index];
-        const costScore =
-          Number.isFinite(cost) && maxCost > minCost
+        // An unpriced candidate costs an unknown amount, so it scores as the
+        // most expensive rather than a neutral 0.5 that let it outrank
+        // priced models. Pricing presence still never filters a candidate.
+        const costScore = !Number.isFinite(cost)
+          ? 0
+          : maxCost > minCost
             ? 1 - (cost - minCost) / (maxCost - minCost)
             : 0.5;
         const capabilityScore = eligible.has(model) ? 1 : 0;
