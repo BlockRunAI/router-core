@@ -1,4 +1,4 @@
-// rules.ts
+// src/rules.ts
 var UNSEGMENTED_SCRIPT = /[؀-ۿ　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/;
 var WORD_CHAR = /[\p{L}\p{N}]/u;
 var ASCII_PHRASE = /^[a-z0-9' -]+$/;
@@ -299,7 +299,7 @@ function calibrateConfidence(distance, steepness) {
   return 1 / (1 + Math.exp(-steepness * distance));
 }
 
-// selector.ts
+// src/selector.ts
 var BASELINE_MODEL_ID = "anthropic/claude-opus-4.7";
 var BASELINE_INPUT_PRICE = 5;
 var BASELINE_OUTPUT_PRICE = 25;
@@ -402,7 +402,7 @@ function filterCandidatesByCapacity(models, estimatedInputTokens, requestedOutpu
   return filtered;
 }
 
-// tokens.ts
+// src/tokens.ts
 var CJK_CHARS = /[　-ヿ㐀-䶿一-鿿가-힯豈-﫿＀-￯]/g;
 function estimateTokens(text) {
   if (text.length === 0) return 0;
@@ -419,7 +419,7 @@ function sampleForScan(value, limit) {
 ${value.slice(-(limit - prefixLength))}`;
 }
 
-// strategy.ts
+// src/strategy.ts
 function applyPromotions(tierConfigs, promotions, profile, now = /* @__PURE__ */ new Date()) {
   if (!promotions || promotions.length === 0) return tierConfigs;
   let result = tierConfigs;
@@ -569,7 +569,7 @@ function registerStrategy(strategy) {
   registry.set(strategy.name, strategy);
 }
 
-// model-capabilities.ts
+// src/model-capabilities.ts
 var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
   "anthropic/claude-fable-5": {
     contextWindow: 1e6,
@@ -1131,7 +1131,7 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
   }
 });
 
-// model-profiles.generated.json
+// src/model-profiles.generated.json
 var model_profiles_generated_default = {
   "anthropic/claude-fable-5": {
     measuredAt: "2026-08-29T16:51:33Z",
@@ -1679,7 +1679,7 @@ var model_profiles_generated_default = {
   }
 };
 
-// model-profiles.ts
+// src/model-profiles.ts
 var LIVE_MODEL_PROFILES = Object.freeze(
   model_profiles_generated_default
 );
@@ -1734,7 +1734,7 @@ var HISTORICAL_MODEL_PROFILES = Object.freeze({
   }
 });
 
-// tool-intent.ts
+// src/tool-intent.ts
 function inferToolRequirement(prompt, _systemPrompt, toolChoice) {
   if (toolChoice === "none") return false;
   if (toolChoice === "required") return true;
@@ -1749,7 +1749,7 @@ function inferToolRequirement(prompt, _systemPrompt, toolChoice) {
   return explicitTool.test(text) || codeEnvironment.test(text) || webAction.test(text) || statefulAction.test(text);
 }
 
-// portfolio.ts
+// src/portfolio.ts
 var DEFAULT_PORTFOLIO_WEIGHTS = {
   auto: {
     quality: 0.47,
@@ -2540,7 +2540,7 @@ var PortfolioStrategy = class {
   }
 };
 
-// catalog.ts
+// src/catalog.ts
 var MODEL_KINDS = ["chat", "image", "video", "music"];
 var PRICE_KEYS = [
   "input",
@@ -2617,7 +2617,7 @@ function toRoutingCatalog(catalog, options = {}) {
   return { modelPricing, modelCapabilities, unavailableModels: [...catalog.unavailable] };
 }
 
-// config.ts
+// src/config.ts
 var DEFAULT_ROUTING_CONFIG = {
   version: "3.5",
   strategy: "portfolio",
@@ -4105,7 +4105,7 @@ var DEFAULT_ROUTING_CONFIG = {
   }
 };
 
-// index.ts
+// src/index.ts
 registerStrategy(new PortfolioStrategy());
 function route(prompt, systemPrompt, maxOutputTokens, options) {
   const strategy = getStrategy(options.config.strategy ?? "portfolio");
