@@ -252,6 +252,15 @@ export function classifyByRules(
   // and make every request score identically. See GitHub issue #50.
   const userText = prompt.toLowerCase();
 
+  const reasoningDimension = scoreKeywordMatch(
+    userText,
+    config.reasoningKeywords,
+    "reasoningMarkers",
+    "reasoning",
+    { low: 1, high: 2 },
+    { none: 0, low: 0.7, high: 1.0 },
+  );
+
   // Score the base dimensions against user text only; the agentic dimension is
   // appended below, so the scored total is one more than this list.
   const dimensions: DimensionScore[] = [
@@ -265,14 +274,7 @@ export function classifyByRules(
       { low: 1, high: 2 },
       { none: 0, low: 0.5, high: 1.0 },
     ),
-    scoreKeywordMatch(
-      userText,
-      config.reasoningKeywords,
-      "reasoningMarkers",
-      "reasoning",
-      { low: 1, high: 2 },
-      { none: 0, low: 0.7, high: 1.0 },
-    ),
+    reasoningDimension,
     scoreKeywordMatch(
       userText,
       config.technicalKeywords,
@@ -370,12 +372,12 @@ export function classifyByRules(
     weightedScore += d.score * w;
   }
 
-  // Count reasoning markers for override — only check USER prompt, not system prompt
-  // This prevents system prompts with "step by step" from triggering REASONING for simple queries
-  const reasoningMatches = config.reasoningKeywords.filter((kw) => matchesKeyword(userText, kw));
-
-  // Direct reasoning override: 2+ reasoning markers = high confidence REASONING
-  if (reasoningMatches.length >= 2) {
+  // Direct reasoning override: 2+ reasoning markers in the USER prompt = high
+  // confidence REASONING. The system prompt is never read here, so a host
+  // instruction like "think step by step" cannot lift every query to REASONING.
+  // The reasoning dimension already counted those matches; its score is 1.0
+  // exactly when two or more matched.
+  if (reasoningDimension.score === 1.0) {
     const confidence = calibrateConfidence(
       Math.max(weightedScore, 0.3), // ensure positive for confidence calc
       config.confidenceSteepness,

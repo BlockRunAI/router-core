@@ -61,6 +61,11 @@ type ModelPricing = {
  * Get the ordered fallback chain for a tier: [primary, ...fallbacks].
  */
 declare function getFallbackChain(tier: Tier, tierConfigs: Record<Tier, TierConfig>): string[];
+/**
+ * Calculate charge-accurate cost fields for a specific model (server margin
+ * and minimum-payment floor included — see the cost contract on selectModel).
+ * Hosts call this to display money and to recost a decision after a fallback.
+ */
 declare function calculateModelCost(model: string, modelPricing: Map<string, ModelPricing>, estimatedInputTokens: number, maxOutputTokens: number, routingProfile?: "free" | "eco" | "auto" | "premium"): {
     costEstimate: number;
     baselineCost: number;
@@ -109,11 +114,12 @@ declare function filterCandidatesByCapacity(models: string[], estimatedInputToke
 /**
  * Smart Router Types
  *
- * Four classification tiers — REASONING is distinct from COMPLEX because
- * reasoning tasks need different models (o3, gemini-pro) than general
- * complex tasks (gpt-4o, sonnet-4).
+ * Four capability tiers. REASONING is distinct from COMPLEX because proof,
+ * derivation and multi-step math reward a different model set than broad
+ * complex work; the configured chains in config.ts carry the current picks.
  *
- * Scoring uses weighted float dimensions with sigmoid confidence calibration.
+ * Tier scoring uses weighted float dimensions with sigmoid confidence
+ * calibration (rules.ts); the portfolio strategy ranks within a tier.
  */
 type Tier = "SIMPLE" | "MEDIUM" | "COMPLEX" | "REASONING";
 type ScoringResult = {

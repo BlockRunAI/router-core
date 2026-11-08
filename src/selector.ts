@@ -26,6 +26,46 @@ const BASELINE_MODEL_ID = "anthropic/claude-opus-4.7";
 const BASELINE_INPUT_PRICE = 5.0;
 const BASELINE_OUTPUT_PRICE = 25.0;
 
+/** Raw token cost (no margin, no floor), or the flat promo price when one is set. */
+function rawCost(
+  pricing: ModelPricing | undefined,
+  estimatedInputTokens: number,
+  maxOutputTokens: number,
+): number {
+  if (pricing?.flatPrice !== undefined) return pricing.flatPrice;
+  const inputPrice = pricing?.inputPrice ?? 0;
+  const outputPrice = pricing?.outputPrice ?? 0;
+  return (estimatedInputTokens / 1_000_000) * inputPrice + (maxOutputTokens / 1_000_000) * outputPrice;
+}
+
+/** What the anchor Opus tier would cost for the same request (see BASELINE_MODEL_ID). */
+function baselineCostFor(
+  modelPricing: Map<string, ModelPricing>,
+  estimatedInputTokens: number,
+  maxOutputTokens: number,
+): number {
+  const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
+  const inputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
+  const outputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
+  return (estimatedInputTokens / 1_000_000) * inputPrice + (maxOutputTokens / 1_000_000) * outputPrice;
+}
+
+/**
+ * Fractional savings against the baseline. Premium reports none (it is about
+ * quality, not cost), and a model the host has no price for costs an unknown
+ * amount, not nothing: reporting its savings as 100% would be a fabricated
+ * figure.
+ */
+function savingsFor(
+  costEstimate: number,
+  baselineCost: number,
+  pricing: ModelPricing | undefined,
+  routingProfile: string | undefined,
+): number {
+  if (routingProfile === "premium" || pricing === undefined || !(baselineCost > 0)) return 0;
+  return Math.max(0, (baselineCost - costEstimate) / baselineCost);
+}
+
 /**
  * Select the primary model for a tier and build the RoutingDecision.
  *
@@ -51,33 +91,9 @@ export function selectModel(
   const model = tierConfig.primary;
   const pricing = modelPricing.get(model);
 
-  let costEstimate: number;
-  if (pricing?.flatPrice !== undefined) {
-    costEstimate = pricing.flatPrice;
-  } else {
-    const inputPrice = pricing?.inputPrice ?? 0;
-    const outputPrice = pricing?.outputPrice ?? 0;
-    costEstimate =
-      (estimatedInputTokens / 1_000_000) * inputPrice + (maxOutputTokens / 1_000_000) * outputPrice;
-  }
-
-  // Baseline: what the anchor Opus tier would cost (see BASELINE_MODEL_ID)
-  const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
-  const opusInputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
-  const opusOutputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
-  const baselineInput = (estimatedInputTokens / 1_000_000) * opusInputPrice;
-  const baselineOutput = (maxOutputTokens / 1_000_000) * opusOutputPrice;
-  const baselineCost = baselineInput + baselineOutput;
-
-  // Premium profile doesn't calculate savings (it's about quality, not cost).
-  // A model the host has no price for costs an unknown amount, not nothing;
-  // reporting its savings as 100% would be a fabricated figure.
-  const savings =
-    routingProfile === "premium" || pricing === undefined
-      ? 0
-      : baselineCost > 0
-        ? Math.max(0, (baselineCost - costEstimate) / baselineCost)
-        : 0;
+  const costEstimate = rawCost(pricing, estimatedInputTokens, maxOutputTokens);
+  const baselineCost = baselineCostFor(modelPricing, estimatedInputTokens, maxOutputTokens);
+  const savings = savingsFor(costEstimate, baselineCost, pricing, routingProfile);
 
   return {
     model,
@@ -100,16 +116,16 @@ export function getFallbackChain(tier: Tier, tierConfigs: Record<Tier, TierConfi
   return [config.primary, ...config.fallback];
 }
 
-/**
- * Calculate charge-accurate cost fields for a specific model (server margin
- * and minimum-payment floor included — see the cost contract on selectModel).
- * Hosts call this to display money and to recost a decision after a fallback.
- */
 // Server-side margin applied to all x402 payments (must match blockrun server's MARGIN_PERCENT)
 const SERVER_MARGIN_PERCENT = 5;
 // Minimum payment enforced by CDP Facilitator (must match blockrun server's MIN_PAYMENT_USD)
 const MIN_PAYMENT_USD = 0.001;
 
+/**
+ * Calculate charge-accurate cost fields for a specific model (server margin
+ * and minimum-payment floor included — see the cost contract on selectModel).
+ * Hosts call this to display money and to recost a decision after a fallback.
+ */
 export function calculateModelCost(
   model: string,
   modelPricing: Map<string, ModelPricing>,
@@ -119,40 +135,21 @@ export function calculateModelCost(
 ): { costEstimate: number; baselineCost: number; savings: number } {
   const pricing = modelPricing.get(model);
 
-  let costEstimate: number;
-  if (pricing?.flatPrice !== undefined) {
-    // Active promo: fixed cost per request
-    costEstimate = Math.max(pricing.flatPrice * (1 + SERVER_MARGIN_PERCENT / 100), MIN_PAYMENT_USD);
-  } else {
-    // Defensive: guard against undefined price fields (not just undefined pricing)
-    const inputPrice = pricing?.inputPrice ?? 0;
-    const outputPrice = pricing?.outputPrice ?? 0;
-    const inputCost = (estimatedInputTokens / 1_000_000) * inputPrice;
-    const outputCost = (maxOutputTokens / 1_000_000) * outputPrice;
-    // Include server margin + minimum payment to match actual x402 charge
-    costEstimate = Math.max(
-      (inputCost + outputCost) * (1 + SERVER_MARGIN_PERCENT / 100),
-      MIN_PAYMENT_USD,
-    );
-  }
-
-  // Baseline: what the anchor Opus tier would cost (see BASELINE_MODEL_ID)
-  const opusPricing = modelPricing.get(BASELINE_MODEL_ID);
-  const opusInputPrice = opusPricing?.inputPrice ?? BASELINE_INPUT_PRICE;
-  const opusOutputPrice = opusPricing?.outputPrice ?? BASELINE_OUTPUT_PRICE;
-  const baselineInput = (estimatedInputTokens / 1_000_000) * opusInputPrice;
-  const baselineOutput = (maxOutputTokens / 1_000_000) * opusOutputPrice;
-  const baselineCost = baselineInput + baselineOutput;
-
-  // Premium profile doesn't calculate savings (it's about quality, not cost)
-  const savings =
-    routingProfile === "premium"
-      ? 0
-      : baselineCost > 0
-        ? Math.max(0, (baselineCost - costEstimate) / baselineCost)
-        : 0;
+  // Server margin + minimum payment, to match the actual x402 charge.
+  const costEstimate = Math.max(
+    rawCost(pricing, estimatedInputTokens, maxOutputTokens) * (1 + SERVER_MARGIN_PERCENT / 100),
+    MIN_PAYMENT_USD,
+  );
+  const baselineCost = baselineCostFor(modelPricing, estimatedInputTokens, maxOutputTokens);
+  const savings = savingsFor(costEstimate, baselineCost, pricing, routingProfile);
 
   return { costEstimate, baselineCost, savings };
+}
+
+/** The models satisfying `keep`, or every model when none does. */
+function keepOrFailOpen(models: string[], keep: (modelId: string) => boolean): string[] {
+  const filtered = models.filter(keep);
+  return filtered.length > 0 ? filtered : models;
 }
 
 /**
@@ -166,9 +163,7 @@ export function filterByToolCalling(
   hasTools: boolean,
   supportsToolCalling: (modelId: string) => boolean,
 ): string[] {
-  if (!hasTools) return models;
-  const filtered = models.filter(supportsToolCalling);
-  return filtered.length > 0 ? filtered : models;
+  return hasTools ? keepOrFailOpen(models, supportsToolCalling) : models;
 }
 
 /**
@@ -182,9 +177,7 @@ export function filterByVision(
   hasVision: boolean,
   supportsVision: (modelId: string) => boolean,
 ): string[] {
-  if (!hasVision) return models;
-  const filtered = models.filter(supportsVision);
-  return filtered.length > 0 ? filtered : models;
+  return hasVision ? keepOrFailOpen(models, supportsVision) : models;
 }
 
 /**
@@ -194,8 +187,7 @@ export function filterByVision(
  */
 export function filterByExcludeList(models: string[], excludeList: Set<string>): string[] {
   if (excludeList.size === 0) return models;
-  const filtered = models.filter((m) => !excludeList.has(m));
-  return filtered.length > 0 ? filtered : models;
+  return keepOrFailOpen(models, (m) => !excludeList.has(m));
 }
 
 /**

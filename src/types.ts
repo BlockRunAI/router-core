@@ -1,11 +1,12 @@
 /**
  * Smart Router Types
  *
- * Four classification tiers — REASONING is distinct from COMPLEX because
- * reasoning tasks need different models (o3, gemini-pro) than general
- * complex tasks (gpt-4o, sonnet-4).
+ * Four capability tiers. REASONING is distinct from COMPLEX because proof,
+ * derivation and multi-step math reward a different model set than broad
+ * complex work; the configured chains in config.ts carry the current picks.
  *
- * Scoring uses weighted float dimensions with sigmoid confidence calibration.
+ * Tier scoring uses weighted float dimensions with sigmoid confidence
+ * calibration (rules.ts); the portfolio strategy ranks within a tier.
  */
 
 export type Tier = "SIMPLE" | "MEDIUM" | "COMPLEX" | "REASONING";
