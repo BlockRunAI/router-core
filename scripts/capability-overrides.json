@@ -14,5 +14,17 @@
   "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
     "supportsVision": false,
     "reason": "The catalog tags this model \"vision\", but a correctly sized probe does not hold up (ClawRouter, 2026-08-31): a 64x64 solid-red PNG was named correctly 1 of 4 times on Base, and on Solana the image was silently dropped and a text model answered \"white\". An HTTP 200 with a confident wrong answer gives the caller nothing to branch on, so image turns must not be routed here. It is ecoTiers.SIMPLE.fallback[0] since nemotron-3-nano-30b was delisted (2026-09-08); remove once a probe of this size comes back right on both chains."
+  },
+  "deepseek/deepseek-chat": {
+    "supportsVision": false,
+    "reason": "The 2026-11-08 catalog began tagging deepseek/deepseek-chat \"vision\" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry."
+  },
+  "deepseek/deepseek-reasoner": {
+    "supportsVision": false,
+    "reason": "The 2026-11-08 catalog began tagging deepseek/deepseek-reasoner \"vision\" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry."
+  },
+  "deepseek/deepseek-v4.1-flash": {
+    "supportsVision": false,
+    "reason": "The 2026-11-08 catalog began tagging deepseek/deepseek-v4.1-flash \"vision\" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry."
   }
 }

@@ -2141,12 +2141,14 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "deepseek/deepseek-chat": {
+    // override: The 2026-11-08 catalog began tagging deepseek/deepseek-chat "vision" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry.
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     supportsTools: true,
     supportsVision: false
   },
   "deepseek/deepseek-reasoner": {
+    // override: The 2026-11-08 catalog began tagging deepseek/deepseek-reasoner "vision" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry.
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     supportsTools: true,
@@ -2165,6 +2167,7 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "deepseek/deepseek-v4.1-flash": {
+    // override: The 2026-11-08 catalog began tagging deepseek/deepseek-v4.1-flash "vision" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry.
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     supportsTools: true,
@@ -2257,17 +2260,25 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "moonshot/kimi-k3": {
+    // absent from the 2026-11-08 listing but still routed — previous entry retained; probe before removing
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     supportsTools: true,
     supportsVision: true
   },
-  "nvidia/llama-3.2-11b-vision": {
+  "moonshot/kimi-k3.1-pro": {
     // supportsTools: not probed — fails closed
-    contextWindow: 128e3,
-    maxOutputTokens: 16384,
+    contextWindow: 1048576,
+    maxOutputTokens: 65536,
     supportsTools: false,
     supportsVision: true
+  },
+  "nvidia/minimax-m3.1-flash": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 1048576,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: false
   },
   "nvidia/muse-glimmer-30b": {
     // supportsTools: not probed — fails closed
@@ -2283,12 +2294,26 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: false,
     supportsVision: false
   },
+  "nvidia/nemotron-3-super-120b": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 131072,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: true
+  },
   "nvidia/nemotron-3-ultra-550b": {
     // supportsTools: not probed — fails closed
     contextWindow: 1e6,
     maxOutputTokens: 16384,
     supportsTools: false,
     supportsVision: false
+  },
+  "nvidia/nemotron-3.5-bolt": {
+    // supportsTools: not probed — fails closed
+    contextWindow: 131072,
+    maxOutputTokens: 16384,
+    supportsTools: false,
+    supportsVision: true
   },
   "nvidia/nemotron-3.5-lightning": {
     // supportsTools: not probed — fails closed
@@ -2310,12 +2335,6 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "openai/gpt-4.1-mini": {
-    contextWindow: 128e3,
-    maxOutputTokens: 32768,
-    supportsTools: true,
-    supportsVision: false
-  },
-  "openai/gpt-4.1-nano": {
     contextWindow: 128e3,
     maxOutputTokens: 32768,
     supportsTools: true,
