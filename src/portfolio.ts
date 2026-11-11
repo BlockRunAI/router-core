@@ -930,6 +930,7 @@ const VERIFIED_TOOL_FALLBACKS = [
   "anthropic/claude-sonnet-5.5",
   "deepseek/deepseek-v4.1-flash",
   "google/gemini-3.8-flash",
+  "google/gemini-4-carbon",
   "openai/gpt-5.1",
   "openai/gpt-6-astra",
   "openai/gpt-6-luna",

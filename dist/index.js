@@ -2240,6 +2240,12 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: false,
     supportsVision: true
   },
+  "google/gemini-4-carbon": {
+    contextWindow: 1048576,
+    maxOutputTokens: 65536,
+    supportsTools: true,
+    supportsVision: true
+  },
   "minimax/minimax-m2.7": {
     contextWindow: 204800,
     maxOutputTokens: 16384,
@@ -3877,6 +3883,7 @@ var VERIFIED_TOOL_FALLBACKS = [
   "anthropic/claude-sonnet-5.5",
   "deepseek/deepseek-v4.1-flash",
   "google/gemini-3.8-flash",
+  "google/gemini-4-carbon",
   "openai/gpt-5.1",
   "openai/gpt-6-astra",
   "openai/gpt-6-luna",

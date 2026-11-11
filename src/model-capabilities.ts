@@ -193,6 +193,12 @@ export const DEFAULT_MODEL_CAPABILITIES: Readonly<Record<string, ModelCapabiliti
       supportsTools: false,
       supportsVision: true,
     },
+    "google/gemini-4-carbon": {
+      contextWindow: 1_048_576,
+      maxOutputTokens: 65_536,
+      supportsTools: true,
+      supportsVision: true,
+    },
     "minimax/minimax-m2.7": {
       contextWindow: 204_800,
       maxOutputTokens: 16_384,
