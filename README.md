@@ -268,7 +268,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 68 live performance profiles (three samples per model), 9 auditable historical seeds, 82 function-calling probe results, and a built-in snapshot of the 92 text models in the public catalog (2026-11-08 sync, plus routed ids the listing omits). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Mistral Large 4 and Gemini 4 Argon have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
+The repository ships 68 live performance profiles (three samples per model), 9 auditable historical seeds, 83 function-calling probe results, and a built-in snapshot of the 93 text models in the public catalog (2026-11-08 sync, plus routed ids the listing omits). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Gemini 4 Carbon, added 2026-11-11 ahead of its gateway listing, returned its own next tool call through a two-round tool history on both the streaming and non-streaming gateway paths, so it is admitted as a tool fallback too. Mistral Large 4 and Gemini 4 Argon have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
 
 Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
 
@@ -345,7 +345,7 @@ The engine never makes a network call. Everything current is **injected** by the
 const decision = route(prompt, systemPrompt, maxOutputTokens, {
   config: DEFAULT_ROUTING_CONFIG,
   modelPricing,          // required — current prices from your catalog
-  modelCapabilities,     // optional — overrides the built-in 92-model snapshot
+  modelCapabilities,     // optional — overrides the built-in 93-model snapshot
   modelPerformance,      // optional — fresh speed/reliability, e.g. the Observatory feed
   routingProfile: "auto",
   hasTools, toolCount, toolNames, requiresTools,

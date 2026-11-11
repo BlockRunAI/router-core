@@ -108,6 +108,11 @@
     "supportsTools": true,
     "probedAt": "2026-10-03T04:27:11Z"
   },
+  "google/gemini-4-carbon": {
+    "supportsTools": true,
+    "probedAt": "2026-11-11",
+    "source": "BlockRun base gateway before listing (BlockRunAI/blockrun#1035), not probe-model-profiles.mjs: a two-round tool history through both the stream and non-stream paths returned Carbon's own next tool call (finish_reason tool_calls), no catalog fallback. No latency profile yet; a re-probe overwrites this entry."
+  },
   "minimax/minimax-m2.7": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
