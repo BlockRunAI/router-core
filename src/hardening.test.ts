@@ -22,7 +22,7 @@ const pricing = new Map<string, ModelPricing>([
   ["google/gemini-3.5-flash", { inputPrice: 1.5, outputPrice: 9 }],
   ["google/gemini-2.5-flash", { inputPrice: 0.3, outputPrice: 2.5 }],
   ["deepseek/deepseek-v4-pro", { inputPrice: 0.435, outputPrice: 0.87 }],
-  ["moonshot/kimi-k3", { inputPrice: 3, outputPrice: 15 }],
+  ["moonshot/kimi-k3.1-pro", { inputPrice: 2, outputPrice: 10 }],
 ]);
 
 const options = (extra: Partial<RouterOptions> = {}): RouterOptions => ({
@@ -304,7 +304,7 @@ describe("language band", () => {
       options({ requiresStructuredOutput: true }),
     );
     expect(decision.taskType).toBe("extraction");
-    const kimi = decision.candidateScores?.find((c) => c.model === "moonshot/kimi-k3");
+    const kimi = decision.candidateScores?.find((c) => c.model === "moonshot/kimi-k3.1-pro");
     if (kimi) expect(kimi.quality).toBeLessThan(1);
   });
 });

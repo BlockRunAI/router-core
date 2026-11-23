@@ -1133,7 +1133,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "openai/gpt-5.5", // $5/$30 — prior OpenAI flagship
         "openai/gpt-5.4", // $2.50/$15 — previous flagship, benchmarked
         "zai/glm-5.3", // $1.40/$4.40, 1M ctx, always-on thinking — verified live 2026-08-19
-        "moonshot/kimi-k3", // $3/$15, 1M ctx — Moonshot flagship (K2.7 successor)
+        "moonshot/kimi-k3.1-pro", // $2/$10, 1M ctx — Moonshot flagship (K3 successor)
         "deepseek/deepseek-v4-pro", // $0.435/$0.87 — strongest open-weight reasoner
         "deepseek/deepseek-chat", // $0.14/$0.28 — cheap last resort
         "google/gemini-2.5-flash", // $0.30/$2.50
@@ -1231,7 +1231,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
       primary: "openai/gpt-5.3-codex", // $1.75/$14 - 400K context, 128K output — code_edit/debug lead (portfolio.ts)
       fallback: [
         "anthropic/claude-sonnet-5", // $3/$15 — code_agent band 0.98
-        "moonshot/kimi-k3", // $3/$15, 1M ctx — Moonshot flagship
+        "moonshot/kimi-k3.1-pro", // $2/$10, 1M ctx — Moonshot flagship
         "zai/glm-5.3", // $1.40/$4.40 — long-horizon coding
         "google/gemini-3.6-flash", // $1.50/$7.50
         "google/gemini-3.5-flash", // $1.50/$9
@@ -1256,7 +1256,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "anthropic/claude-sonnet-5", // Sonnet-tier drop-down, near-Opus quality
         "anthropic/claude-sonnet-4.6",
         "xai/grok-4.5", // xAI flagship — 503-resistant, direct-xAI SKU
-        "moonshot/kimi-k3", // Moonshot flagship, independent infra
+        "moonshot/kimi-k3.1-pro", // Moonshot flagship, independent infra
         "openai/gpt-5.6-terra", // GPT-5.6 balanced tier — stable (Sol excluded: #202)
         "openai/gpt-5.5", // Prior OpenAI flagship — 1M+ ctx, native agent + computer use
         "openai/gpt-5.4", // Previous flagship (slow but stable, benchmarked at 6,213ms)
@@ -1307,7 +1307,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "openai/gpt-4o-mini", // $0.15/$0.60 — reliable tool calling
         "anthropic/claude-haiku-4.5", // $1/$5
         "deepseek/deepseek-chat", // $0.14/$0.28
-        "moonshot/kimi-k3", // $3/$15 — tool_agent band 0.85
+        "moonshot/kimi-k3.1-pro", // $2/$10 — tool_agent band 0.85
       ],
     },
     COMPLEX: {
@@ -1323,7 +1323,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "anthropic/claude-opus-4.8", // Prior flagship Opus — identical cost to 5
         "anthropic/claude-opus-4.7", // Flagship Opus — in-family hot swap
         "xai/grok-4.5", // xAI flagship — strong tool use, independent infra
-        "moonshot/kimi-k3", // Moonshot flagship — independent infra
+        "moonshot/kimi-k3.1-pro", // Moonshot flagship — independent infra
         "openai/gpt-5.6-terra", // GPT-5.6 balanced tier — stable (Sol excluded: #202)
         "openai/gpt-5.5", // Prior flagship — native agent + computer use (exactly the agentic-tier use case)
         "openai/gpt-5.4", // Previous flagship — reliable

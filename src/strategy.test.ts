@@ -22,7 +22,7 @@ const MODEL_PRICING = new Map<string, ModelPricing>([
   ["xai/grok-4.5", { inputPrice: 2.5, outputPrice: 9 }],
   ["anthropic/claude-sonnet-5", { inputPrice: 3, outputPrice: 15 }],
   ["deepseek/deepseek-v4-pro", { inputPrice: 0.435, outputPrice: 0.87 }],
-  ["moonshot/kimi-k3", { inputPrice: 3, outputPrice: 15 }],
+  ["moonshot/kimi-k3.1-pro", { inputPrice: 2, outputPrice: 10 }],
   ["xai/grok-4-1-fast-reasoning", { inputPrice: 0.2, outputPrice: 0.5 }],
   ["nvidia/gpt-oss-120b", { inputPrice: 0, outputPrice: 0 }],
   ["nvidia/gpt-oss-20b", { inputPrice: 0, outputPrice: 0 }],

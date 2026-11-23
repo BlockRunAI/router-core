@@ -15,7 +15,7 @@ const pricing = new Map<string, ModelPricing>([
   ["google/gemini-3.5-flash", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3-flash-preview", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3.1-pro", { inputPrice: 2, outputPrice: 12 }],
-  ["moonshot/kimi-k3", { inputPrice: 3, outputPrice: 15 }],
+  ["moonshot/kimi-k3.1-pro", { inputPrice: 2, outputPrice: 10 }],
   ["deepseek/deepseek-v4-pro", { inputPrice: 0.435, outputPrice: 0.87 }],
   ["xai/grok-4.5", { inputPrice: 2, outputPrice: 10 }],
   ["qwen/qwen3.7-max", { inputPrice: 1.475, outputPrice: 4.425 }],
@@ -845,8 +845,8 @@ describe("PortfolioStrategy", () => {
     );
 
     expect(decision.taskType).toBe("extraction");
-    expect(decision.model).toBe("moonshot/kimi-k3");
-    expect(decision.candidates?.[0]).toBe("moonshot/kimi-k3");
+    expect(decision.model).toBe("moonshot/kimi-k3.1-pro");
+    expect(decision.candidates?.[0]).toBe("moonshot/kimi-k3.1-pro");
   });
 
   it("does not promote a generic recovery fallback without task affinity", () => {
