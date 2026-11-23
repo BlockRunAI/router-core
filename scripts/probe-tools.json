@@ -125,6 +125,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "moonshot/kimi-k3.1-pro": {
+    "supportsTools": true,
+    "probedAt": "2026-11-23T20:18:18Z"
+  },
   "nvidia/mistral-nemotron": {
     "supportsTools": false,
     "probedAt": "2026-08-29T16:59:54Z",

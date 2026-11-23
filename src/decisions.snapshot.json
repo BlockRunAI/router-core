@@ -59,7 +59,7 @@
    "openai/gpt-4.1",
    "google/gemini-3.5-flash",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "deepseek/deepseek-v4-pro",
    "deepseek/deepseek-v4.1-flash",
    "google/gemini-3.8-flash",
@@ -324,17 +324,17 @@
  {
   "prompt": 8,
   "profile": "auto",
-  "model": "moonshot/kimi-k3",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
-  "costEstimate": 0.0017732000000000004,
+  "costEstimate": 0.00018839999999999997,
   "baselineCost": 0.0065,
-  "savings": 0.7272,
+  "savings": 0.9710153846153846,
   "agenticScore": 0,
   "candidates": [
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "google/gemini-3.5-flash",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -350,11 +350,11 @@
   ],
   "candidateScores": [
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8664118013428358,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8691193450333762,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.37731144775479714,
+    "speed": 0.41599064333394636,
     "reliability": 1
    }
   ],
@@ -466,7 +466,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -543,10 +543,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -560,6 +560,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8615113422618537,
+    "quality": 0.9,
+    "cost": 0.9966222068248745,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -585,14 +593,6 @@
     "cost": 0,
     "speed": 0.5421106182761342,
     "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6796144689333433,
-    "quality": 0.9,
-    "cost": 0.001125931058375107,
-    "speed": 0.37731144775479714,
-    "reliability": 1
    }
   ],
   "taskType": "reasoning_math",
@@ -612,9 +612,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -635,6 +635,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8783525065702322,
+    "quality": 0.9,
+    "cost": 0.9975916381677183,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.8053574061523814,
     "quality": 0.9,
@@ -648,14 +656,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6962952205744078,
-    "quality": 0.9,
-    "cost": 0.001204180916140718,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -719,7 +719,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -800,9 +800,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -823,6 +823,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9144987101737575,
+    "quality": 0.9,
+    "cost": 0.9971106616584803,
+    "speed": 0.43568082939042846,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.8471345209396577,
     "quality": 0.9,
@@ -836,14 +844,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5157519613982099,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.7257711638661457,
-    "quality": 0.9,
-    "cost": 0.0014446691707599157,
-    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -864,10 +864,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -881,6 +881,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8615257012196644,
+    "quality": 0.9,
+    "cost": 0.9967019788127124,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -905,14 +913,6 @@
     "quality": 1,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6796096826140732,
-    "quality": 0.9,
-    "cost": 0.001099340395762649,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -978,7 +978,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -1048,22 +1048,22 @@
  {
   "prompt": 1,
   "profile": "eco",
-  "model": "anthropic/claude-sonnet-5",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
   "reasoning": "score=-0.08 | short (1 tokens) | eco | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
-  "costEstimate": 0.0032001,
+  "costEstimate": 0.0005163000000000001,
   "baselineCost": 0.032005,
-  "savings": 0.9000124980471801,
+  "savings": 0.9838681456022498,
   "agenticScore": 0,
   "candidates": [
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "openai/gpt-5-mini",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "google/gemini-2.5-flash-lite",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-luna",
@@ -1089,34 +1089,42 @@
   ],
   "candidateScores": [
    {
-    "model": "anthropic/claude-sonnet-5",
-    "score": 0.9448830643397024,
-    "quality": 1,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8715990643333947,
+    "quality": 0.85,
     "cost": 1,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5",
+    "score": 0.8516874744447462,
+    "quality": 1,
+    "cost": 0.6671586075180138,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.886667385900499,
+    "score": 0.7935081768474016,
     "quality": 0.84,
-    "cost": 0.9996096291476904,
+    "cost": 0.6668981682437713,
     "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8720981461564362,
+    "score": 0.7789268101560526,
     "quality": 0.87,
-    "cost": 0.9997397527651268,
+    "cost": 0.6669849813351855,
     "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7171734068659547,
+    "score": 0.6705695484448334,
     "quality": 0.82,
-    "cost": 0.5000650618087183,
+    "cost": 0.333622710304714,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
@@ -1126,14 +1134,6 @@
     "quality": 0.88,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.5877675793883619,
-    "quality": 0.85,
-    "cost": 0.00013012361743647283,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1388,19 +1388,19 @@
  {
   "prompt": 8,
   "profile": "eco",
-  "model": "google/gemini-2.5-flash",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | eco | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0001604,
+  "costEstimate": 0.00018839999999999997,
   "baselineCost": 0.0065,
-  "savings": 0.975323076923077,
+  "savings": 0.9710153846153846,
   "agenticScore": 0,
   "candidates": [
+   "moonshot/kimi-k3.1-pro",
    "google/gemini-2.5-flash",
    "anthropic/claude-sonnet-5",
-   "moonshot/kimi-k3",
    "google/gemini-3.5-flash",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
@@ -1410,6 +1410,14 @@
    "google/gemini-2.5-flash-lite"
   ],
   "candidateScores": [
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9301131205582944,
+    "quality": 1,
+    "cost": 0.9827882960413081,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
    {
     "model": "google/gemini-2.5-flash",
     "score": 0.9101229342146075,
@@ -1424,14 +1432,6 @@
     "quality": 0.88,
     "cost": 0.7039586919104992,
     "speed": 0.44883064339702206,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.65347411666303,
-    "quality": 1,
-    "cost": 0.008605851979346046,
-    "speed": 0.37731144775479714,
     "reliability": 1
    },
    {
@@ -1528,11 +1528,11 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "moonshot/kimi-k3.1-pro",
    "openai/gpt-5-mini",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -1561,33 +1561,41 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9448830643397024,
+    "score": 0.9187490813920776,
     "quality": 1,
-    "cost": 1,
+    "cost": 0.9066643466156254,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8715990643333947,
+    "quality": 0.85,
+    "cost": 1,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
     "model": "openai/gpt-5-mini",
-    "score": 0.8475382143236465,
+    "score": 0.825066580116734,
     "quality": 0.84,
-    "cost": 0.8598625878017887,
+    "cost": 0.7796067513485296,
     "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8460120317718679,
+    "score": 0.8223196146513846,
     "quality": 0.87,
-    "cost": 0.9065750585345258,
+    "cost": 0.8219592831042283,
     "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7236949354620967,
+    "score": 0.7100175525314989,
     "quality": 0.82,
-    "cost": 0.5233562353663685,
+    "cost": 0.474508439185662,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
@@ -1597,14 +1605,6 @@
     "quality": 0.88,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6008106365806462,
-    "quality": 0.85,
-    "cost": 0.04671247073273721,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1654,10 +1654,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "qwen/qwen3.7-plus",
    "minimax/minimax-m3",
@@ -1670,6 +1670,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8846532822443596,
+    "quality": 0.9,
+    "cost": 0.9966222068248745,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -1695,14 +1703,6 @@
     "cost": 0,
     "speed": 0.5421106182761342,
     "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6020464054718248,
-    "quality": 0.9,
-    "cost": 0.001125931058375107,
-    "speed": 0.37731144775479714,
-    "reliability": 1
    }
   ],
   "taskType": "reasoning_math",
@@ -1722,9 +1722,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -1742,6 +1742,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8982580563536893,
+    "quality": 0.9,
+    "cost": 0.9975916381677183,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.7970108038512865,
     "quality": 0.9,
@@ -1755,14 +1763,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6154016487653324,
-    "quality": 0.9,
-    "cost": 0.001204180916140718,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1817,11 +1817,11 @@
   "agenticScore": 0.2,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "moonshot/kimi-k3.1-pro",
    "openai/gpt-5-mini",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -1850,33 +1850,41 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9448830643397024,
+    "score": 0.8781575568374959,
     "quality": 1,
-    "cost": 1,
+    "cost": 0.7616946160635482,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8715990643333947,
+    "quality": 0.85,
+    "cost": 1,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
     "model": "openai/gpt-5-mini",
-    "score": 0.8682830628561793,
+    "score": 0.8059646862086955,
     "quality": 0.84,
-    "cost": 0.9339513325608342,
+    "cost": 0.7113857016769638,
     "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8598419307935564,
+    "score": 0.7960545105278317,
     "quality": 0.87,
-    "cost": 0.9559675550405561,
+    "cost": 0.7281553398058253,
     "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7202374607066745,
+    "score": 0.6861401851464508,
     "quality": 0.82,
-    "cost": 0.5110081112398608,
+    "cost": 0.3892321270962047,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
@@ -1886,14 +1894,6 @@
     "quality": 0.88,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.5938956870698018,
-    "quality": 0.85,
-    "cost": 0.022016222479721792,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -1944,9 +1944,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -1964,6 +1964,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9349468678879851,
+    "quality": 0.9,
+    "cost": 0.9971106616584803,
+    "speed": 0.43568082939042846,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.8400287467109466,
     "quality": 0.9,
@@ -1977,14 +1985,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5157519613982099,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6447511887996366,
-    "quality": 0.9,
-    "cost": 0.0014446691707599157,
-    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -2005,10 +2005,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "qwen/qwen3.7-plus",
    "minimax/minimax-m3",
@@ -2021,6 +2021,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8846756184009542,
+    "quality": 0.9,
+    "cost": 0.9967019788127124,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -2045,14 +2053,6 @@
     "quality": 1,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6020389600862933,
-    "quality": 0.9,
-    "cost": 0.001099340395762649,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2110,8 +2110,8 @@
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
    "openai/gpt-5-mini",
-   "moonshot/kimi-k3",
    "google/gemini-3.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -2148,42 +2148,42 @@
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.7709506381655831,
+    "score": 0.7745038408435178,
     "quality": 0.87,
-    "cost": 0.6384986527977944,
+    "cost": 0.6511886623618466,
     "speed": 0.3897141538220059,
     "reliability": 0.79999
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7424602838636679,
+    "score": 0.7464864914047818,
     "quality": 0.82,
-    "cost": 0.5903753368005515,
+    "cost": 0.6047546494473868,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "openai/gpt-5-mini",
-    "score": 0.7349461239142193,
+    "score": 0.7402759279311213,
     "quality": 0.84,
-    "cost": 0.45774797919669175,
+    "cost": 0.4767829935427701,
     "speed": 0.48376689739145695,
     "reliability": 1
    },
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6383413333837885,
-    "quality": 0.85,
-    "cost": 0.18075067360110297,
-    "speed": 0.37731144775479714,
+    "model": "google/gemini-3.5-flash",
+    "score": 0.6328400782488085,
+    "quality": 0.88,
+    "cost": 0.035103630075696834,
+    "speed": 0.5421106182761342,
     "reliability": 1
    },
    {
-    "model": "google/gemini-3.5-flash",
-    "score": 0.6230110618276133,
-    "quality": 0.88,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.5915990643333947,
+    "quality": 0.85,
     "cost": 0,
-    "speed": 0.5421106182761342,
+    "speed": 0.41599064333394636,
     "reliability": 1
    }
   ],
@@ -2250,7 +2250,7 @@
    "openai/gpt-4.1",
    "google/gemini-3.5-flash",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "deepseek/deepseek-v4-pro",
    "deepseek/deepseek-v4.1-flash",
    "google/gemini-3.8-flash",
@@ -2515,17 +2515,17 @@
  {
   "prompt": 8,
   "profile": "auto",
-  "model": "moonshot/kimi-k3",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=13",
-  "costEstimate": 0.0017732000000000004,
+  "costEstimate": 0.00018839999999999997,
   "baselineCost": 0.0065,
-  "savings": 0.7272,
+  "savings": 0.9710153846153846,
   "agenticScore": 0,
   "candidates": [
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "google/gemini-3.5-flash",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -2541,11 +2541,11 @@
   ],
   "candidateScores": [
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8664118013428358,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8691193450333762,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.37731144775479714,
+    "speed": 0.41599064333394636,
     "reliability": 1
    }
   ],
@@ -2657,7 +2657,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -2734,10 +2734,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -2751,6 +2751,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8615113422618537,
+    "quality": 0.9,
+    "cost": 0.9966222068248745,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -2776,14 +2784,6 @@
     "cost": 0,
     "speed": 0.5421106182761342,
     "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6796144689333433,
-    "quality": 0.9,
-    "cost": 0.001125931058375107,
-    "speed": 0.37731144775479714,
-    "reliability": 1
    }
   ],
   "taskType": "reasoning_math",
@@ -2803,9 +2803,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -2826,6 +2826,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8783525065702322,
+    "quality": 0.9,
+    "cost": 0.9975916381677183,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.8053574061523814,
     "quality": 0.9,
@@ -2839,14 +2847,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6962952205744078,
-    "quality": 0.9,
-    "cost": 0.001204180916140718,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -2910,7 +2910,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -2991,9 +2991,9 @@
   "agenticScore": 0,
   "candidates": [
    "google/gemini-2.5-flash",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -3014,6 +3014,14 @@
     "reliability": 1
    },
    {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9144987101737575,
+    "quality": 0.9,
+    "cost": 0.9971106616584803,
+    "speed": 0.43568082939042846,
+    "reliability": 1
+   },
+   {
     "model": "anthropic/claude-sonnet-5",
     "score": 0.8471345209396577,
     "quality": 0.9,
@@ -3027,14 +3035,6 @@
     "quality": 0.9,
     "cost": 0,
     "speed": 0.5157519613982099,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.7257711638661457,
-    "quality": 0.9,
-    "cost": 0.0014446691707599157,
-    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -3055,10 +3055,10 @@
   "agenticScore": 0,
   "candidates": [
    "xai/grok-4.5",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -3072,6 +3072,14 @@
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
+    "reliability": 1
+   },
+   {
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8615257012196644,
+    "quality": 0.9,
+    "cost": 0.9967019788127124,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -3096,14 +3104,6 @@
     "quality": 1,
     "cost": 0,
     "speed": 0.5421106182761342,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.6796096826140732,
-    "quality": 0.9,
-    "cost": 0.001099340395762649,
-    "speed": 0.37731144775479714,
     "reliability": 1
    }
   ],
@@ -3169,7 +3169,7 @@
    "openai/gpt-4o-mini",
    "anthropic/claude-haiku-4.5",
    "deepseek/deepseek-chat",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-5.3-codex",
@@ -3270,7 +3270,7 @@
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "deepseek/deepseek-v4-pro",
    "anthropic/claude-fable-5.1",
    "anthropic/claude-opus-5.5",
@@ -3346,7 +3346,7 @@
   "candidates": [
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3444,7 +3444,7 @@
   "candidates": [
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3556,17 +3556,17 @@
  {
   "prompt": 8,
   "profile": "premium",
-  "model": "moonshot/kimi-k3",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (20 tokens), constraints (不超过) | ambiguous -> default: MEDIUM | premium | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0017732000000000004,
+  "costEstimate": 0.00018839999999999997,
   "baselineCost": 0.0065,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
    "zai/glm-5.3",
@@ -3579,11 +3579,11 @@
   ],
   "candidateScores": [
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.9226386868652878,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9249594386000368,
     "quality": 1,
     "cost": 0.5,
-    "speed": 0.37731144775479714,
+    "speed": 0.41599064333394636,
     "reliability": 1
    }
   ],
@@ -3593,17 +3593,17 @@
  {
   "prompt": 9,
   "profile": "premium",
-  "model": "moonshot/kimi-k3",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.008694900000000002,
+  "costEstimate": 0.0006883,
   "baselineCost": 0.032205,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "google/gemini-3.5-flash",
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
@@ -3616,11 +3616,11 @@
   ],
   "candidateScores": [
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8814386868652877,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.8837594386000367,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.37731144775479714,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
@@ -3650,7 +3650,7 @@
   "candidates": [
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3687,7 +3687,7 @@
   "candidates": [
    "anthropic/claude-sonnet-5",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3783,7 +3783,7 @@
    "xai/grok-4.3",
    "openai/o4-mini",
    "openai/o3",
-   "moonshot/kimi-k3"
+   "moonshot/kimi-k3.1-pro"
   ],
   "candidateScores": [
    {
@@ -3801,19 +3801,19 @@
  {
   "prompt": 14,
   "profile": "premium",
-  "model": "anthropic/claude-sonnet-5",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (25 tokens), format (json) | ambiguous -> default: MEDIUM | premium | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0057625,
+  "costEstimate": 0.0010291,
   "baselineCost": 0.057725,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
-   "moonshot/kimi-k3",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.3-codex",
    "zai/glm-5.3",
@@ -3824,10 +3824,18 @@
   ],
   "candidateScores": [
    {
-    "model": "anthropic/claude-sonnet-5",
-    "score": 0.9089298386038214,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9002927719333701,
     "quality": 0.9,
     "cost": 1,
+    "speed": 0.41599064333394636,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5",
+    "score": 0.8828103851732771,
+    "quality": 0.9,
+    "cost": 0.6735068321181981,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
@@ -3840,18 +3848,10 @@
     "reliability": 1
    },
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8181153996523453,
-    "quality": 0.9,
-    "cost": 0.0017922431715533538,
-    "speed": 0.37731144775479714,
-    "reliability": 1
-   },
-   {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8088821855823103,
+    "score": 0.808788560758199,
     "quality": 0.9,
-    "cost": 0.0035844863431069296,
+    "cost": 0.002414176041716898,
     "speed": 0.4432571112476951,
     "reliability": 1
    }
@@ -3916,7 +3916,7 @@
   "candidates": [
    "anthropic/claude-sonnet-5",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3960,18 +3960,18 @@
  {
   "prompt": 17,
   "profile": "premium",
-  "model": "anthropic/claude-sonnet-4.6",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
-  "costEstimate": 0.008595800000000002,
+  "costEstimate": 0.0005507000000000001,
   "baselineCost": 0.032045000000000004,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-4.6",
-   "moonshot/kimi-k3",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -3981,19 +3981,19 @@
   ],
   "candidateScores": [
    {
-    "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8885954266748617,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9069594386000368,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.4432571112476951,
+    "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8246386868652877,
+    "model": "anthropic/claude-sonnet-4.6",
+    "score": 0.8085954266748616,
     "quality": 0.9,
     "cost": 0,
-    "speed": 0.37731144775479714,
+    "speed": 0.4432571112476951,
     "reliability": 1
    }
   ],
@@ -4003,20 +4003,20 @@
  {
   "prompt": 18,
   "profile": "premium",
-  "model": "anthropic/claude-sonnet-5",
+  "model": "moonshot/kimi-k3.1-pro",
   "tier": "MEDIUM",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (30 tokens), simple (translate) | upgraded to MEDIUM (structured output) | premium | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.005763000000000001,
+  "costEstimate": 0.0010506,
   "baselineCost": 0.057749999999999996,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
+   "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.5-flash",
    "anthropic/claude-sonnet-4.6",
-   "moonshot/kimi-k3",
    "openai/gpt-5.3-codex",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
@@ -4026,10 +4026,18 @@
   ],
   "candidateScores": [
    {
-    "model": "anthropic/claude-sonnet-5",
-    "score": 0.9501405003873673,
+    "model": "moonshot/kimi-k3.1-pro",
+    "score": 0.9363286494479933,
     "quality": 0.9,
     "cost": 1,
+    "speed": 0.43568082939042846,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5",
+    "score": 0.9241306481706184,
+    "quality": 0.9,
+    "cost": 0.6748768472906403,
     "speed": 0.4867178599097662,
     "reliability": 1
    },
@@ -4043,18 +4051,10 @@
    },
    {
     "model": "anthropic/claude-sonnet-4.6",
-    "score": 0.8501542380866078,
+    "score": 0.8500425598890262,
     "quality": 0.9,
-    "cost": 0.004293688278231067,
+    "cost": 0.002897710808461351,
     "speed": 0.4843624501739247,
-    "reliability": 1
-   },
-   {
-    "model": "moonshot/kimi-k3",
-    "score": 0.8476265738299552,
-    "quality": 0.9,
-    "cost": 0.002146844139115478,
-    "speed": 0.3722963783249474,
     "reliability": 1
    }
   ],
@@ -4085,7 +4085,7 @@
    "xai/grok-4.3",
    "openai/o4-mini",
    "openai/o3",
-   "moonshot/kimi-k3"
+   "moonshot/kimi-k3.1-pro"
   ],
   "candidateScores": [
    {
@@ -4115,7 +4115,7 @@
   "candidates": [
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",
@@ -4152,7 +4152,7 @@
   "candidates": [
    "anthropic/claude-sonnet-5",
    "openai/gpt-5.3-codex",
-   "moonshot/kimi-k3",
+   "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.5-flash",

@@ -199,6 +199,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "moonshot/kimi-k3.1-pro": {
+    "measuredAt": "2026-11-23T20:18:18Z",
+    "latencyMs": 9243.1,
+    "p95LatencyMs": 10504.1,
+    "outputTokensPerSecond": 55.89,
+    "errorRate": 0,
+    "samples": 3
+  },
   "nvidia/mistral-nemotron": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 7349.6,
