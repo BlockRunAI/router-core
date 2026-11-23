@@ -723,12 +723,25 @@ const AFFINITY = {
   // Same calibration, five multilingual MGSM tasks: Gemini 3.5 Flash was 5/5
   // with the lowest cost and latency; four current flagships were 4/5 and Kimi
   // K2.7 was 3/5.
+  //
+  // Kimi K3.1 Pro, paired against Kimi K3 (2026-11-23): all 50 rows of the
+  // pinned RouterBench MGSM slice (5 per language x 10 languages), the text
+  // adapter's `Answer: <number>` contract and deterministic grader, 512 output
+  // tokens, temperature 0, same rows and settings for both. K3 44/50, K3.1 Pro
+  // 41/50; discordant pairs 5 K3-only vs 2 K3.1-only (not significant). Every
+  // K3-only win was K3.1 Pro hitting the 512-token cap; the non-truncated
+  // errors were the same two rows for both. Rerunning the 10 truncated rows at
+  // 2048 tokens gave 8/10 each (46/50 each overall), so the gap is verbosity at
+  // the calibration budget, not arithmetic. K3.1 Pro was also slower (p95
+  // 10.4s vs 4.7s). It moves from K3's carried 0.9 to 0.88: below the models
+  // the 4/5 calibration put at 0.9, by less than the raw 41/44 ratio because
+  // the difference is within noise.
   reasoningMath: {
     "gemini-3.5-flash": 1,
     "grok-4.5": 0.93,
     "claude-sonnet-5": 0.9,
     "deepseek-v4-pro": 0.9,
-    "kimi-k3.1-pro": 0.9,
+    "kimi-k3.1-pro": 0.88,
   },
   vision: {
     "gemini-3.1-pro": 0.96,
@@ -757,10 +770,16 @@ const AFFINITY = {
   // re-selects a non-native model for Mandarin input; 0.12 keeps Kimi alone in
   // the primary band for zh and leaves every other language untouched.
   //
-  // Every "kimi-k3.1-pro" value in AFFINITY is carried over from the Kimi
-  // flagship it replaced (K3, whose values were in turn carried from K2.7);
-  // none is a K3.1 Pro trajectory measurement. K3.1 Pro's own evidence is the
-  // 2026-11-23 live probe: 3/3 completions, 0 errors, a well-formed tool call.
+  // Only one "kimi-k3.1-pro" value in AFFINITY is measured on K3.1 Pro:
+  // reasoningMath (paired K3 vs K3.1 Pro on 50 MGSM rows, 2026-11-23; see that
+  // band). Every other value (codeAgent, retailStandard, retailHigh,
+  // toolAgent, vision, extractionZh, extraction, chat) is still carried over
+  // from the Kimi flagship it replaced (K3, whose values were in turn carried
+  // from K2.7). Those bands' calibrations could not be rerun locally: the
+  // Terminal-Bench and tau2 trajectories need the RouterBench Franklin host
+  // (and Docker for Terminal-Bench), and no extraction or vision slice has a
+  // runner. K3.1 Pro's other evidence is the 2026-11-23 live probe: 3/3
+  // completions, 0 errors, a well-formed tool call.
   extractionZh: {
     "kimi-k3.1-pro": 1,
     "gemini-3.5-flash": 0.88,
