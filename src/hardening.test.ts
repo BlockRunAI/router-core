@@ -19,7 +19,7 @@ const pricing = new Map<string, ModelPricing>([
   ["anthropic/claude-opus-4.8", { inputPrice: 5, outputPrice: 25 }],
   ["openai/gpt-5.3-codex", { inputPrice: 1.75, outputPrice: 14 }],
   ["openai/gpt-5-mini", { inputPrice: 0.25, outputPrice: 2 }],
-  ["google/gemini-3.5-flash", { inputPrice: 1.5, outputPrice: 9 }],
+  ["google/gemini-3.6-flash", { inputPrice: 0.75, outputPrice: 3.75 }],
   ["google/gemini-2.5-flash", { inputPrice: 0.3, outputPrice: 2.5 }],
   ["deepseek/deepseek-v4-pro", { inputPrice: 0.435, outputPrice: 0.87 }],
   ["moonshot/kimi-k3.1-pro", { inputPrice: 2, outputPrice: 10 }],

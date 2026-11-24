@@ -12,7 +12,7 @@ const pricing = new Map<string, ModelPricing>([
   ["openai/gpt-5.3-codex", { inputPrice: 1.75, outputPrice: 14 }],
   ["openai/gpt-5-mini", { inputPrice: 0.25, outputPrice: 2 }],
   ["openai/gpt-4.1", { inputPrice: 2, outputPrice: 8 }],
-  ["google/gemini-3.5-flash", { inputPrice: 0.5, outputPrice: 3 }],
+  ["google/gemini-3.6-flash", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3-flash-preview", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3.1-pro", { inputPrice: 2, outputPrice: 12 }],
   ["moonshot/kimi-k3.1-pro", { inputPrice: 2, outputPrice: 10 }],
@@ -70,7 +70,7 @@ describe("PortfolioStrategy", () => {
     expect(["tool_agent", "tool_agent_parallel"]).toContain(decision.taskType);
     expect(decision.model).toBe("anthropic/claude-sonnet-5");
     expect(decision.candidates).toContain(decision.model);
-    expect(decision.candidates).toContain("google/gemini-3.5-flash");
+    expect(decision.candidates).toContain("google/gemini-3.6-flash");
     expect(["moonshot/kimi-k2.7", "moonshot/kimi-k2.6", "moonshot/kimi-k2.5"]).not.toContain(
       decision.model,
     );
@@ -115,7 +115,7 @@ describe("PortfolioStrategy", () => {
 
     expect(decision.taskType).toBe("tool_agent");
     expect(decision.model).toBe("anthropic/claude-sonnet-5");
-    expect(decision.candidates).toContain("google/gemini-3.5-flash");
+    expect(decision.candidates).toContain("google/gemini-3.6-flash");
   });
 
   it("keeps newly tool-verified catalog models as safe fallbacks without promoting them", () => {
@@ -209,7 +209,7 @@ describe("PortfolioStrategy", () => {
     expect(decision.candidates?.slice(0, 3)).toEqual([
       "anthropic/claude-sonnet-5",
       "openai/gpt-5-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
     ]);
     expect(decision.reasoning).toContain("candidates=");
   });
