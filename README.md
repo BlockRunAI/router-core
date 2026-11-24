@@ -431,7 +431,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 197 tests across 12 files
+npm test            # vitest — 198 tests across 12 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 

@@ -1681,7 +1681,9 @@ var DEFAULT_ROUTING_CONFIG = {
   //    affinity values, CARRIED, not measured (portfolio.ts) — gpt-5-mini is a
   //    reasoning model and luna runs without reasoning, so those values are a
   //    placeholder until a Terminal-Bench/tau2 run on luna.
-  //  - openai/gpt-5-nano -> openai/gpt-6-luna. In no chain.
+  //  - openai/gpt-5-nano is NOT redirected (owner decision 2026-11-24): the
+  //    gateways keep serving it from Azure at its own $0.05/$0.40 until
+  //    2027-02-09. It is hidden and in no chain, and none is added.
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
     SIMPLE: {
