@@ -10,7 +10,7 @@ const pricing = new Map<string, ModelPricing>([
   ["anthropic/claude-opus-5", { inputPrice: 5, outputPrice: 25 }],
   ["anthropic/claude-opus-4.8", { inputPrice: 5, outputPrice: 25 }],
   ["openai/gpt-5.3-codex", { inputPrice: 1.75, outputPrice: 14 }],
-  ["openai/gpt-5-mini", { inputPrice: 0.25, outputPrice: 2 }],
+  ["openai/gpt-5.6-luna", { inputPrice: 0.25, outputPrice: 2 }],
   ["openai/gpt-4.1", { inputPrice: 2, outputPrice: 8 }],
   ["google/gemini-3.6-flash", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3-flash-preview", { inputPrice: 0.5, outputPrice: 3 }],
@@ -51,7 +51,7 @@ describe("PortfolioStrategy", () => {
 
     expect(decision.method).toBe("portfolio");
     expect(decision.taskType).toBe("code_agent");
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.candidates).toContain(decision.model);
     expect(decision.candidates).toContain("openai/gpt-5.3-codex");
     expect(["moonshot/kimi-k2.7", "moonshot/kimi-k2.6", "moonshot/kimi-k2.5"]).not.toContain(
@@ -208,7 +208,7 @@ describe("PortfolioStrategy", () => {
     expect(decision.reasoning).toContain("deepWebResearch=true");
     expect(decision.candidates?.slice(0, 3)).toEqual([
       "anthropic/claude-sonnet-5",
-      "openai/gpt-5-mini",
+      "openai/gpt-5.6-luna",
       "google/gemini-3.6-flash",
     ]);
     expect(decision.reasoning).toContain("candidates=");
@@ -257,7 +257,7 @@ describe("PortfolioStrategy", () => {
 
     expect(["tool_agent", "tool_agent_parallel"]).toContain(decision.taskType);
     expect(decision.reasoning).toContain("agentRisk=high");
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
   });
 
   it("promotes conditional-global airline work to the complex band", () => {
@@ -305,7 +305,7 @@ describe("PortfolioStrategy", () => {
     });
 
     expect(decision.taskType).toBe("code_agent");
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.reasoning).toContain("terminalCode=true");
   });
 
@@ -328,7 +328,7 @@ describe("PortfolioStrategy", () => {
     expect(decision.taskType).toBe("tool_agent");
     expect(decision.reasoning).toContain("agentRisk=complex_high");
     expect(decision.model).toBe("anthropic/claude-sonnet-5");
-    expect(decision.model).not.toBe("openai/gpt-5-mini");
+    expect(decision.model).not.toBe("openai/gpt-5.6-luna");
   });
 
   it("promotes a cross-runtime polyglot artifact to the strong Terminal Agent band", () => {
@@ -456,7 +456,7 @@ describe("PortfolioStrategy", () => {
     });
 
     expect(["tool_agent", "tool_agent_parallel", "code_agent"]).toContain(decision.taskType);
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.reasoning).toContain("terminalSafety=false");
   });
 
@@ -475,7 +475,7 @@ describe("PortfolioStrategy", () => {
     });
 
     expect(decision.reasoning).toContain("terminalSafety=true");
-    expect(decision.model).not.toBe("openai/gpt-5-mini");
+    expect(decision.model).not.toBe("openai/gpt-5.6-luna");
   });
 
   it("uses the trajectory-validated high-risk model for retail order tools", () => {
@@ -501,7 +501,7 @@ describe("PortfolioStrategy", () => {
 
     expect(["tool_agent", "tool_agent_parallel"]).toContain(decision.taskType);
     expect(decision.model).toBe("deepseek/deepseek-v4-pro");
-    expect(decision.candidates).toContain("openai/gpt-5-mini");
+    expect(decision.candidates).toContain("openai/gpt-5.6-luna");
   });
 
   it("uses the calibrated low-cost model for one local retail operation", () => {
@@ -526,7 +526,7 @@ describe("PortfolioStrategy", () => {
     );
 
     expect(decision.taskType).toBe("tool_agent");
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
   });
 
   it("keeps global retail choices on the high-risk calibrated model", () => {
@@ -593,7 +593,7 @@ describe("PortfolioStrategy", () => {
       },
     );
 
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.reasoning).toContain("agentRisk=policy_exception_simple");
   });
 
@@ -659,7 +659,7 @@ describe("PortfolioStrategy", () => {
     });
 
     expect(["tool_agent", "tool_agent_parallel"]).toContain(decision.taskType);
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.candidates).toContain("anthropic/claude-sonnet-5");
   });
 
@@ -684,7 +684,7 @@ describe("PortfolioStrategy", () => {
     );
 
     expect(decision.taskType).not.toBe("code_agent");
-    expect(decision.model).toBe("openai/gpt-5-mini");
+    expect(decision.model).toBe("openai/gpt-5.6-luna");
     expect(decision.reasoning).toContain("agentRisk=high");
   });
 
