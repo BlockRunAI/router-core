@@ -135,11 +135,11 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
 
 // route("Prove that the sum of two odd integers is even, step by step.", undefined, 4096, { ... })
 {
-  "model": "deepseek/deepseek-v4-pro",
+  "model": "google/gemini-3.6-flash",
   "tier": "REASONING",
   "taskType": "reasoning",
   "confidence": 0.97,
-  "candidates": ["deepseek/deepseek-v4-pro", "google/gemini-3.5-flash", "deepseek/deepseek-reasoner", "…"]
+  "candidates": ["google/gemini-3.6-flash", "deepseek/deepseek-v4-pro", "deepseek/deepseek-reasoner", "…"]
 }
 
 // same request, tools attached: "Cancel order B-42 and book the 9am flight to SFO."
@@ -268,7 +268,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 69 live performance profiles (three samples per model), 9 auditable historical seeds, 84 function-calling probe results, and a built-in snapshot of the 97 text models in the public catalog (2026-11-23 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Gemini 4 Carbon, added 2026-11-11 ahead of its gateway listing, returned its own next tool call through a two-round tool history on both the streaming and non-streaming gateway paths, so it is admitted as a tool fallback too. Kimi K3.1 Pro, which replaced Kimi K3 in every chain and affinity band on 2026-11-23, passed the live profile probe (three completions, no errors, a well-formed tool call); its reasoningMath affinity is measured on K3.1 Pro (paired against K3 on 50 MGSM rows on 2026-11-23: 41/50 vs 44/50 at a 512-token budget, every gap a truncation, 46/50 each when the truncated rows were rerun at 2,048 tokens), and it moves from 0.9 to 0.88. Its other affinity values are still carried over from K3, not measured on K3.1 Pro. Mistral Large 4, Gemini 4 Argon, Hydrogen and Neon, Claude Fable 5.2, and GPT-6.2 Astra and Sol have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
+The repository ships 69 live performance profiles (three samples per model), 9 auditable historical seeds, 84 function-calling probe results, and a built-in snapshot of the 97 text models in the public catalog (2026-11-24 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Gemini 4 Carbon, added 2026-11-11 ahead of its gateway listing, returned its own next tool call through a two-round tool history on both the streaming and non-streaming gateway paths, so it is admitted as a tool fallback too. Kimi K3.1 Pro, which replaced Kimi K3 in every chain and affinity band on 2026-11-23, passed the live profile probe (three completions, no errors, a well-formed tool call); its reasoningMath affinity is measured on K3.1 Pro (paired against K3 on 50 MGSM rows on 2026-11-23: 41/50 vs 44/50 at a 512-token budget, every gap a truncation, 46/50 each when the truncated rows were rerun at 2,048 tokens), and it moves from 0.9 to 0.88. Its other affinity values are still carried over from K3, not measured on K3.1 Pro. On 2026-11-24 Gemini 3.6 Flash replaced Gemini 3.5 Flash, and GPT-5.4 Mini replaced o4-mini, in every chain and affinity band, when the gateways began redirecting the retired ids to them; 3.6 Flash's affinity values are carried over from 3.5 Flash (which Google had been answering with 3.6 since October), not measured on 3.6. Mistral Large 4, Gemini 4 Argon, Hydrogen and Neon, Claude Fable 5.2, and GPT-6.2 Astra and Sol have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
 
 Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
 
@@ -431,7 +431,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 189 tests across 11 files
+npm test            # vitest — 196 tests across 12 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 

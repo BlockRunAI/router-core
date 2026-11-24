@@ -1644,6 +1644,17 @@ var DEFAULT_ROUTING_CONFIG = {
   //
   // Latency figures in comments are the 2026-08-29 gateway probe
   // (model-profiles.generated.json); prices are the catalog list.
+  //
+  // Retirements 2026-11-24 (owner-approved; the gateways redirect each id
+  // before pricing, so a stale name here is a silent model swap, not an error):
+  //  - google/gemini-3.5-flash -> google/gemini-3.6-flash. Google has served
+  //    3.6 Flash under the 3.5 name since ~2026-10-10. Each 3.5 rung now names
+  //    3.6 at the same position; where 3.6 already sat in the same chain, the
+  //    later of the two is dropped, so the order of the models actually served
+  //    is unchanged. 3.6 inherits 3.5's affinity values, carried, not measured
+  //    (portfolio.ts).
+  //  - openai/o4-mini (and o1, o3-mini) -> openai/gpt-5.4-mini, at the same
+  //    position. Dead at OpenAI since 2026-10-23 and on Azure since 2026-11-19.
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
     SIMPLE: {
@@ -1669,13 +1680,13 @@ var DEFAULT_ROUTING_CONFIG = {
       ]
     },
     MEDIUM: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08). Gemini 3.5 Flash is the
-      // calibrated successor: MGSM 5/5, GPQA 4/6, extraction band (portfolio.ts).
-      primary: "google/gemini-3.5-flash",
-      // $1.50/$9, 1M ctx, vision + tools
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then Gemini 3.5 Flash — the
+      // calibrated successor (MGSM 5/5, GPQA 4/6, extraction band) — until its
+      // 2026-11-24 retirement. 3.6 Flash is what Google served under that name
+      // since ~10-10; it was this chain's first fallback and is dropped there.
+      primary: "google/gemini-3.6-flash",
+      // $0.75/$3.75, 1M ctx, vision + tools — 3.5's affinity, carried
       fallback: [
-        "google/gemini-3.6-flash",
-        // $1.50/$7.50 — newest Flash, output 17% cheaper than 3.5; awaiting calibration
         "zai/glm-5.3-flash",
         // $0.15/$0.50, 1M ctx, vision + tools verified live 2026-08-27
         "openai/gpt-5.6-terra",
@@ -1701,9 +1712,7 @@ var DEFAULT_ROUTING_CONFIG = {
       // $2/$12 — proven long-context flagship (portfolio.ts long_context lead)
       fallback: [
         "google/gemini-3.6-flash",
-        // $1.50/$7.50 — Pro-level quality at Flash price (Google's claim; uncalibrated here)
-        "google/gemini-3.5-flash",
-        // $1.50/$9 — calibrated
+        // $0.75/$3.75 — Pro-level quality at Flash price (Google's claim); also 3.5 Flash's successor (3.5 retired 2026-11-24 and was the next rung)
         "anthropic/claude-sonnet-5",
         // $3/$15 — near-Opus quality, tau2 + Terminal-Bench calibrated
         "xai/grok-4.5",
@@ -1742,10 +1751,10 @@ var DEFAULT_ROUTING_CONFIG = {
         // $1.50/$4, 1M ctx — xAI reasoning model, vision
         "qwen/qwen3.7-plus",
         // $0.32/$1.28, 1M ctx — reasoning; needs a generous max_tokens (thinking is billed)
-        "google/gemini-3.5-flash",
-        // $1.50/$9 — MGSM 5/5
-        "openai/o4-mini",
-        // $1.10/$4.40
+        "google/gemini-3.6-flash",
+        // $0.75/$3.75 — 3.5 Flash's successor (MGSM 5/5 on 3.5, carried)
+        "openai/gpt-5.4-mini",
+        // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
         "openai/o3"
         // $2/$8
       ]
@@ -1837,12 +1846,12 @@ var DEFAULT_ROUTING_CONFIG = {
   // codex=complex coding, flash=simple coding, sonnet=reasoning/instructions, fable/opus=architecture/PM/audits
   premiumTiers: {
     SIMPLE: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08).
-      primary: "google/gemini-3.5-flash",
-      // $1.50/$9, 1M ctx, vision + tools — calibrated
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then Gemini 3.5 Flash until
+      // its 2026-11-24 retirement; 3.6 Flash was the first fallback and is
+      // dropped there.
+      primary: "google/gemini-3.6-flash",
+      // $0.75/$3.75, 1M ctx, vision + tools — 3.5's affinity, carried
       fallback: [
-        "google/gemini-3.6-flash",
-        // $1.50/$7.50 — newest Flash
         "anthropic/claude-haiku-4.5",
         // $1/$5
         "zai/glm-5.3",
@@ -1866,9 +1875,7 @@ var DEFAULT_ROUTING_CONFIG = {
         "zai/glm-5.3",
         // $1.40/$4.40 — long-horizon coding
         "google/gemini-3.6-flash",
-        // $1.50/$7.50
-        "google/gemini-3.5-flash",
-        // $1.50/$9
+        // $0.75/$3.75 (3.5 Flash, the next rung, retired 2026-11-24)
         "google/gemini-2.5-pro",
         // $1.25/$10
         "xai/grok-4.5",
@@ -1939,8 +1946,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // reasoning band 0.95
         "xai/grok-4.3",
         // $1.50/$4 — xAI reasoning model
-        "openai/o4-mini",
-        // $1.10/$4.40
+        "openai/gpt-5.4-mini",
+        // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
         "openai/o3"
         // $2/$8
       ]
@@ -1968,8 +1975,8 @@ var DEFAULT_ROUTING_CONFIG = {
       primary: "openai/gpt-5-mini",
       // $0.25/$2 — 4/7 Terminal-Bench, 5/6 tau2 airline
       fallback: [
-        "google/gemini-3.5-flash",
-        // $1.50/$9 — tool_agent band 0.88
+        "google/gemini-3.6-flash",
+        // $0.75/$3.75 — tool_agent band 0.88 (3.5's, carried)
         "zai/glm-5.3-flash",
         // $0.15/$0.50 — tools verified
         "openai/gpt-5.6-terra",
@@ -3535,19 +3542,19 @@ var TERMINAL_COMPLEX_HIGH = {
   "claude-sonnet-5": 1,
   "gpt-5.3-codex": 0.87,
   "gpt-5-mini": 0.78,
-  "gemini-3.5-flash": 0.76
+  "gemini-3.6-flash": 0.76
 };
 var WEB_RESEARCH_DEEP = {
   "claude-sonnet-5": 1,
   "gpt-5-mini": 0.88,
-  "gemini-3.5-flash": 0.84,
+  "gemini-3.6-flash": 0.84,
   "claude-opus-5": 0.8,
   "claude-opus-4.8": 0.78
 };
 var WEB_RESEARCH = {
   "claude-sonnet-5": 1,
   "gpt-5-mini": 0.88,
-  "gemini-3.5-flash": 0.86,
+  "gemini-3.6-flash": 0.86,
   "claude-opus-5": 0.84,
   "claude-opus-4.8": 0.82
 };
@@ -3577,7 +3584,7 @@ var AFFINITY = {
     "gpt-5.3-codex": 1,
     "claude-sonnet-5": 0.98,
     "gpt-5-mini": 0.96,
-    "gemini-3.5-flash": 0.92,
+    "gemini-3.6-flash": 0.92,
     "kimi-k3.1-pro": 0.9,
     "deepseek-v4-pro": 0.88,
     "glm-5.2": 0.88
@@ -3589,7 +3596,7 @@ var AFFINITY = {
     "gpt-5-mini": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.89
+    "gemini-3.6-flash": 0.89
   },
   // Two complete agent observations on the public Terminal-Bench
   // new-encrypt-command task ended in Codex repeating the same TerminalExec
@@ -3610,7 +3617,7 @@ var AFFINITY = {
   retailStandard: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.88,
-    "gemini-3.5-flash": 0.82,
+    "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
     "kimi-k3.1-pro": 0.78,
     "deepseek-v4-pro": 0.76
@@ -3618,7 +3625,7 @@ var AFFINITY = {
   retailHigh: {
     "deepseek-v4-pro": 1,
     "claude-sonnet-5": 0.88,
-    "gemini-3.5-flash": 0.82,
+    "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
     "kimi-k3.1-pro": 0.78,
     "gpt-5-mini": 0.76
@@ -3636,13 +3643,13 @@ var AFFINITY = {
   airlineComplex: {
     "claude-sonnet-5": 1,
     "gpt-5-mini": 0.78,
-    "gemini-3.5-flash": 0.76,
+    "gemini-3.6-flash": 0.76,
     "deepseek-v4-pro": 0.74
   },
   airlineStandard: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.8,
+    "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.76
   },
   // Full-trajectory tau2 calibration (2026-07-28, official gpt-4.1 simulator):
@@ -3652,7 +3659,7 @@ var AFFINITY = {
   // airline task.
   toolAgent: {
     "claude-sonnet-5": 1,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "gpt-5.3-codex": 0.87,
     "kimi-k3.1-pro": 0.85,
     "gpt-5-mini": 0.84,
@@ -3670,25 +3677,25 @@ var AFFINITY = {
     "gpt-5-mini": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.92,
-    "gemini-3.5-flash": 0.88
+    "gemini-3.6-flash": 0.88
   },
   parallelRetail: {
     "deepseek-v4-pro": 1,
     "claude-sonnet-5": 0.88,
     "claude-opus-4.8": 0.84,
     "gpt-5-mini": 0.78,
-    "gemini-3.5-flash": 0.76
+    "gemini-3.6-flash": 0.76
   },
   parallelAirlineComplex: {
     "claude-sonnet-5": 1,
     "gpt-5-mini": 0.78,
     "claude-opus-4.8": 0.76,
-    "gemini-3.5-flash": 0.74
+    "gemini-3.6-flash": 0.74
   },
   parallelAirline: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.8
+    "gemini-3.6-flash": 0.8
   },
   // RouterBench calibration, 2026-07-26: Opus 4.8 produced complete multi-call
   // payloads on 2/3 multilingual BFCL parallel cases. Gemini 3.5 Flash, Sonnet
@@ -3698,7 +3705,7 @@ var AFFINITY = {
     "claude-opus-4.8": 1,
     "claude-sonnet-5": 0.84,
     "grok-4.5": 0.82,
-    "gemini-3.5-flash": 0.8,
+    "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.78
   },
   codeEdit: {
@@ -3713,7 +3720,7 @@ var AFFINITY = {
     "deepseek-v4-pro": 0.95,
     "grok-4.5": 0.94,
     "gemini-3.1-pro": 0.92,
-    "gemini-3.5-flash": 0.92
+    "gemini-3.6-flash": 0.92
   },
   // RouterBench calibration (2026-07-28, six stratified GPQA Diamond tasks,
   // identical agent adapter and 512-token budget): Gemini 3 Flash Preview
@@ -3723,7 +3730,7 @@ var AFFINITY = {
   // this reasoning-only model choice.
   reasoningMcq: {
     "gemini-3-flash-preview": 1,
-    "gemini-3.5-flash": 0.91,
+    "gemini-3.6-flash": 0.91,
     "grok-4.5": 0.9,
     "claude-sonnet-5": 0.88,
     "deepseek-v4-pro": 0.84
@@ -3745,7 +3752,7 @@ var AFFINITY = {
   // the 4/5 calibration put at 0.9, by less than the raw 41/44 ratio because
   // the difference is within noise.
   reasoningMath: {
-    "gemini-3.5-flash": 1,
+    "gemini-3.6-flash": 1,
     "grok-4.5": 0.93,
     "claude-sonnet-5": 0.9,
     "deepseek-v4-pro": 0.9,
@@ -3766,7 +3773,7 @@ var AFFINITY = {
     "gemini-3.1-pro": 1,
     "qwen3.7-max": 0.89,
     "glm-5.2": 0.89,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "deepseek-v4-pro": 0.85
   },
   // A structured extraction must preserve both the output contract and the
@@ -3790,7 +3797,7 @@ var AFFINITY = {
   // completions, 0 errors, a well-formed tool call.
   extractionZh: {
     "kimi-k3.1-pro": 1,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "gemini-2.5-flash": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
@@ -3798,14 +3805,14 @@ var AFFINITY = {
   },
   extraction: {
     "kimi-k3.1-pro": 0.9,
-    "gemini-3.5-flash": 0.9,
+    "gemini-3.6-flash": 0.9,
     "gemini-2.5-flash": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
     "claude-sonnet-4.6": 0.9
   },
   chat: {
-    "gemini-3.5-flash": 0.86,
+    "gemini-3.6-flash": 0.86,
     "gemini-2.5-flash": 0.86,
     "kimi-k3.1-pro": 0.86
   }
@@ -3873,7 +3880,7 @@ function evidenceCandidates(task) {
       "openai/gpt-5.3-codex",
       "anthropic/claude-sonnet-5",
       "openai/gpt-5-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "moonshot/kimi-k3.1-pro",
       "deepseek/deepseek-v4-pro"
     ];
@@ -3885,7 +3892,7 @@ function evidenceCandidates(task) {
       "openai/gpt-5-mini",
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "openai/gpt-5.3-codex",
       "moonshot/kimi-k3.1-pro",
       "deepseek/deepseek-v4-pro"
@@ -3900,7 +3907,7 @@ function evidenceCandidates(task) {
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
       "xai/grok-4.5",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "deepseek/deepseek-v4-pro"
     ];
   }
@@ -3910,24 +3917,24 @@ function evidenceCandidates(task) {
       "deepseek/deepseek-v4-pro",
       "qwen/qwen3.7-max",
       "zai/glm-5.2",
-      "google/gemini-3.5-flash"
+      "google/gemini-3.6-flash"
     ];
   }
   if (task === "reasoning_mcq") {
     return [
       "google/gemini-3-flash-preview",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "xai/grok-4.5",
       "anthropic/claude-sonnet-5",
       "deepseek/deepseek-v4-pro"
     ];
   }
   if (task === "extraction") {
-    return ["moonshot/kimi-k3.1-pro", "google/gemini-3.5-flash", "anthropic/claude-sonnet-5"];
+    return ["moonshot/kimi-k3.1-pro", "google/gemini-3.6-flash", "anthropic/claude-sonnet-5"];
   }
   if (task === "reasoning_math") {
     return [
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "xai/grok-4.5",
       "anthropic/claude-sonnet-5",
       "deepseek/deepseek-v4-pro",
@@ -4081,7 +4088,7 @@ var PortfolioStrategy = class {
     const webResearchFallbackOrder = [
       "anthropic/claude-sonnet-5",
       "openai/gpt-5-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "anthropic/claude-opus-5",
       "anthropic/claude-opus-4.8",
       "openai/gpt-5.3-codex"

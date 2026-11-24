@@ -17,7 +17,7 @@ const MODEL_PRICING = new Map<string, ModelPricing>([
   ["deepseek/deepseek-chat", { inputPrice: 0.14, outputPrice: 0.28 }],
   ["anthropic/claude-sonnet-4.6", { inputPrice: 3, outputPrice: 15 }],
   ["google/gemini-3.1-pro", { inputPrice: 1.25, outputPrice: 10 }],
-  ["google/gemini-3.5-flash", { inputPrice: 0.5, outputPrice: 3 }],
+  ["google/gemini-3.6-flash", { inputPrice: 0.5, outputPrice: 3 }],
   ["google/gemini-3-flash-preview", { inputPrice: 0.5, outputPrice: 3 }],
   ["xai/grok-4.5", { inputPrice: 2.5, outputPrice: 9 }],
   ["anthropic/claude-sonnet-5", { inputPrice: 3, outputPrice: 15 }],
@@ -295,7 +295,7 @@ describe("Portfolio default", () => {
 
     expect(decision.taskType).toBe("reasoning_math");
     expect(decision.tier).toBe("REASONING");
-    expect(decision.model).toBe("google/gemini-3.5-flash");
+    expect(decision.model).toBe("google/gemini-3.6-flash");
   });
 
   it("recognizes math word problems in languages that omit question marks", () => {

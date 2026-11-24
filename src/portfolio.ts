@@ -510,6 +510,16 @@ function classifyTask(
  */
 type AffinityBand = Readonly<Record<string, number>>;
 
+// Every "gemini-3.6-flash" value below is CARRIED from Gemini 3.5 Flash, not
+// measured on 3.6. The calibrations that set them (RouterBench GPQA/MGSM and
+// BFCL 2026-07-26/28, the Terminal-Bench and tau2 trajectories of 2026-07-28)
+// ran on 3.5. Google has answered the 3.5 name with 3.6 Flash since
+// ~2026-10-10, and on 2026-11-24 the gateways began redirecting 3.5 to 3.6, so
+// the router has in practice been routing 3.6 on these values since October;
+// the key now names the model that answers. The comments that cite "Gemini
+// 3.5 Flash" results describe those runs. Re-measure before treating any of
+// these as 3.6 evidence.
+
 /** Affinity of a model with no task-specific evidence. */
 const NEUTRAL_AFFINITY = 0.68;
 
@@ -520,7 +530,7 @@ const TERMINAL_COMPLEX_HIGH: AffinityBand = {
   "claude-sonnet-5": 1,
   "gpt-5.3-codex": 0.87,
   "gpt-5-mini": 0.78,
-  "gemini-3.5-flash": 0.76,
+  "gemini-3.6-flash": 0.76,
 };
 
 // Complete-session BrowseComp calibration supersedes the earlier single-case
@@ -530,14 +540,14 @@ const TERMINAL_COMPLEX_HIGH: AffinityBand = {
 const WEB_RESEARCH_DEEP: AffinityBand = {
   "claude-sonnet-5": 1,
   "gpt-5-mini": 0.88,
-  "gemini-3.5-flash": 0.84,
+  "gemini-3.6-flash": 0.84,
   "claude-opus-5": 0.8,
   "claude-opus-4.8": 0.78,
 };
 const WEB_RESEARCH: AffinityBand = {
   "claude-sonnet-5": 1,
   "gpt-5-mini": 0.88,
-  "gemini-3.5-flash": 0.86,
+  "gemini-3.6-flash": 0.86,
   "claude-opus-5": 0.84,
   "claude-opus-4.8": 0.82,
 };
@@ -569,7 +579,7 @@ const AFFINITY = {
     "gpt-5.3-codex": 1,
     "claude-sonnet-5": 0.98,
     "gpt-5-mini": 0.96,
-    "gemini-3.5-flash": 0.92,
+    "gemini-3.6-flash": 0.92,
     "kimi-k3.1-pro": 0.9,
     "deepseek-v4-pro": 0.88,
     "glm-5.2": 0.88,
@@ -581,7 +591,7 @@ const AFFINITY = {
     "gpt-5-mini": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.89,
+    "gemini-3.6-flash": 0.89,
   },
   // Two complete agent observations on the public Terminal-Bench
   // new-encrypt-command task ended in Codex repeating the same TerminalExec
@@ -602,7 +612,7 @@ const AFFINITY = {
   retailStandard: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.88,
-    "gemini-3.5-flash": 0.82,
+    "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
     "kimi-k3.1-pro": 0.78,
     "deepseek-v4-pro": 0.76,
@@ -610,7 +620,7 @@ const AFFINITY = {
   retailHigh: {
     "deepseek-v4-pro": 1,
     "claude-sonnet-5": 0.88,
-    "gemini-3.5-flash": 0.82,
+    "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
     "kimi-k3.1-pro": 0.78,
     "gpt-5-mini": 0.76,
@@ -628,13 +638,13 @@ const AFFINITY = {
   airlineComplex: {
     "claude-sonnet-5": 1,
     "gpt-5-mini": 0.78,
-    "gemini-3.5-flash": 0.76,
+    "gemini-3.6-flash": 0.76,
     "deepseek-v4-pro": 0.74,
   },
   airlineStandard: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.8,
+    "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.76,
   },
   // Full-trajectory tau2 calibration (2026-07-28, official gpt-4.1 simulator):
@@ -644,7 +654,7 @@ const AFFINITY = {
   // airline task.
   toolAgent: {
     "claude-sonnet-5": 1,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "gpt-5.3-codex": 0.87,
     "kimi-k3.1-pro": 0.85,
     "gpt-5-mini": 0.84,
@@ -662,25 +672,25 @@ const AFFINITY = {
     "gpt-5-mini": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.92,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
   },
   parallelRetail: {
     "deepseek-v4-pro": 1,
     "claude-sonnet-5": 0.88,
     "claude-opus-4.8": 0.84,
     "gpt-5-mini": 0.78,
-    "gemini-3.5-flash": 0.76,
+    "gemini-3.6-flash": 0.76,
   },
   parallelAirlineComplex: {
     "claude-sonnet-5": 1,
     "gpt-5-mini": 0.78,
     "claude-opus-4.8": 0.76,
-    "gemini-3.5-flash": 0.74,
+    "gemini-3.6-flash": 0.74,
   },
   parallelAirline: {
     "gpt-5-mini": 1,
     "claude-sonnet-5": 0.9,
-    "gemini-3.5-flash": 0.8,
+    "gemini-3.6-flash": 0.8,
   },
   // RouterBench calibration, 2026-07-26: Opus 4.8 produced complete multi-call
   // payloads on 2/3 multilingual BFCL parallel cases. Gemini 3.5 Flash, Sonnet
@@ -690,7 +700,7 @@ const AFFINITY = {
     "claude-opus-4.8": 1,
     "claude-sonnet-5": 0.84,
     "grok-4.5": 0.82,
-    "gemini-3.5-flash": 0.8,
+    "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.78,
   },
   codeEdit: {
@@ -705,7 +715,7 @@ const AFFINITY = {
     "deepseek-v4-pro": 0.95,
     "grok-4.5": 0.94,
     "gemini-3.1-pro": 0.92,
-    "gemini-3.5-flash": 0.92,
+    "gemini-3.6-flash": 0.92,
   },
   // RouterBench calibration (2026-07-28, six stratified GPQA Diamond tasks,
   // identical agent adapter and 512-token budget): Gemini 3 Flash Preview
@@ -715,7 +725,7 @@ const AFFINITY = {
   // this reasoning-only model choice.
   reasoningMcq: {
     "gemini-3-flash-preview": 1,
-    "gemini-3.5-flash": 0.91,
+    "gemini-3.6-flash": 0.91,
     "grok-4.5": 0.9,
     "claude-sonnet-5": 0.88,
     "deepseek-v4-pro": 0.84,
@@ -737,7 +747,7 @@ const AFFINITY = {
   // the 4/5 calibration put at 0.9, by less than the raw 41/44 ratio because
   // the difference is within noise.
   reasoningMath: {
-    "gemini-3.5-flash": 1,
+    "gemini-3.6-flash": 1,
     "grok-4.5": 0.93,
     "claude-sonnet-5": 0.9,
     "deepseek-v4-pro": 0.9,
@@ -758,7 +768,7 @@ const AFFINITY = {
     "gemini-3.1-pro": 1,
     "qwen3.7-max": 0.89,
     "glm-5.2": 0.89,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "deepseek-v4-pro": 0.85,
   },
   // A structured extraction must preserve both the output contract and the
@@ -782,7 +792,7 @@ const AFFINITY = {
   // completions, 0 errors, a well-formed tool call.
   extractionZh: {
     "kimi-k3.1-pro": 1,
-    "gemini-3.5-flash": 0.88,
+    "gemini-3.6-flash": 0.88,
     "gemini-2.5-flash": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
@@ -790,14 +800,14 @@ const AFFINITY = {
   },
   extraction: {
     "kimi-k3.1-pro": 0.9,
-    "gemini-3.5-flash": 0.9,
+    "gemini-3.6-flash": 0.9,
     "gemini-2.5-flash": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
     "claude-sonnet-4.6": 0.9,
   },
   chat: {
-    "gemini-3.5-flash": 0.86,
+    "gemini-3.6-flash": 0.86,
     "gemini-2.5-flash": 0.86,
     "kimi-k3.1-pro": 0.86,
   },
@@ -872,7 +882,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "openai/gpt-5.3-codex",
       "anthropic/claude-sonnet-5",
       "openai/gpt-5-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "moonshot/kimi-k3.1-pro",
       "deepseek/deepseek-v4-pro",
     ];
@@ -884,7 +894,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "openai/gpt-5-mini",
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "openai/gpt-5.3-codex",
       "moonshot/kimi-k3.1-pro",
       "deepseek/deepseek-v4-pro",
@@ -899,7 +909,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
       "xai/grok-4.5",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "deepseek/deepseek-v4-pro",
     ];
   }
@@ -909,13 +919,13 @@ function evidenceCandidates(task: TaskType): string[] {
       "deepseek/deepseek-v4-pro",
       "qwen/qwen3.7-max",
       "zai/glm-5.2",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
     ];
   }
   if (task === "reasoning_mcq") {
     return [
       "google/gemini-3-flash-preview",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "xai/grok-4.5",
       "anthropic/claude-sonnet-5",
       "deepseek/deepseek-v4-pro",
@@ -924,11 +934,11 @@ function evidenceCandidates(task: TaskType): string[] {
   if (task === "extraction") {
     // The Kimi flagship is not on the auto MEDIUM chain (K2.7 was); the
     // language-native extraction band (AFFINITY.extractionZh) needs it in the pool.
-    return ["moonshot/kimi-k3.1-pro", "google/gemini-3.5-flash", "anthropic/claude-sonnet-5"];
+    return ["moonshot/kimi-k3.1-pro", "google/gemini-3.6-flash", "anthropic/claude-sonnet-5"];
   }
   if (task === "reasoning_math") {
     return [
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "xai/grok-4.5",
       "anthropic/claude-sonnet-5",
       "deepseek/deepseek-v4-pro",
@@ -1232,7 +1242,7 @@ export class PortfolioStrategy implements RouterStrategy {
     const webResearchFallbackOrder = [
       "anthropic/claude-sonnet-5",
       "openai/gpt-5-mini",
-      "google/gemini-3.5-flash",
+      "google/gemini-3.6-flash",
       "anthropic/claude-opus-5",
       "anthropic/claude-opus-4.8",
       "openai/gpt-5.3-codex",

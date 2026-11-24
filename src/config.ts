@@ -1087,6 +1087,17 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   //
   // Latency figures in comments are the 2026-08-29 gateway probe
   // (model-profiles.generated.json); prices are the catalog list.
+  //
+  // Retirements 2026-11-24 (owner-approved; the gateways redirect each id
+  // before pricing, so a stale name here is a silent model swap, not an error):
+  //  - google/gemini-3.5-flash -> google/gemini-3.6-flash. Google has served
+  //    3.6 Flash under the 3.5 name since ~2026-10-10. Each 3.5 rung now names
+  //    3.6 at the same position; where 3.6 already sat in the same chain, the
+  //    later of the two is dropped, so the order of the models actually served
+  //    is unchanged. 3.6 inherits 3.5's affinity values, carried, not measured
+  //    (portfolio.ts).
+  //  - openai/o4-mini (and o1, o3-mini) -> openai/gpt-5.4-mini, at the same
+  //    position. Dead at OpenAI since 2026-10-23 and on Azure since 2026-11-19.
 
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
@@ -1104,11 +1115,12 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
       ],
     },
     MEDIUM: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08). Gemini 3.5 Flash is the
-      // calibrated successor: MGSM 5/5, GPQA 4/6, extraction band (portfolio.ts).
-      primary: "google/gemini-3.5-flash", // $1.50/$9, 1M ctx, vision + tools
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then Gemini 3.5 Flash — the
+      // calibrated successor (MGSM 5/5, GPQA 4/6, extraction band) — until its
+      // 2026-11-24 retirement. 3.6 Flash is what Google served under that name
+      // since ~10-10; it was this chain's first fallback and is dropped there.
+      primary: "google/gemini-3.6-flash", // $0.75/$3.75, 1M ctx, vision + tools — 3.5's affinity, carried
       fallback: [
-        "google/gemini-3.6-flash", // $1.50/$7.50 — newest Flash, output 17% cheaper than 3.5; awaiting calibration
         "zai/glm-5.3-flash", // $0.15/$0.50, 1M ctx, vision + tools verified live 2026-08-27
         "openai/gpt-5.6-terra", // $2/$12, 1M ctx — GPT-5.6 balanced tier
         "google/gemini-3-flash-preview", // $0.50/$3
@@ -1123,8 +1135,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
     COMPLEX: {
       primary: "google/gemini-3.1-pro", // $2/$12 — proven long-context flagship (portfolio.ts long_context lead)
       fallback: [
-        "google/gemini-3.6-flash", // $1.50/$7.50 — Pro-level quality at Flash price (Google's claim; uncalibrated here)
-        "google/gemini-3.5-flash", // $1.50/$9 — calibrated
+        "google/gemini-3.6-flash", // $0.75/$3.75 — Pro-level quality at Flash price (Google's claim); also 3.5 Flash's successor (3.5 retired 2026-11-24 and was the next rung)
         "anthropic/claude-sonnet-5", // $3/$15 — near-Opus quality, tau2 + Terminal-Bench calibrated
         "xai/grok-4.5", // $2.50/$9 — 503-resistant, independent infra (was grok-4-0709, now hidden)
         "google/gemini-2.5-pro", // $1.25/$10
@@ -1147,8 +1158,8 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "deepseek/deepseek-v4-pro", // $0.435/$0.87 — calibrated reasoning band 0.95
         "xai/grok-4.3", // $1.50/$4, 1M ctx — xAI reasoning model, vision
         "qwen/qwen3.7-plus", // $0.32/$1.28, 1M ctx — reasoning; needs a generous max_tokens (thinking is billed)
-        "google/gemini-3.5-flash", // $1.50/$9 — MGSM 5/5
-        "openai/o4-mini", // $1.10/$4.40
+        "google/gemini-3.6-flash", // $0.75/$3.75 — 3.5 Flash's successor (MGSM 5/5 on 3.5, carried)
+        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
         "openai/o3", // $2/$8
       ],
     },
@@ -1216,10 +1227,11 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   // codex=complex coding, flash=simple coding, sonnet=reasoning/instructions, fable/opus=architecture/PM/audits
   premiumTiers: {
     SIMPLE: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08).
-      primary: "google/gemini-3.5-flash", // $1.50/$9, 1M ctx, vision + tools — calibrated
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then Gemini 3.5 Flash until
+      // its 2026-11-24 retirement; 3.6 Flash was the first fallback and is
+      // dropped there.
+      primary: "google/gemini-3.6-flash", // $0.75/$3.75, 1M ctx, vision + tools — 3.5's affinity, carried
       fallback: [
-        "google/gemini-3.6-flash", // $1.50/$7.50 — newest Flash
         "anthropic/claude-haiku-4.5", // $1/$5
         "zai/glm-5.3", // $1.40/$4.40, 1M ctx
         "google/gemini-2.5-flash", // $0.30/$2.50
@@ -1233,8 +1245,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "anthropic/claude-sonnet-5", // $3/$15 — code_agent band 0.98
         "moonshot/kimi-k3.1-pro", // $2/$10, 1M ctx — Moonshot flagship
         "zai/glm-5.3", // $1.40/$4.40 — long-horizon coding
-        "google/gemini-3.6-flash", // $1.50/$7.50
-        "google/gemini-3.5-flash", // $1.50/$9
+        "google/gemini-3.6-flash", // $0.75/$3.75 (3.5 Flash, the next rung, retired 2026-11-24)
         "google/gemini-2.5-pro", // $1.25/$10
         "xai/grok-4.5", // $2.50/$9
         "anthropic/claude-sonnet-4.6", // $3/$15
@@ -1279,7 +1290,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "xai/grok-4.5", // reasoning band 0.94
         "deepseek/deepseek-v4-pro", // reasoning band 0.95
         "xai/grok-4.3", // $1.50/$4 — xAI reasoning model
-        "openai/o4-mini", // $1.10/$4.40
+        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
         "openai/o3", // $2/$8
       ],
     },
@@ -1301,7 +1312,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
       // Terminal-Bench and tau2 trajectory evidence in portfolio.ts.
       primary: "openai/gpt-5-mini", // $0.25/$2 — 4/7 Terminal-Bench, 5/6 tau2 airline
       fallback: [
-        "google/gemini-3.5-flash", // $1.50/$9 — tool_agent band 0.88
+        "google/gemini-3.6-flash", // $0.75/$3.75 — tool_agent band 0.88 (3.5's, carried)
         "zai/glm-5.3-flash", // $0.15/$0.50 — tools verified
         "openai/gpt-5.6-terra", // $2/$12
         "openai/gpt-4o-mini", // $0.15/$0.60 — reliable tool calling
