@@ -1081,7 +1081,7 @@ describe("PortfolioStrategy signal hygiene", () => {
     // measured (which gets the neutral 0.5).
     // Both models share the extraction affinity band, so both are scored.
     const equalCostPricing = new Map<string, ModelPricing>([
-      ["google/gemini-2.5-flash", { inputPrice: 1, outputPrice: 1 }],
+      ["google/gemini-3.5-flash-lite", { inputPrice: 1, outputPrice: 1 }],
       ["openai/gpt-4o-mini", { inputPrice: 1, outputPrice: 1 }],
     ]);
     const twoCandidateConfig = {
@@ -1089,7 +1089,7 @@ describe("PortfolioStrategy signal hygiene", () => {
       tiers: Object.fromEntries(
         Object.keys(DEFAULT_ROUTING_CONFIG.tiers).map((tier) => [
           tier,
-          { primary: "google/gemini-2.5-flash", fallback: ["openai/gpt-4o-mini"] },
+          { primary: "google/gemini-3.5-flash-lite", fallback: ["openai/gpt-4o-mini"] },
         ]),
       ) as typeof DEFAULT_ROUTING_CONFIG.tiers,
     };
@@ -1103,7 +1103,7 @@ describe("PortfolioStrategy signal hygiene", () => {
           latencyMs: 600,
           outputTokensPerSecond: 250,
         },
-        "google/gemini-2.5-flash": {
+        "google/gemini-3.5-flash-lite": {
           measuredAt: "not-measured", // no usable observation: neutral
           latencyMs: 0,
           outputTokensPerSecond: 0,
@@ -1116,7 +1116,7 @@ describe("PortfolioStrategy signal hygiene", () => {
     );
     expect(decision.taskType).toBe("extraction");
     expect(rows["openai/gpt-4o-mini"].speed).toBeCloseTo(0.5, 2);
-    expect(rows["google/gemini-2.5-flash"].speed).toBeCloseTo(0.5, 2);
+    expect(rows["google/gemini-3.5-flash-lite"].speed).toBeCloseTo(0.5, 2);
   });
 });
 

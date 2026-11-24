@@ -519,6 +519,12 @@ type AffinityBand = Readonly<Record<string, number>>;
 // the key now names the model that answers. The comments that cite "Gemini
 // 3.5 Flash" results describe those runs. Re-measure before treating any of
 // these as 3.6 evidence.
+//
+// Likewise every "gemini-3.5-flash-lite" value (extractionZh, extraction,
+// chat) is CARRIED from Gemini 2.5 Flash, which Google retired on 2026-12-01
+// and the gateways redirect to 3.5 Flash-Lite. It is a successor, not a
+// sibling claiming a flagship's evidence (see the rule above), but the values
+// were measured on 2.5 and still need a 3.5 Flash-Lite run.
 
 /** Affinity of a model with no task-specific evidence. */
 const NEUTRAL_AFFINITY = 0.68;
@@ -793,7 +799,7 @@ const AFFINITY = {
   extractionZh: {
     "kimi-k3.1-pro": 1,
     "gemini-3.6-flash": 0.88,
-    "gemini-2.5-flash": 0.88,
+    "gemini-3.5-flash-lite": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
     "claude-sonnet-4.6": 0.88,
@@ -801,14 +807,14 @@ const AFFINITY = {
   extraction: {
     "kimi-k3.1-pro": 0.9,
     "gemini-3.6-flash": 0.9,
-    "gemini-2.5-flash": 0.9,
+    "gemini-3.5-flash-lite": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
     "claude-sonnet-4.6": 0.9,
   },
   chat: {
     "gemini-3.6-flash": 0.86,
-    "gemini-2.5-flash": 0.86,
+    "gemini-3.5-flash-lite": 0.86,
     "kimi-k3.1-pro": 0.86,
   },
 } as const satisfies Record<string, AffinityBand>;

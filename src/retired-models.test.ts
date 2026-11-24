@@ -25,6 +25,9 @@ const REDIRECTED: Readonly<Record<string, string>> = {
   "openai/o3-mini": "openai/gpt-5.4-mini",
   "openai/o4-mini": "openai/gpt-5.4-mini",
   "google/gemini-3.5-flash": "google/gemini-3.6-flash",
+  // 2026-12-01: Google retires Gemini 2.5.
+  "google/gemini-2.5-flash": "google/gemini-3.5-flash-lite",
+  "google/gemini-2.5-pro": "google/gemini-3.8-flash",
 };
 
 const TIER_SETS = ["tiers", "ecoTiers", "premiumTiers", "agenticTiers"] as const;

@@ -2,19 +2,18 @@
  {
   "prompt": 0,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
-  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
-  "costEstimate": 0.0001459,
+  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
+  "costEstimate": 0.00011439999999999999,
   "baselineCost": 0.006475,
-  "savings": 0.9774671814671815,
+  "savings": 0.9823320463320464,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
-   "google/gemini-3-flash-preview",
    "google/gemini-3.5-flash-lite",
+   "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -24,11 +23,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8115260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8151268360088743,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    }
   ],
@@ -53,7 +52,7 @@
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
    "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
@@ -92,27 +91,26 @@
  {
   "prompt": 2,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (16 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.0009680000000000001,
+  "reasoning": "score=-0.08 | short (16 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.015438400000000001,
   "baselineCost": 0.057679999999999995,
-  "savings": 0.9832177531206658,
+  "savings": 0.7323439667128987,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -137,7 +135,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -216,7 +214,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -253,7 +251,7 @@
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
    "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "anthropic/claude-sonnet-5",
    "openai/gpt-5-mini",
@@ -292,27 +290,26 @@
  {
   "prompt": 7,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.0013689000000000002,
+  "reasoning": "score=-0.08 | short (13 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.0222989,
   "baselineCost": 0.08326499999999999,
-  "savings": 0.983559718969555,
+  "savings": 0.7321935987509758,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -338,7 +335,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -361,17 +358,17 @@
  {
   "prompt": 9,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0006309000000000001,
+  "costEstimate": 0.0005448000000000001,
   "baselineCost": 0.032205,
-  "savings": 0.9804098742431301,
+  "savings": 0.9830833721471822,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -384,11 +381,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8515260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8551268360088743,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
@@ -421,7 +418,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -497,27 +494,26 @@
  {
   "prompt": 12,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.708477270409738,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (32 tokens), references (following) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.00019519999999999997,
+  "reasoning": "score=-0.07 | short (32 tokens), references (following) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.0017184000000000004,
   "baselineCost": 0.00656,
-  "savings": 0.9702439024390245,
+  "savings": 0.7380487804878049,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -588,17 +584,17 @@
  {
   "prompt": 14,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (25 tokens), format (json) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=12",
-  "costEstimate": 0.0009941000000000001,
+  "costEstimate": 0.0009416000000000001,
   "baselineCost": 0.057725,
-  "savings": 0.9827786920744912,
+  "savings": 0.9836881766998701,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -613,26 +609,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9036593872835585,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9072601693422075,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8783509348364636,
+    "score": 0.8777022488755162,
     "quality": 0.9,
-    "cost": 0.9975829063134487,
+    "cost": 0.9939790954192959,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8051432731437569,
+    "score": 0.8047071484576653,
     "quality": 0.9,
-    "cost": 0.6706951561442522,
+    "cost": 0.6682722412215212,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
@@ -651,19 +647,18 @@
  {
   "prompt": 15,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
-  "costEstimate": 0.0014153,
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
+  "costEstimate": 0.0013544,
   "baselineCost": 0.083345,
-  "savings": 0.983018777371168,
+  "savings": 0.9837494750734896,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
-   "google/gemini-3-flash-preview",
    "google/gemini-3.5-flash-lite",
+   "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -673,11 +668,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8115260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8151268360088743,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    }
   ],
@@ -745,7 +740,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
+  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=5",
   "costEstimate": 0.008589500000000002,
   "baselineCost": 0.032045000000000004,
   "savings": 0.7319550631923858,
@@ -755,7 +750,6 @@
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
-   "google/gemini-2.5-flash",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
@@ -774,17 +768,17 @@
  {
   "prompt": 18,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (30 tokens), simple (translate) | upgraded to MEDIUM (structured output) | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=12",
-  "costEstimate": 0.0010086000000000001,
+  "costEstimate": 0.0009456000000000001,
   "baselineCost": 0.057749999999999996,
-  "savings": 0.9825350649350649,
+  "savings": 0.9836259740259741,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -799,26 +793,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9397869559818712,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9497725092053597,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.48969081765691935,
+    "speed": 0.556261172480176,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.9144964463276977,
+    "score": 0.9137185888215471,
     "quality": 0.9,
-    "cost": 0.9970980847359258,
+    "cost": 0.9927766541462005,
     "speed": 0.43568082939042846,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8468782535656872,
+    "score": 0.8463543995874474,
     "quality": 0.9,
-    "cost": 0.6715031921067905,
+    "cost": 0.66859289222768,
     "speed": 0.4867178599097662,
     "reliability": 1
    },
@@ -913,7 +907,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -1163,7 +1157,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash"
+   "google/gemini-3.5-flash-lite"
   ],
   "candidateScores": [
    {
@@ -1229,7 +1223,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash"
+   "google/gemini-3.5-flash-lite"
   ],
   "candidateScores": [
    {
@@ -1374,7 +1368,7 @@
   "agenticScore": 0,
   "candidates": [
    "moonshot/kimi-k3.1-pro",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -1387,25 +1381,25 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.929985401200297,
+    "score": 0.9228842048956438,
     "quality": 1,
-    "cost": 0.9823321554770318,
+    "cost": 0.9569707401032702,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9101229342146075,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9152669085841061,
     "quality": 0.88,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.7965947251170874,
+    "score": 0.7915625824119914,
     "quality": 0.88,
-    "cost": 0.6961130742049471,
+    "cost": 0.6781411359724614,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
@@ -1424,17 +1418,17 @@
  {
   "prompt": 9,
   "profile": "eco",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | eco | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=7",
-  "costEstimate": 0.0006309000000000001,
+  "costEstimate": 0.0005448000000000001,
   "baselineCost": 0.032205,
-  "savings": 0.9804098742431301,
+  "savings": 0.9830833721471822,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "zai/glm-5.3-flash",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
@@ -1444,11 +1438,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7629229342146076,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.7680669085841062,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    }
   ],
@@ -1474,7 +1468,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash"
+   "google/gemini-3.5-flash-lite"
   ],
   "candidateScores": [
    {
@@ -1514,7 +1508,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
@@ -1686,17 +1680,17 @@
  {
   "prompt": 14,
   "profile": "eco",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (25 tokens), format (json) | ambiguous -> default: MEDIUM | eco | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0009941000000000001,
+  "costEstimate": 0.0009416000000000001,
   "baselineCost": 0.057725,
-  "savings": 0.9827786920744912,
+  "savings": 0.9836881766998701,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -1709,26 +1703,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9173229342146076,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9224669085841062,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8982556114344937,
+    "score": 0.8972465443841309,
     "quality": 0.9,
-    "cost": 0.9975829063134487,
+    "cost": 0.9939790954192959,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.796677708060093,
+    "score": 0.7959992918817282,
     "quality": 0.9,
-    "cost": 0.6706951561442522,
+    "cost": 0.6682722412215212,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
@@ -1803,7 +1797,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
@@ -1882,15 +1876,14 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
+  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | eco | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
   "costEstimate": 0.011271200000000002,
   "baselineCost": 0.032045000000000004,
   "savings": 0.6482696208456857,
   "agenticScore": 0,
   "candidates": [
    "zai/glm-5.3-flash",
-   "openai/gpt-5.6-luna",
-   "google/gemini-2.5-flash"
+   "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
@@ -1908,17 +1901,17 @@
  {
   "prompt": 18,
   "profile": "eco",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (30 tokens), simple (translate) | upgraded to MEDIUM (structured output) | eco | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0010086000000000001,
+  "costEstimate": 0.0009456000000000001,
   "baselineCost": 0.057749999999999996,
-  "savings": 0.9825350649350649,
+  "savings": 0.9836259740259741,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -1931,26 +1924,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9521443471782456,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9641270110464317,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.48969081765691935,
+    "speed": 0.556261172480176,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.9349433463496697,
+    "score": 0.9337333457845467,
     "quality": 0.9,
-    "cost": 0.9970980847359258,
+    "cost": 0.9927766541462005,
     "speed": 0.43568082939042846,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8396301085736594,
+    "score": 0.8388152246075085,
     "quality": 0.9,
-    "cost": 0.6715031921067905,
+    "cost": 0.66859289222768,
     "speed": 0.4867178599097662,
     "reliability": 1
    },
@@ -2053,7 +2046,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash"
+   "google/gemini-3.5-flash-lite"
   ],
   "candidateScores": [
    {
@@ -2093,7 +2086,7 @@
    "openai/gpt-5.6-luna",
    "openai/gpt-5.4-nano",
    "google/gemini-2.5-flash-lite",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-4.1",
    "openai/gpt-4o-mini",
@@ -2168,19 +2161,18 @@
  {
   "prompt": 0,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
-  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
-  "costEstimate": 0.0001459,
+  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
+  "costEstimate": 0.00011439999999999999,
   "baselineCost": 0.006475,
-  "savings": 0.9774671814671815,
+  "savings": 0.9823320463320464,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
-   "google/gemini-3-flash-preview",
    "google/gemini-3.5-flash-lite",
+   "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2190,11 +2182,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8115260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8151268360088743,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    }
   ],
@@ -2219,7 +2211,7 @@
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
    "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "openai/gpt-5-mini",
    "openai/gpt-4.1",
@@ -2258,27 +2250,26 @@
  {
   "prompt": 2,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (16 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.0009680000000000001,
+  "reasoning": "score=-0.08 | short (16 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.015438400000000001,
   "baselineCost": 0.057679999999999995,
-  "savings": 0.9832177531206658,
+  "savings": 0.7323439667128987,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -2303,7 +2294,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2382,7 +2373,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2419,7 +2410,7 @@
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
    "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "anthropic/claude-opus-5",
    "anthropic/claude-sonnet-5",
    "openai/gpt-5-mini",
@@ -2458,27 +2449,26 @@
  {
   "prompt": 7,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.0013689000000000002,
+  "reasoning": "score=-0.08 | short (13 tokens) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.0222989,
   "baselineCost": 0.08326499999999999,
-  "savings": 0.983559718969555,
+  "savings": 0.7321935987509758,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -2504,7 +2494,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2527,17 +2517,17 @@
  {
   "prompt": 9,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (41 tokens), imperative (设计), references (代码) | ambiguous -> default: MEDIUM | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
-  "costEstimate": 0.0006309000000000001,
+  "costEstimate": 0.0005448000000000001,
   "baselineCost": 0.032205,
-  "savings": 0.9804098742431301,
+  "savings": 0.9830833721471822,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
@@ -2550,11 +2540,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8515260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8551268360088743,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
@@ -2587,7 +2577,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2663,27 +2653,26 @@
  {
   "prompt": 12,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3-flash-preview",
   "tier": "SIMPLE",
   "confidence": 0.708477270409738,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (32 tokens), references (following) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
-  "costEstimate": 0.00019519999999999997,
+  "reasoning": "score=-0.07 | short (32 tokens), references (following) | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
+  "costEstimate": 0.0017184000000000004,
   "baselineCost": 0.00656,
-  "savings": 0.9702439024390245,
+  "savings": 0.7380487804878049,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
    "google/gemini-3-flash-preview",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.7269260539502254,
+    "model": "google/gemini-3-flash-preview",
+    "score": 0.7268977078124272,
     "quality": 0.68,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5328243973203874,
     "reliability": 1
    }
   ],
@@ -2754,17 +2743,17 @@
  {
   "prompt": 14,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
   "reasoning": "score=-0.07 | short (25 tokens), format (json) | ambiguous -> default: MEDIUM | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=12",
-  "costEstimate": 0.0009941000000000001,
+  "costEstimate": 0.0009416000000000001,
   "baselineCost": 0.057725,
-  "savings": 0.9827786920744912,
+  "savings": 0.9836881766998701,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -2779,26 +2768,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9036593872835585,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9072601693422075,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8783509348364636,
+    "score": 0.8777022488755162,
     "quality": 0.9,
-    "cost": 0.9975829063134487,
+    "cost": 0.9939790954192959,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8051432731437569,
+    "score": 0.8047071484576653,
     "quality": 0.9,
-    "cost": 0.6706951561442522,
+    "cost": 0.6682722412215212,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
@@ -2817,19 +2806,18 @@
  {
   "prompt": 15,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
-  "costEstimate": 0.0014153,
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=8",
+  "costEstimate": 0.0013544,
   "baselineCost": 0.083345,
-  "savings": 0.983018777371168,
+  "savings": 0.9837494750734896,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
-   "google/gemini-3-flash-preview",
    "google/gemini-3.5-flash-lite",
+   "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -2839,11 +2827,11 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8115260539502253,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8151268360088743,
     "quality": 0.86,
     "cost": 0.5,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    }
   ],
@@ -2911,7 +2899,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
+  "reasoning": "score=-0.06 | short (9 tokens), creative (write a) | ambiguous -> default: MEDIUM | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=5",
   "costEstimate": 0.008589500000000002,
   "baselineCost": 0.032045000000000004,
   "savings": 0.7319550631923858,
@@ -2921,7 +2909,6 @@
    "zai/glm-5.3-flash",
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
-   "google/gemini-2.5-flash",
    "openai/gpt-5.6-luna"
   ],
   "candidateScores": [
@@ -2940,17 +2927,17 @@
  {
   "prompt": 18,
   "profile": "auto",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "MEDIUM",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
   "reasoning": "score=-0.10 | short (30 tokens), simple (translate) | upgraded to MEDIUM (structured output) | v3 task=extraction agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=12",
-  "costEstimate": 0.0010086000000000001,
+  "costEstimate": 0.0009456000000000001,
   "baselineCost": 0.057749999999999996,
-  "savings": 0.9825350649350649,
+  "savings": 0.9836259740259741,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "moonshot/kimi-k3.1-pro",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
@@ -2965,26 +2952,26 @@
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.9397869559818712,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.9497725092053597,
     "quality": 0.9,
     "cost": 1,
-    "speed": 0.48969081765691935,
+    "speed": 0.556261172480176,
     "reliability": 1
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.9144964463276977,
+    "score": 0.9137185888215471,
     "quality": 0.9,
-    "cost": 0.9970980847359258,
+    "cost": 0.9927766541462005,
     "speed": 0.43568082939042846,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8468782535656872,
+    "score": 0.8463543995874474,
     "quality": 0.9,
-    "cost": 0.6715031921067905,
+    "cost": 0.66859289222768,
     "speed": 0.4867178599097662,
     "reliability": 1
    },
@@ -3079,7 +3066,7 @@
    "openai/gpt-5.6-terra",
    "google/gemini-3-flash-preview",
    "deepseek/deepseek-chat",
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "minimax/minimax-m3",
    "google/gemini-3.1-flash-lite",
    "openai/gpt-5.6-luna",
@@ -3155,30 +3142,29 @@
  {
   "prompt": 0,
   "profile": "premium",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7685247834990178,
   "method": "portfolio",
-  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
-  "costEstimate": 0.0001459,
+  "reasoning": "score=-0.10 | short (15 tokens), simple (what is, capital of) | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=5",
+  "costEstimate": 0.00011439999999999999,
   "baselineCost": 0.006475,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "google/gemini-3.6-flash",
    "anthropic/claude-haiku-4.5",
    "zai/glm-5.3",
-   "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8707937605287643,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8738801451504636,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
@@ -3200,7 +3186,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (1 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
+  "reasoning": "score=-0.08 | short (1 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0032001,
   "baselineCost": 0.032005,
   "savings": 0,
@@ -3210,7 +3196,6 @@
    "google/gemini-3.6-flash",
    "anthropic/claude-haiku-4.5",
    "zai/glm-5.3",
-   "google/gemini-2.5-flash",
    "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat",
    "anthropic/claude-opus-5",
@@ -3255,15 +3240,14 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (16 tokens) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
+  "reasoning": "score=-0.08 | short (16 tokens) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
   "costEstimate": 0.015460800000000002,
   "baselineCost": 0.057679999999999995,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-3.6-flash",
-   "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash"
+   "anthropic/claude-haiku-4.5"
   ],
   "candidateScores": [
    {
@@ -3296,7 +3280,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -3393,7 +3377,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -3418,7 +3402,7 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (20 tokens) | premium | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
+  "reasoning": "score=-0.08 | short (20 tokens) | premium | v3 task=tool_agent_parallel agentRisk=high deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.020291200000000002,
   "baselineCost": 0.0577,
   "savings": 0,
@@ -3428,7 +3412,6 @@
    "google/gemini-3.6-flash",
    "anthropic/claude-haiku-4.5",
    "zai/glm-5.3",
-   "google/gemini-2.5-flash",
    "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat",
    "anthropic/claude-opus-5",
@@ -3473,15 +3456,14 @@
   "tier": "SIMPLE",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
+  "reasoning": "score=-0.08 | short (13 tokens) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
   "costEstimate": 0.0223171,
   "baselineCost": 0.08326499999999999,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-3.6-flash",
-   "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash"
+   "anthropic/claude-haiku-4.5"
   ],
   "candidateScores": [
    {
@@ -3514,7 +3496,7 @@
    "anthropic/claude-sonnet-5",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -3550,7 +3532,7 @@
    "openai/gpt-5.3-codex",
    "anthropic/claude-sonnet-5",
    "zai/glm-5.3",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -3594,7 +3576,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -3619,7 +3601,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7373034537835593,
   "method": "portfolio",
-  "reasoning": "score=0.09 | long (1217 tokens), references (following) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
+  "reasoning": "score=0.09 | long (1217 tokens), references (following) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0084417,
   "baselineCost": 0.089285,
   "savings": 0,
@@ -3630,7 +3612,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra",
@@ -3643,7 +3625,6 @@
    "anthropic/claude-opus-5.5",
    "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-v4.1-flash",
-   "google/gemini-3.8-flash",
    "google/gemini-4-carbon",
    "openai/gpt-5.1",
    "openai/gpt-6-astra",
@@ -3674,15 +3655,14 @@
   "tier": "SIMPLE",
   "confidence": 0.708477270409738,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (32 tokens), references (following) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=3",
+  "reasoning": "score=-0.07 | short (32 tokens), references (following) | premium | v3 task=vision agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=2",
   "costEstimate": 0.0017632000000000004,
   "baselineCost": 0.00656,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
    "google/gemini-3.6-flash",
-   "anthropic/claude-haiku-4.5",
-   "google/gemini-2.5-flash"
+   "anthropic/claude-haiku-4.5"
   ],
   "candidateScores": [
    {
@@ -3755,7 +3735,7 @@
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.3-codex",
    "zai/glm-5.3",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "openai/gpt-5.6-terra"
   ],
@@ -3799,30 +3779,29 @@
  {
   "prompt": 15,
   "profile": "premium",
-  "model": "google/gemini-2.5-flash",
+  "model": "google/gemini-3.5-flash-lite",
   "tier": "SIMPLE",
   "confidence": 0.7009865197502964,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=6",
-  "costEstimate": 0.0014153,
+  "reasoning": "score=-0.07 | short (29 tokens), imperative (build) | premium | v3 task=chat agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=5",
+  "costEstimate": 0.0013544,
   "baselineCost": 0.083345,
   "savings": 0,
   "agenticScore": 0,
   "candidates": [
-   "google/gemini-2.5-flash",
+   "google/gemini-3.5-flash-lite",
    "google/gemini-3.6-flash",
    "anthropic/claude-haiku-4.5",
    "zai/glm-5.3",
-   "google/gemini-3.5-flash-lite",
    "deepseek/deepseek-chat"
   ],
   "candidateScores": [
    {
-    "model": "google/gemini-2.5-flash",
-    "score": 0.8707937605287643,
+    "model": "google/gemini-3.5-flash-lite",
+    "score": 0.8738801451504636,
     "quality": 0.86,
     "cost": 1,
-    "speed": 0.5332293421460749,
+    "speed": 0.5846690858410604,
     "reliability": 1
    },
    {
@@ -3844,7 +3823,7 @@
   "tier": "MEDIUM",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
+  "reasoning": "score=-0.06 | short (38 tokens), imperative (deploy), references (the api), agentic-light (check the, deploy) | ambiguous -> default: MEDIUM | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0006437999999999999,
   "baselineCost": 0.0065899999999999995,
   "savings": 0,
@@ -3855,7 +3834,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra",
@@ -3868,7 +3847,6 @@
    "anthropic/claude-opus-5.5",
    "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-v4.1-flash",
-   "google/gemini-3.8-flash",
    "google/gemini-4-carbon",
    "openai/gpt-5.1",
    "openai/gpt-6-astra",
@@ -3909,7 +3887,7 @@
    "anthropic/claude-sonnet-4.6",
    "anthropic/claude-sonnet-5",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "openai/gpt-5.6-terra"
   ],
@@ -3953,7 +3931,7 @@
    "google/gemini-3.6-flash",
    "openai/gpt-5.3-codex",
    "zai/glm-5.3",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "openai/gpt-5.6-terra"
   ],
@@ -4051,7 +4029,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra"
@@ -4076,7 +4054,7 @@
   "tier": "MEDIUM",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=0.08 | long (14423 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=28",
+  "reasoning": "score=0.08 | long (14423 tokens) | premium | v3 task=tool_agent agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=27",
   "costEstimate": 0.0046423,
   "baselineCost": 0.104115,
   "savings": 0,
@@ -4087,7 +4065,7 @@
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
-   "google/gemini-2.5-pro",
+   "google/gemini-3.8-flash",
    "xai/grok-4.5",
    "anthropic/claude-sonnet-4.6",
    "openai/gpt-5.6-terra",
@@ -4100,7 +4078,6 @@
    "anthropic/claude-opus-5.5",
    "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-v4.1-flash",
-   "google/gemini-3.8-flash",
    "google/gemini-4-carbon",
    "openai/gpt-5.1",
    "openai/gpt-6-astra",

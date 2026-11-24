@@ -603,7 +603,12 @@ var DEFAULT_ROUTING_CONFIG = {
     affinityFloorGap: { auto: 0.1, eco: 0.22, premium: 0.05 }
   },
   classifier: {
-    llmModel: "google/gemini-2.5-flash",
+    // gemini-2.5-flash until Google retired it on 2026-12-01 (the gateways
+    // redirect it to 3.5 Flash-Lite). Nothing in this package or ClawRouter
+    // reads llmModel today. Before wiring it, note that 3.5 Flash-Lite always
+    // thinks (it rejects a thinking budget of 0), so llmMaxTokens 10 may be
+    // spent on reasoning before any label is emitted.
+    llmModel: "google/gemini-3.5-flash-lite",
     llmMaxTokens: 10,
     llmTemperature: 0,
     promptTruncationChars: 500,
@@ -1655,16 +1660,27 @@ var DEFAULT_ROUTING_CONFIG = {
   //    (portfolio.ts).
   //  - openai/o4-mini (and o1, o3-mini) -> openai/gpt-5.4-mini, at the same
   //    position. Dead at OpenAI since 2026-10-23 and on Azure since 2026-11-19.
+  //
+  // Retirements 2026-12-01 (Google retires Gemini 2.5; the gateways redirect):
+  //  - google/gemini-2.5-flash -> google/gemini-3.5-flash-lite (same
+  //    $0.30/$2.50), in place, with the same dedupe rule. 3.5 Flash-Lite has
+  //    no vision tag where 2.5 Flash had one, so a SIMPLE vision turn now
+  //    falls past it to the next vision-capable rung instead of reaching a
+  //    redirected model that would drop the image.
+  //  - google/gemini-2.5-pro -> google/gemini-3.8-flash ($0.75/$3.75), in
+  //    place.
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
     SIMPLE: {
-      primary: "google/gemini-2.5-flash",
-      // $0.30/$2.50 — 60% retention (best) in the 2026-03 run; still the fastest quality answer
+      // Was google/gemini-2.5-flash (60% retention, best, in the 2026-03 run)
+      // until its 2026-12-01 retirement. 3.5 Flash-Lite is what the gateways
+      // serve under that name from then on; it was this chain's second
+      // fallback and is dropped there.
+      primary: "google/gemini-3.5-flash-lite",
+      // $0.30/$2.50, 1M ctx, thinking mode, no vision
       fallback: [
         "google/gemini-3-flash-preview",
         // $0.50/$3 — GPQA 5/6 in the 2026-07 calibration
-        "google/gemini-3.5-flash-lite",
-        // $0.30/$2.50, 1M ctx, thinking mode — same price as 2.5 Flash, newer generation
         "deepseek/deepseek-chat",
         // $0.14/$0.28, 1M ctx
         "google/gemini-3.1-flash-lite",
@@ -1695,8 +1711,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.50/$3
         "deepseek/deepseek-chat",
         // $0.14/$0.28
-        "google/gemini-2.5-flash",
-        // $0.30/$2.50
+        "google/gemini-3.5-flash-lite",
+        // $0.30/$2.50 — 2.5 Flash's successor (retired 2026-12-01)
         "minimax/minimax-m3",
         // $0.30/$1.20, 1M ctx
         "google/gemini-3.1-flash-lite",
@@ -1717,8 +1733,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $3/$15 — near-Opus quality, tau2 + Terminal-Bench calibrated
         "xai/grok-4.5",
         // $2.50/$9 — 503-resistant, independent infra (was grok-4-0709, now hidden)
-        "google/gemini-2.5-pro",
-        // $1.25/$10
+        "google/gemini-3.8-flash",
+        // $0.75/$3.75 — 2.5 Pro's successor (retired 2026-12-01)
         "anthropic/claude-sonnet-4.6",
         // $3/$15
         "openai/gpt-5.6-terra",
@@ -1735,8 +1751,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.435/$0.87 — strongest open-weight reasoner
         "deepseek/deepseek-chat",
         // $0.14/$0.28 — cheap last resort
-        "google/gemini-2.5-flash"
-        // $0.30/$2.50
+        "google/gemini-3.5-flash-lite"
+        // $0.30/$2.50 — 2.5 Flash's successor (retired 2026-12-01)
       ]
     },
     REASONING: {
@@ -1807,8 +1823,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.20/$1.25
         "google/gemini-2.5-flash-lite",
         // $0.10/$0.40
-        "google/gemini-2.5-flash"
-        // $0.30/$2.50
+        "google/gemini-3.5-flash-lite"
+        // $0.30/$2.50 — 2.5 Flash's successor (retired 2026-12-01)
       ]
     },
     COMPLEX: {
@@ -1823,8 +1839,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.435/$0.87
         "google/gemini-3.1-flash-lite",
         // $0.25/$1.50
-        "google/gemini-2.5-flash"
-        // $0.30/$2.50
+        "google/gemini-3.5-flash-lite"
+        // $0.30/$2.50 — 2.5 Flash's successor (retired 2026-12-01)
       ]
     },
     REASONING: {
@@ -1856,10 +1872,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $1/$5
         "zai/glm-5.3",
         // $1.40/$4.40, 1M ctx
-        "google/gemini-2.5-flash",
-        // $0.30/$2.50
         "google/gemini-3.5-flash-lite",
-        // $0.30/$2.50
+        // $0.30/$2.50 — written where 2.5 Flash sat (retired 2026-12-01); the duplicate after it is dropped
         "deepseek/deepseek-chat"
         // $0.14/$0.28
       ]
@@ -1876,8 +1890,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $1.40/$4.40 — long-horizon coding
         "google/gemini-3.6-flash",
         // $0.75/$3.75 (3.5 Flash, the next rung, retired 2026-11-24)
-        "google/gemini-2.5-pro",
-        // $1.25/$10
+        "google/gemini-3.8-flash",
+        // $0.75/$3.75 — 2.5 Pro's successor (retired 2026-12-01)
         "xai/grok-4.5",
         // $2.50/$9
         "anthropic/claude-sonnet-4.6",
@@ -1965,8 +1979,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.15/$0.50 — tool calls verified live 2026-08-27
         "anthropic/claude-haiku-4.5",
         // $1/$5
-        "google/gemini-2.5-flash"
-        // $0.30/$2.50
+        "google/gemini-3.5-flash-lite"
+        // $0.30/$2.50 — 2.5 Flash's successor (retired 2026-12-01)
       ]
     },
     MEDIUM: {
@@ -3798,7 +3812,7 @@ var AFFINITY = {
   extractionZh: {
     "kimi-k3.1-pro": 1,
     "gemini-3.6-flash": 0.88,
-    "gemini-2.5-flash": 0.88,
+    "gemini-3.5-flash-lite": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
     "claude-sonnet-4.6": 0.88
@@ -3806,14 +3820,14 @@ var AFFINITY = {
   extraction: {
     "kimi-k3.1-pro": 0.9,
     "gemini-3.6-flash": 0.9,
-    "gemini-2.5-flash": 0.9,
+    "gemini-3.5-flash-lite": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
     "claude-sonnet-4.6": 0.9
   },
   chat: {
     "gemini-3.6-flash": 0.86,
-    "gemini-2.5-flash": 0.86,
+    "gemini-3.5-flash-lite": 0.86,
     "kimi-k3.1-pro": 0.86
   }
 };
