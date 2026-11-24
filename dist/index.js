@@ -1669,6 +1669,19 @@ var DEFAULT_ROUTING_CONFIG = {
   //    redirected model that would drop the image.
   //  - google/gemini-2.5-pro -> google/gemini-3.8-flash ($0.75/$3.75), in
   //    place.
+  //
+  // Retirements 2026-12-11 (OpenAI shuts down o3, gpt-5-mini and gpt-5-nano —
+  // developers.openai.com/api/docs/deprecations, notice 2026-06-11; the
+  // gateways redirect each and quote the successor):
+  //  - openai/o3 -> openai/gpt-5.4-mini ($2/$8 -> $0.75/$4.50). Both o3 rungs
+  //    (auto and premium REASONING) sat directly behind gpt-5.4-mini, so they
+  //    are dropped by the dedupe rule; the order actually served is unchanged.
+  //  - openai/gpt-5-mini -> openai/gpt-5.6-luna ($0.25/$2 -> $0.20/$1.20), in
+  //    place as the agentic MEDIUM primary. Luna inherits gpt-5-mini's
+  //    affinity values, CARRIED, not measured (portfolio.ts) — gpt-5-mini is a
+  //    reasoning model and luna runs without reasoning, so those values are a
+  //    placeholder until a Terminal-Bench/tau2 run on luna.
+  //  - openai/gpt-5-nano -> openai/gpt-6-luna. In no chain.
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
     SIMPLE: {
@@ -1769,10 +1782,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.32/$1.28, 1M ctx — reasoning; needs a generous max_tokens (thinking is billed)
         "google/gemini-3.6-flash",
         // $0.75/$3.75 — 3.5 Flash's successor (MGSM 5/5 on 3.5, carried)
-        "openai/gpt-5.4-mini",
-        // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
-        "openai/o3"
-        // $2/$8
+        "openai/gpt-5.4-mini"
+        // $0.75/$4.50 — o4-mini's and o3's successor (retired 2026-11-24 and 2026-12-11; o3 was the next rung)
       ]
     }
   },
@@ -1960,10 +1971,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // reasoning band 0.95
         "xai/grok-4.3",
         // $1.50/$4 — xAI reasoning model
-        "openai/gpt-5.4-mini",
-        // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
-        "openai/o3"
-        // $2/$8
+        "openai/gpt-5.4-mini"
+        // $0.75/$4.50 — o4-mini's and o3's successor (retired 2026-11-24 and 2026-12-11; o3 was the next rung)
       ]
     }
   },
@@ -1984,10 +1993,12 @@ var DEFAULT_ROUTING_CONFIG = {
       ]
     },
     MEDIUM: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08). GPT-5 Mini carries the
-      // Terminal-Bench and tau2 trajectory evidence in portfolio.ts.
-      primary: "openai/gpt-5-mini",
-      // $0.25/$2 — 4/7 Terminal-Bench, 5/6 tau2 airline
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then GPT-5 Mini — which
+      // carries the Terminal-Bench and tau2 trajectory evidence in
+      // portfolio.ts — until its 2026-12-11 retirement. GPT-5.6 Luna is what
+      // the gateways serve under that name from then on.
+      primary: "openai/gpt-5.6-luna",
+      // $0.20/$1.20, 1M ctx, vision + tools — gpt-5-mini's affinity (4/7 Terminal-Bench, 5/6 tau2 airline), carried
       fallback: [
         "google/gemini-3.6-flash",
         // $0.75/$3.75 — tool_agent band 0.88 (3.5's, carried)
@@ -3555,19 +3566,19 @@ var NEUTRAL_AFFINITY = 0.68;
 var TERMINAL_COMPLEX_HIGH = {
   "claude-sonnet-5": 1,
   "gpt-5.3-codex": 0.87,
-  "gpt-5-mini": 0.78,
+  "gpt-5.6-luna": 0.78,
   "gemini-3.6-flash": 0.76
 };
 var WEB_RESEARCH_DEEP = {
   "claude-sonnet-5": 1,
-  "gpt-5-mini": 0.88,
+  "gpt-5.6-luna": 0.88,
   "gemini-3.6-flash": 0.84,
   "claude-opus-5": 0.8,
   "claude-opus-4.8": 0.78
 };
 var WEB_RESEARCH = {
   "claude-sonnet-5": 1,
-  "gpt-5-mini": 0.88,
+  "gpt-5.6-luna": 0.88,
   "gemini-3.6-flash": 0.86,
   "claude-opus-5": 0.84,
   "claude-opus-4.8": 0.82
@@ -3576,11 +3587,11 @@ var RETAIL_POLICY_EXCEPTION = {
   "gpt-4.1": 1,
   "claude-sonnet-5": 0.9,
   "deepseek-v4-pro": 0.82,
-  "gpt-5-mini": 0.8,
+  "gpt-5.6-luna": 0.8,
   "gpt-4o-mini": 0.76
 };
 var RETAIL_POLICY_EXCEPTION_SIMPLE = {
-  "gpt-5-mini": 1,
+  "gpt-5.6-luna": 1,
   "gpt-4.1": 0.86,
   "deepseek-v4-pro": 0.82,
   "gpt-4o-mini": 0.8
@@ -3597,7 +3608,7 @@ var AFFINITY = {
   codeAgent: {
     "gpt-5.3-codex": 1,
     "claude-sonnet-5": 0.98,
-    "gpt-5-mini": 0.96,
+    "gpt-5.6-luna": 0.96,
     "gemini-3.6-flash": 0.92,
     "kimi-k3.1-pro": 0.9,
     "deepseek-v4-pro": 0.88,
@@ -3607,7 +3618,7 @@ var AFFINITY = {
   // over the prior dynamic choice. Codex/Sonnet are close fallbacks; actual
   // request cost breaks the tie.
   terminalTool: {
-    "gpt-5-mini": 1,
+    "gpt-5.6-luna": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.9,
     "gemini-3.6-flash": 0.89
@@ -3629,7 +3640,7 @@ var AFFINITY = {
   // arguments. DeepSeek V4 Pro completed all three high-risk retail calibration
   // trajectories (global-choice, cross-record, multi-write); Sonnet one.
   retailStandard: {
-    "gpt-5-mini": 1,
+    "gpt-5.6-luna": 1,
     "claude-sonnet-5": 0.88,
     "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
@@ -3642,7 +3653,7 @@ var AFFINITY = {
     "gemini-3.6-flash": 0.82,
     "gpt-5.3-codex": 0.81,
     "kimi-k3.1-pro": 0.78,
-    "gpt-5-mini": 0.76
+    "gpt-5.6-luna": 0.76
   },
   // Standard airline workflows stay on GPT-5 Mini: six full-session
   // development trajectories gave it the same 5/6 success as Sonnet at roughly
@@ -3656,12 +3667,12 @@ var AFFINITY = {
   // roughly two orders of magnitude more on the long-tail case.
   airlineComplex: {
     "claude-sonnet-5": 1,
-    "gpt-5-mini": 0.78,
+    "gpt-5.6-luna": 0.78,
     "gemini-3.6-flash": 0.76,
     "deepseek-v4-pro": 0.74
   },
   airlineStandard: {
-    "gpt-5-mini": 1,
+    "gpt-5.6-luna": 1,
     "claude-sonnet-5": 0.9,
     "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.76
@@ -3676,7 +3687,7 @@ var AFFINITY = {
     "gemini-3.6-flash": 0.88,
     "gpt-5.3-codex": 0.87,
     "kimi-k3.1-pro": 0.85,
-    "gpt-5-mini": 0.84,
+    "gpt-5.6-luna": 0.84,
     "deepseek-v4-pro": 0.82
   },
   // Multi-file Terminal work is not equivalent to a one-turn parallel
@@ -3688,7 +3699,7 @@ var AFFINITY = {
     "gpt-5.3-codex": 0.86
   },
   parallelTerminal: {
-    "gpt-5-mini": 1,
+    "gpt-5.6-luna": 1,
     "gpt-5.3-codex": 0.98,
     "claude-sonnet-5": 0.92,
     "gemini-3.6-flash": 0.88
@@ -3697,17 +3708,17 @@ var AFFINITY = {
     "deepseek-v4-pro": 1,
     "claude-sonnet-5": 0.88,
     "claude-opus-4.8": 0.84,
-    "gpt-5-mini": 0.78,
+    "gpt-5.6-luna": 0.78,
     "gemini-3.6-flash": 0.76
   },
   parallelAirlineComplex: {
     "claude-sonnet-5": 1,
-    "gpt-5-mini": 0.78,
+    "gpt-5.6-luna": 0.78,
     "claude-opus-4.8": 0.76,
     "gemini-3.6-flash": 0.74
   },
   parallelAirline: {
-    "gpt-5-mini": 1,
+    "gpt-5.6-luna": 1,
     "claude-sonnet-5": 0.9,
     "gemini-3.6-flash": 0.8
   },
@@ -3893,7 +3904,7 @@ function evidenceCandidates(task) {
     return [
       "openai/gpt-5.3-codex",
       "anthropic/claude-sonnet-5",
-      "openai/gpt-5-mini",
+      "openai/gpt-5.6-luna",
       "google/gemini-3.6-flash",
       "moonshot/kimi-k3.1-pro",
       "deepseek/deepseek-v4-pro"
@@ -3903,7 +3914,7 @@ function evidenceCandidates(task) {
     return [
       "anthropic/claude-sonnet-5",
       "anthropic/claude-opus-5",
-      "openai/gpt-5-mini",
+      "openai/gpt-5.6-luna",
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
       "google/gemini-3.6-flash",
@@ -3917,7 +3928,7 @@ function evidenceCandidates(task) {
       "anthropic/claude-opus-5",
       "anthropic/claude-opus-4.8",
       "anthropic/claude-sonnet-5",
-      "openai/gpt-5-mini",
+      "openai/gpt-5.6-luna",
       "openai/gpt-4.1",
       "openai/gpt-4o-mini",
       "xai/grok-4.5",
@@ -4101,7 +4112,7 @@ var PortfolioStrategy = class {
     const scoredModels = rankedEntries.map((item) => item.model);
     const webResearchFallbackOrder = [
       "anthropic/claude-sonnet-5",
-      "openai/gpt-5-mini",
+      "openai/gpt-5.6-luna",
       "google/gemini-3.6-flash",
       "anthropic/claude-opus-5",
       "anthropic/claude-opus-4.8",

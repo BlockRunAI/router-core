@@ -28,6 +28,10 @@ const REDIRECTED: Readonly<Record<string, string>> = {
   // 2026-12-01: Google retires Gemini 2.5.
   "google/gemini-2.5-flash": "google/gemini-3.5-flash-lite",
   "google/gemini-2.5-pro": "google/gemini-3.8-flash",
+  // 2026-12-11: OpenAI shuts down o3, gpt-5-mini and gpt-5-nano.
+  "openai/o3": "openai/gpt-5.4-mini",
+  "openai/gpt-5-mini": "openai/gpt-5.6-luna",
+  "openai/gpt-5-nano": "openai/gpt-6-luna",
 };
 
 const TIER_SETS = ["tiers", "ecoTiers", "premiumTiers", "agenticTiers"] as const;
@@ -99,6 +103,31 @@ describe("retired models", () => {
           expect(REDIRECTED[model], `${profile ?? "default"} #${i} returned ${model}`).toBeUndefined();
         }
       });
+    }
+  });
+
+  it("route never returns a retired id on a web-research turn (its own curated fallback order)", () => {
+    // The web-research fallback order is a separate list in portfolio.ts that
+    // the corpus above never reaches: it needs web tools and a research prompt.
+    for (const profile of [undefined, "eco", "auto", "premium"] as const) {
+      for (const prompt of [
+        "Research the following clues across multiple public sources and identify the country.",
+        "Search the official documentation for the current API timeout setting.",
+      ]) {
+        const decision = route(prompt, undefined, 2048, {
+          config: DEFAULT_ROUTING_CONFIG,
+          modelPricing: PRICING,
+          routingProfile: profile,
+          hasTools: true,
+          requiresTools: true,
+          toolCount: 2,
+          toolNames: ["web_search", "web_fetch"],
+        });
+        expect(decision.reasoning).toContain("deepWebResearch=");
+        for (const model of [decision.model, ...(decision.candidates ?? [])]) {
+          expect(REDIRECTED[model], `${profile ?? "default"} web research returned ${model}`).toBeUndefined();
+        }
+      }
     }
   });
 

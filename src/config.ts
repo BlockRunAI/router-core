@@ -1112,6 +1112,19 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   //    redirected model that would drop the image.
   //  - google/gemini-2.5-pro -> google/gemini-3.8-flash ($0.75/$3.75), in
   //    place.
+  //
+  // Retirements 2026-12-11 (OpenAI shuts down o3, gpt-5-mini and gpt-5-nano —
+  // developers.openai.com/api/docs/deprecations, notice 2026-06-11; the
+  // gateways redirect each and quote the successor):
+  //  - openai/o3 -> openai/gpt-5.4-mini ($2/$8 -> $0.75/$4.50). Both o3 rungs
+  //    (auto and premium REASONING) sat directly behind gpt-5.4-mini, so they
+  //    are dropped by the dedupe rule; the order actually served is unchanged.
+  //  - openai/gpt-5-mini -> openai/gpt-5.6-luna ($0.25/$2 -> $0.20/$1.20), in
+  //    place as the agentic MEDIUM primary. Luna inherits gpt-5-mini's
+  //    affinity values, CARRIED, not measured (portfolio.ts) — gpt-5-mini is a
+  //    reasoning model and luna runs without reasoning, so those values are a
+  //    placeholder until a Terminal-Bench/tau2 run on luna.
+  //  - openai/gpt-5-nano -> openai/gpt-6-luna. In no chain.
 
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
@@ -1176,8 +1189,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "xai/grok-4.3", // $1.50/$4, 1M ctx — xAI reasoning model, vision
         "qwen/qwen3.7-plus", // $0.32/$1.28, 1M ctx — reasoning; needs a generous max_tokens (thinking is billed)
         "google/gemini-3.6-flash", // $0.75/$3.75 — 3.5 Flash's successor (MGSM 5/5 on 3.5, carried)
-        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
-        "openai/o3", // $2/$8
+        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's and o3's successor (retired 2026-11-24 and 2026-12-11; o3 was the next rung)
       ],
     },
   },
@@ -1306,8 +1318,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
         "xai/grok-4.5", // reasoning band 0.94
         "deepseek/deepseek-v4-pro", // reasoning band 0.95
         "xai/grok-4.3", // $1.50/$4 — xAI reasoning model
-        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's successor (o4-mini retired 2026-11-24)
-        "openai/o3", // $2/$8
+        "openai/gpt-5.4-mini", // $0.75/$4.50 — o4-mini's and o3's successor (retired 2026-11-24 and 2026-12-11; o3 was the next rung)
       ],
     },
   },
@@ -1324,9 +1335,11 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
       ],
     },
     MEDIUM: {
-      // Was moonshot/kimi-k2.7 (hidden 2026-08). GPT-5 Mini carries the
-      // Terminal-Bench and tau2 trajectory evidence in portfolio.ts.
-      primary: "openai/gpt-5-mini", // $0.25/$2 — 4/7 Terminal-Bench, 5/6 tau2 airline
+      // Was moonshot/kimi-k2.7 (hidden 2026-08), then GPT-5 Mini — which
+      // carries the Terminal-Bench and tau2 trajectory evidence in
+      // portfolio.ts — until its 2026-12-11 retirement. GPT-5.6 Luna is what
+      // the gateways serve under that name from then on.
+      primary: "openai/gpt-5.6-luna", // $0.20/$1.20, 1M ctx, vision + tools — gpt-5-mini's affinity (4/7 Terminal-Bench, 5/6 tau2 airline), carried
       fallback: [
         "google/gemini-3.6-flash", // $0.75/$3.75 — tool_agent band 0.88 (3.5's, carried)
         "zai/glm-5.3-flash", // $0.15/$0.50 — tools verified
