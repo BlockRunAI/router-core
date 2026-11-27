@@ -7,6 +7,11 @@
     "supportsTools": true,
     "probedAt": "2026-10-03T04:27:03Z"
   },
+  "anthropic/claude-fable-5.2": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z",
+    "emptyCompletionSeen": true
+  },
   "anthropic/claude-haiku-4.5": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -30,7 +35,7 @@
   },
   "anthropic/claude-opus-5.5": {
     "supportsTools": true,
-    "probedAt": "2026-10-03T04:27:06Z"
+    "probedAt": "2026-11-27T23:25:03Z"
   },
   "anthropic/claude-sonnet-4.5": {
     "supportsTools": true,
@@ -46,7 +51,8 @@
   },
   "anthropic/claude-sonnet-5.5": {
     "supportsTools": true,
-    "probedAt": "2026-10-03T04:27:07Z"
+    "probedAt": "2026-11-27T23:25:03Z",
+    "emptyCompletionSeen": true
   },
   "deepseek/deepseek-chat": {
     "supportsTools": true,
@@ -108,10 +114,24 @@
     "supportsTools": true,
     "probedAt": "2026-10-03T04:27:11Z"
   },
+  "google/gemini-4-argon": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
+  },
   "google/gemini-4-carbon": {
     "supportsTools": true,
-    "probedAt": "2026-11-11",
-    "source": "BlockRun base gateway before listing (BlockRunAI/blockrun#1035), not probe-model-profiles.mjs: a two-round tool history through both the stream and non-stream paths returned Carbon's own next tool call (finish_reason tool_calls), no catalog fallback. No latency profile yet; a re-probe overwrites this entry."
+    "probedAt": "2026-11-27T23:25:03Z",
+    "emptyCompletionSeen": true
+  },
+  "google/gemini-4-hydrogen": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z",
+    "emptyCompletionSeen": true
+  },
+  "google/gemini-4-neon": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z",
+    "emptyCompletionSeen": true
   },
   "minimax/minimax-m2.7": {
     "supportsTools": true,
@@ -139,6 +159,10 @@
     "supportsTools": false,
     "probedAt": "2026-08-29T16:59:54Z",
     "error": "API error: 429"
+  },
+  "nvidia/nemotron-3.5-bolt": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
   },
   "nvidia/nemotron-nano-12b-v2-vl": {
     "supportsTools": false,
@@ -231,9 +255,8 @@
     "emptyCompletionSeen": true
   },
   "openai/gpt-5.6-luna-pro": {
-    "supportsTools": false,
-    "probedAt": "2026-08-29T16:59:54Z",
-    "error": "API error after payment: 500"
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
   },
   "openai/gpt-5.6-sol": {
     "supportsTools": true,
@@ -271,6 +294,14 @@
     "probedAt": "2026-10-20T18:12:51Z",
     "emptyCompletionSeen": true
   },
+  "openai/gpt-6.2-astra": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
+  },
+  "openai/gpt-6.2-sol": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
+  },
   "openai/o1": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z",
@@ -290,6 +321,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z",
     "emptyCompletionSeen": true
+  },
+  "poolside/laguna-xs-2.1": {
+    "supportsTools": true,
+    "probedAt": "2026-11-27T23:25:03Z"
   },
   "qwen/qwen3.7-flash": {
     "supportsTools": true,

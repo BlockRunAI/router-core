@@ -1684,6 +1684,29 @@ var DEFAULT_ROUTING_CONFIG = {
   //  - openai/gpt-5-nano is NOT redirected (owner decision 2026-11-24): the
   //    gateways keep serving it from Azure at its own $0.05/$0.40 until
   //    2027-02-09. It is hidden and in no chain, and none is added.
+  //
+  // Generation refresh 2026-11-27 (owner-approved). Nothing below is retired
+  // at the gateway — every id it replaces still answers on both chains. The
+  // rule: a fallback rung, or a primary with no calibration behind it, moves
+  // to the same family's newer model when that model costs the same or less
+  // and is tool-verified. Primaries carrying measured trajectory evidence
+  // (Sonnet 5, GPT-4o Mini, Gemini 3.1 Pro's long-context lead) stay until a
+  // calibration run says otherwise, and so do the measured values in
+  // portfolio.ts (BFCL parallel, GPQA, MGSM, BrowseComp, tau2, Terminal-Bench)
+  // and the evidence pools that reach them.
+  //  - claude-opus-5 / -4.8 / -4.7 ($5/$25) -> claude-opus-5.5 ($4/$20), with
+  //    opus-5 kept directly behind it as the in-family hot swap; 4.8 and 4.7
+  //    leave the chains.
+  //  - claude-sonnet-4.6 ($3/$15) -> claude-sonnet-5.5 ($2/$10), in place.
+  //  - grok-4.5 -> grok-4.7 (both $2/$6), in place.
+  //  - gpt-5.4-nano ($0.20/$1.25) -> gpt-6-luna ($0.10/$0.50), in place.
+  //  - gpt-5.5 ($5/$30) and gpt-5.4 ($2.50/$15), adjacent in three COMPLEX
+  //    chains -> one gpt-6.2-sol rung ($2/$10; tool call, 3/3 completions,
+  //    6.3s mean on the 2026-11-27 probe). gpt-5.6-terra stays where it is.
+  //  - premiumTiers.COMPLEX primary: claude-fable-5 ($10/$50) ->
+  //    claude-opus-5.5 ($4/$20), owner decision. Fable 5.2 ($8/$40) is served
+  //    on Base only (Solana answers 503 and does not list it), so it is in no
+  //    chain; Fable 5 leaves the chains.
   // Auto (balanced) tier configs - current default smart routing
   tiers: {
     SIMPLE: {
@@ -1702,8 +1725,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.25/$1.50, 1M ctx
         "openai/gpt-5.6-luna",
         // $0.20/$1.20, 1M ctx — GPT-5.6 cost tier (cut 2026-07-30)
-        "openai/gpt-5.4-nano",
-        // $0.20/$1.25, 1M ctx
+        "openai/gpt-6-luna",
+        // $0.10/$0.50, 1M ctx, vision + tools — gpt-5.4-nano's successor (2026-11-27)
         "google/gemini-2.5-flash-lite",
         // $0.10/$0.40
         "nvidia/nemotron-3.5-lightning"
@@ -1745,25 +1768,23 @@ var DEFAULT_ROUTING_CONFIG = {
         "google/gemini-3.6-flash",
         // $0.75/$3.75 — Pro-level quality at Flash price (Google's claim); also 3.5 Flash's successor (3.5 retired 2026-11-24 and was the next rung)
         "anthropic/claude-sonnet-5",
-        // $3/$15 — near-Opus quality, tau2 + Terminal-Bench calibrated
-        "xai/grok-4.5",
-        // $2.50/$9 — 503-resistant, independent infra (was grok-4-0709, now hidden)
+        // $2/$10 — near-Opus quality, tau2 + Terminal-Bench calibrated
+        "xai/grok-4.7",
+        // $2/$6 — 503-resistant, independent infra (grok-4.5's successor, 2026-11-27)
         "google/gemini-3.8-flash",
         // $0.75/$3.75 — 2.5 Pro's successor (retired 2026-12-01)
-        "anthropic/claude-sonnet-4.6",
-        // $3/$15
+        "anthropic/claude-sonnet-5.5",
+        // $2/$10 — sonnet-4.6's successor (2026-11-27)
         "openai/gpt-5.6-terra",
         // $2/$12 — GPT-5.6 balanced tier (Sol excluded: #202)
-        "openai/gpt-5.5",
-        // $5/$30 — prior OpenAI flagship
-        "openai/gpt-5.4",
-        // $2.50/$15 — previous flagship, benchmarked
+        "openai/gpt-6.2-sol",
+        // $2/$10, vision + tools (probed 2026-11-27) — replaces gpt-5.5 ($5/$30) and gpt-5.4 ($2.50/$15)
         "zai/glm-5.3",
         // $1.40/$4.40, 1M ctx, always-on thinking — verified live 2026-08-19
         "moonshot/kimi-k3.1-pro",
         // $2/$10, 1M ctx — Moonshot flagship (K3 successor)
         "deepseek/deepseek-v4-pro",
-        // $0.435/$0.87 — strongest open-weight reasoner
+        // $1.32/$3.96 — strongest open-weight reasoner
         "deepseek/deepseek-chat",
         // $0.14/$0.28 — cheap last resort
         "google/gemini-3.5-flash-lite"
@@ -1777,9 +1798,9 @@ var DEFAULT_ROUTING_CONFIG = {
       // $0.14/$0.28, 1M ctx
       fallback: [
         "deepseek/deepseek-v4-pro",
-        // $0.435/$0.87 — calibrated reasoning band 0.95
+        // $1.32/$3.96 — calibrated reasoning band 0.95
         "xai/grok-4.3",
-        // $1.50/$4, 1M ctx — xAI reasoning model, vision
+        // $1.25/$2.50, 1M ctx — xAI reasoning model, vision
         "qwen/qwen3.7-plus",
         // $0.32/$1.28, 1M ctx — reasoning; needs a generous max_tokens (thinking is billed)
         "google/gemini-3.6-flash",
@@ -1816,8 +1837,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.15/$0.50, 1M ctx, vision + tools
         "openai/gpt-5.6-luna",
         // $0.20/$1.20, 1M ctx
-        "openai/gpt-5.4-nano",
-        // $0.20/$1.25
+        "openai/gpt-6-luna",
+        // $0.10/$0.50 — gpt-5.4-nano's successor (2026-11-27)
         "google/gemini-3.1-flash-lite"
         // $0.25/$1.50
       ]
@@ -1832,8 +1853,8 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.25/$1.50
         "openai/gpt-5.6-luna",
         // $0.20/$1.20
-        "openai/gpt-5.4-nano",
-        // $0.20/$1.25
+        "openai/gpt-6-luna",
+        // $0.10/$0.50 — gpt-5.4-nano's successor (2026-11-27)
         "google/gemini-2.5-flash-lite",
         // $0.10/$0.40
         "google/gemini-3.5-flash-lite"
@@ -1849,7 +1870,7 @@ var DEFAULT_ROUTING_CONFIG = {
         "minimax/minimax-m3",
         // $0.30/$1.20, 1M ctx
         "deepseek/deepseek-v4-pro",
-        // $0.435/$0.87
+        // $1.32/$3.96
         "google/gemini-3.1-flash-lite",
         // $0.25/$1.50
         "google/gemini-3.5-flash-lite"
@@ -1861,7 +1882,7 @@ var DEFAULT_ROUTING_CONFIG = {
       // $0.14/$0.28, 1M ctx — cheapest listed reasoner
       fallback: [
         "deepseek/deepseek-v4-pro",
-        // $0.435/$0.87
+        // $1.32/$3.96
         "qwen/qwen3.7-plus",
         // $0.32/$1.28 — reasoning
         "minimax/minimax-m3",
@@ -1872,7 +1893,7 @@ var DEFAULT_ROUTING_CONFIG = {
     }
   },
   // Premium tier configs - best quality (blockrun/premium)
-  // codex=complex coding, flash=simple coding, sonnet=reasoning/instructions, fable/opus=architecture/PM/audits
+  // codex=complex coding, flash=simple coding, sonnet=reasoning/instructions, opus=architecture/PM/audits
   premiumTiers: {
     SIMPLE: {
       // Was moonshot/kimi-k2.7 (hidden 2026-08), then Gemini 3.5 Flash until
@@ -1896,7 +1917,7 @@ var DEFAULT_ROUTING_CONFIG = {
       // $1.75/$14 - 400K context, 128K output — code_edit/debug lead (portfolio.ts)
       fallback: [
         "anthropic/claude-sonnet-5",
-        // $3/$15 — code_agent band 0.98
+        // $2/$10 — code_agent band 0.98
         "moonshot/kimi-k3.1-pro",
         // $2/$10, 1M ctx — Moonshot flagship
         "zai/glm-5.3",
@@ -1905,43 +1926,40 @@ var DEFAULT_ROUTING_CONFIG = {
         // $0.75/$3.75 (3.5 Flash, the next rung, retired 2026-11-24)
         "google/gemini-3.8-flash",
         // $0.75/$3.75 — 2.5 Pro's successor (retired 2026-12-01)
-        "xai/grok-4.5",
-        // $2.50/$9
-        "anthropic/claude-sonnet-4.6",
-        // $3/$15
+        "xai/grok-4.7",
+        // $2/$6 — grok-4.5's successor (2026-11-27)
+        "anthropic/claude-sonnet-5.5",
+        // $2/$10 — sonnet-4.6's successor (2026-11-27)
         "openai/gpt-5.6-terra"
         // $2/$12
       ]
     },
     COMPLEX: {
       // fable-5 was promoted here 2026-06-11, force-reverted 2026-06-13 when Anthropic
-      // withdrew the offer, and restored 2026-07-14 now that BlockRun has relisted it.
-      primary: "anthropic/claude-fable-5",
-      // Best quality for complex tasks — Mythos-class flagship above Opus ($10/$50, 1M ctx, always-on thinking)
+      // withdrew the offer, and restored 2026-07-14 when BlockRun relisted it.
+      // 2026-11-27 (owner decision): Opus 5.5 takes the slot. Fable 5.2 is
+      // Base-only (Solana 503s it), and Fable 5 / 5.1 cost 2.5x Opus 5.5.
+      primary: "anthropic/claude-opus-5.5",
+      // $4/$20, 1M ctx, adaptive thinking, vision + tools (probed 2026-11-27)
       // Fallback chain de-Gemini'd 2026-04-22: when Anthropic 503s, Gemini is
       // also prone to "high demand" 503s (correlated failure — everyone falls
       // back to Google at the same time). Prefer in-family → xAI → Moonshot →
       // OpenAI flagship → Z.AI → DeepSeek → NVIDIA free instead.
       fallback: [
         "anthropic/claude-opus-5",
-        // in-family hot swap first (half the price, 1M ctx + adaptive thinking)
-        "anthropic/claude-opus-4.8",
-        // in-family hot swap (identical cost to 5)
-        "anthropic/claude-opus-4.7",
-        // in-family hot swap (identical cost to 4.8)
+        // in-family hot swap first ($5/$25, 1M ctx + adaptive thinking); 4.8 and 4.7 left 2026-11-27
         "anthropic/claude-sonnet-5",
         // Sonnet-tier drop-down, near-Opus quality
-        "anthropic/claude-sonnet-4.6",
-        "xai/grok-4.5",
+        "anthropic/claude-sonnet-5.5",
+        // $2/$10 — sonnet-4.6's successor (2026-11-27)
+        "xai/grok-4.7",
         // xAI flagship — 503-resistant, direct-xAI SKU
         "moonshot/kimi-k3.1-pro",
         // Moonshot flagship, independent infra
         "openai/gpt-5.6-terra",
         // GPT-5.6 balanced tier — stable (Sol excluded: #202)
-        "openai/gpt-5.5",
-        // Prior OpenAI flagship — 1M+ ctx, native agent + computer use
-        "openai/gpt-5.4",
-        // Previous flagship (slow but stable, benchmarked at 6,213ms)
+        "openai/gpt-6.2-sol",
+        // OpenAI flagship tier, $2/$10 — replaces gpt-5.5 and gpt-5.4 (2026-11-27)
         "openai/gpt-5.3-codex",
         "zai/glm-5.3",
         // Z.AI flagship, 1M ctx
@@ -1957,22 +1975,20 @@ var DEFAULT_ROUTING_CONFIG = {
       // Sonnet 5 promoted over Sonnet 4.6 (same price; reasoning band 0.98 for both,
       // plus Sonnet 5's tau2/BrowseComp trajectory evidence).
       primary: "anthropic/claude-sonnet-5",
-      // $3/$15, 1M ctx, adaptive thinking
+      // $2/$10, 1M ctx, adaptive thinking
       fallback: [
-        "anthropic/claude-sonnet-4.6",
-        // in-family hot swap — same cost
+        "anthropic/claude-sonnet-5.5",
+        // in-family hot swap — same cost (sonnet-4.6's successor, 2026-11-27)
+        "anthropic/claude-opus-5.5",
+        // Newest flagship Opus w/ adaptive thinking, $4/$20
         "anthropic/claude-opus-5",
-        // Newest flagship Opus w/ adaptive thinking
-        "anthropic/claude-opus-4.8",
-        // Prior flagship Opus — identical cost to 5
-        "anthropic/claude-opus-4.7",
-        // Flagship Opus w/ adaptive thinking
-        "xai/grok-4.5",
-        // reasoning band 0.94
+        // Prior flagship Opus — in-family hot swap ($5/$25)
+        "xai/grok-4.7",
+        // reasoning band 0.94 (grok-4.5's prior, carried)
         "deepseek/deepseek-v4-pro",
         // reasoning band 0.95
         "xai/grok-4.3",
-        // $1.50/$4 — xAI reasoning model
+        // $1.25/$2.50 — xAI reasoning model
         "openai/gpt-5.4-mini"
         // $0.75/$4.50 — o4-mini's and o3's successor (retired 2026-11-24 and 2026-12-11; o3 was the next rung)
       ]
@@ -2022,29 +2038,25 @@ var DEFAULT_ROUTING_CONFIG = {
       // Sonnet 5 promoted over Sonnet 4.6: tau2 airline + retail reward 1.0,
       // Terminal-Bench safety band lead (portfolio.ts).
       primary: "anthropic/claude-sonnet-5",
-      // $3/$15 — best agentic quality per trajectory evidence
+      // $2/$10 — best agentic quality per trajectory evidence
       // Fallback chain de-Gemini'd 2026-04-22: Gemini's "high demand" 503s
       // correlate with Anthropic outages (everyone falls back together).
       // Prefer 503-resistant providers first.
       fallback: [
-        "anthropic/claude-sonnet-4.6",
-        // in-family hot swap — same cost
+        "anthropic/claude-sonnet-5.5",
+        // in-family hot swap — same cost (sonnet-4.6's successor, 2026-11-27)
+        "anthropic/claude-opus-5.5",
+        // Newest flagship Opus — in-family hot swap, $4/$20
         "anthropic/claude-opus-5",
-        // Newest flagship Opus — in-family hot swap
-        "anthropic/claude-opus-4.8",
-        // Prior flagship Opus — identical cost to 5
-        "anthropic/claude-opus-4.7",
-        // Flagship Opus — in-family hot swap
-        "xai/grok-4.5",
+        // Prior flagship Opus — in-family hot swap ($5/$25)
+        "xai/grok-4.7",
         // xAI flagship — strong tool use, independent infra
         "moonshot/kimi-k3.1-pro",
         // Moonshot flagship — independent infra
         "openai/gpt-5.6-terra",
         // GPT-5.6 balanced tier — stable (Sol excluded: #202)
-        "openai/gpt-5.5",
-        // Prior flagship — native agent + computer use (exactly the agentic-tier use case)
-        "openai/gpt-5.4",
-        // Previous flagship — reliable
+        "openai/gpt-6.2-sol",
+        // OpenAI flagship tier, $2/$10, tools verified — replaces gpt-5.5 and gpt-5.4 (2026-11-27)
         "openai/gpt-5.3-codex",
         // code_agent lead
         "zai/glm-5.3",
@@ -2059,18 +2071,16 @@ var DEFAULT_ROUTING_CONFIG = {
     },
     REASONING: {
       primary: "anthropic/claude-sonnet-5",
-      // $3/$15 — strong tool use + adaptive thinking
+      // $2/$10 — strong tool use + adaptive thinking
       fallback: [
-        "anthropic/claude-sonnet-4.6",
-        // in-family hot swap — same cost
+        "anthropic/claude-sonnet-5.5",
+        // in-family hot swap — same cost (sonnet-4.6's successor, 2026-11-27)
+        "anthropic/claude-opus-5.5",
+        // Newest flagship Opus w/ adaptive thinking, $4/$20
         "anthropic/claude-opus-5",
-        // Newest flagship Opus w/ adaptive thinking
-        "anthropic/claude-opus-4.8",
-        // Prior flagship Opus — identical cost to 5
-        "anthropic/claude-opus-4.7",
-        // Flagship Opus w/ adaptive thinking
-        "xai/grok-4.5",
-        // reasoning band 0.94
+        // Prior flagship Opus — in-family hot swap ($5/$25)
+        "xai/grok-4.7",
+        // reasoning band 0.94 (grok-4.5's prior, carried)
         "deepseek/deepseek-v4-pro",
         // reasoning band 0.95
         "deepseek/deepseek-reasoner"
@@ -2106,10 +2116,9 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "anthropic/claude-fable-5.2": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1e6,
     maxOutputTokens: 128e3,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "anthropic/claude-haiku-4.5": {
@@ -2173,13 +2182,6 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     maxOutputTokens: 128e3,
     supportsTools: true,
     supportsVision: true
-  },
-  "cohere/north-mini-code": {
-    // supportsTools: not probed — fails closed
-    contextWindow: 256e3,
-    maxOutputTokens: 16384,
-    supportsTools: false,
-    supportsVision: false
   },
   "deepseek/deepseek-chat": {
     // override: The 2026-11-08 catalog began tagging deepseek/deepseek-chat "vision" (it was text-only through 2026-10-20), and DeepSeek still ships image input as a separate experimental id (deepseek/deepseek-v4-flash-vision-exp). No image probe has confirmed the tag. Routing an image turn to a model that silently drops the image returns a confident 200 the caller cannot branch on, so this fails closed until a correctly sized image probe passes on both chains; then remove this entry.
@@ -2250,12 +2252,6 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
-  "google/gemini-3.5-flash": {
-    contextWindow: 1048576,
-    maxOutputTokens: 65536,
-    supportsTools: true,
-    supportsVision: true
-  },
   "google/gemini-3.5-flash-lite": {
     contextWindow: 1048576,
     maxOutputTokens: 65536,
@@ -2275,10 +2271,9 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "google/gemini-4-argon": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1048576,
     maxOutputTokens: 65536,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "google/gemini-4-carbon": {
@@ -2288,17 +2283,15 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "google/gemini-4-hydrogen": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1048576,
     maxOutputTokens: 65536,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "google/gemini-4-neon": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1048576,
     maxOutputTokens: 65536,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "minimax/minimax-m2.7": {
@@ -2362,10 +2355,9 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "nvidia/nemotron-3.5-bolt": {
-    // supportsTools: not probed — fails closed
     contextWindow: 131072,
     maxOutputTokens: 16384,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "nvidia/nemotron-3.5-lightning": {
@@ -2484,7 +2476,7 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
   "openai/gpt-5.6-luna-pro": {
     contextWindow: 105e4,
     maxOutputTokens: 128e3,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "openai/gpt-5.6-sol": {
@@ -2536,39 +2528,19 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: true
   },
   "openai/gpt-6.2-astra": {
-    // supportsTools: not probed — fails closed
     contextWindow: 105e4,
     maxOutputTokens: 128e3,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "openai/gpt-6.2-sol": {
-    // supportsTools: not probed — fails closed
     contextWindow: 105e4,
     maxOutputTokens: 128e3,
-    supportsTools: false,
-    supportsVision: true
-  },
-  "openai/o1": {
-    contextWindow: 2e5,
-    maxOutputTokens: 1e5,
     supportsTools: true,
-    supportsVision: false
+    supportsVision: true
   },
   "openai/o3": {
     contextWindow: 2e5,
-    maxOutputTokens: 1e5,
-    supportsTools: true,
-    supportsVision: false
-  },
-  "openai/o3-mini": {
-    contextWindow: 128e3,
-    maxOutputTokens: 1e5,
-    supportsTools: true,
-    supportsVision: false
-  },
-  "openai/o4-mini": {
-    contextWindow: 128e3,
     maxOutputTokens: 1e5,
     supportsTools: true,
     supportsVision: false
@@ -2581,10 +2553,9 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "poolside/laguna-xs-2.1": {
-    // supportsTools: not probed — fails closed
     contextWindow: 131072,
     maxOutputTokens: 16384,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: false
   },
   "qwen/qwen3.7-flash": {
@@ -2715,6 +2686,14 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "anthropic/claude-fable-5.2": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 5587.3,
+    p95LatencyMs: 6206.1,
+    outputTokensPerSecond: 92.94,
+    errorRate: 0,
+    samples: 3
+  },
   "anthropic/claude-haiku-4.5": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 3157.4,
@@ -2755,6 +2734,14 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "anthropic/claude-opus-5.5": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 6485.2,
+    p95LatencyMs: 6951.2,
+    outputTokensPerSecond: 79.15,
+    errorRate: 0,
+    samples: 3
+  },
   "anthropic/claude-sonnet-4.5": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 6330.4,
@@ -2779,6 +2766,14 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "anthropic/claude-sonnet-5.5": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 4770.2,
+    p95LatencyMs: 5352,
+    outputTokensPerSecond: 108.11,
+    errorRate: 0,
+    samples: 3
+  },
   "deepseek/deepseek-chat": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 4351.4,
@@ -2792,6 +2787,14 @@ var model_profiles_generated_default = {
     latencyMs: 5201.2,
     p95LatencyMs: 6079.6,
     outputTokensPerSecond: 99.77,
+    errorRate: 0,
+    samples: 3
+  },
+  "deepseek/deepseek-v4-flash-vision-exp": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 4078.4,
+    p95LatencyMs: 4464.5,
+    outputTokensPerSecond: 127,
     errorRate: 0,
     samples: 3
   },
@@ -2883,6 +2886,38 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "google/gemini-4-argon": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 9565.7,
+    p95LatencyMs: 10491.9,
+    outputTokensPerSecond: 53.87,
+    errorRate: 0,
+    samples: 3
+  },
+  "google/gemini-4-carbon": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 10692.9,
+    p95LatencyMs: 12609.2,
+    outputTokensPerSecond: 48.61,
+    errorRate: 0,
+    samples: 3
+  },
+  "google/gemini-4-hydrogen": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 4520.7,
+    p95LatencyMs: 4928.3,
+    outputTokensPerSecond: 113.78,
+    errorRate: 0,
+    samples: 3
+  },
+  "google/gemini-4-neon": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 6728,
+    p95LatencyMs: 8294.8,
+    outputTokensPerSecond: 78,
+    errorRate: 0,
+    samples: 3
+  },
   "minimax/minimax-m2.7": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 8761.1,
@@ -2929,6 +2964,14 @@ var model_profiles_generated_default = {
     p95LatencyMs: 12992,
     outputTokensPerSecond: 64.96,
     errorRate: 0.3333,
+    samples: 3
+  },
+  "nvidia/nemotron-3.5-bolt": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 5670.2,
+    p95LatencyMs: 5688.6,
+    outputTokensPerSecond: 90.3,
+    errorRate: 0,
     samples: 3
   },
   "nvidia/nemotron-nano-12b-v2-vl": {
@@ -3068,11 +3111,11 @@ var model_profiles_generated_default = {
     samples: 3
   },
   "openai/gpt-5.6-luna-pro": {
-    measuredAt: "2026-08-29T16:59:54Z",
-    latencyMs: 13914.9,
-    p95LatencyMs: 13914.9,
-    outputTokensPerSecond: 36.79,
-    errorRate: 0.6667,
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 11046.8,
+    p95LatencyMs: 12033.6,
+    outputTokensPerSecond: 148.22,
+    errorRate: 0,
     samples: 3
   },
   "openai/gpt-5.6-sol": {
@@ -3112,6 +3155,22 @@ var model_profiles_generated_default = {
     latencyMs: 11324,
     p95LatencyMs: 12747.6,
     outputTokensPerSecond: 45.11,
+    errorRate: 0,
+    samples: 3
+  },
+  "openai/gpt-6.2-astra": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 7973.9,
+    p95LatencyMs: 9532.7,
+    outputTokensPerSecond: 47.21,
+    errorRate: 0,
+    samples: 3
+  },
+  "openai/gpt-6.2-sol": {
+    measuredAt: "2026-11-27T23:25:03Z",
+    latencyMs: 6310.9,
+    p95LatencyMs: 6725.5,
+    outputTokensPerSecond: 58.01,
     errorRate: 0,
     samples: 3
   },
@@ -3614,7 +3673,7 @@ var AFFINITY = {
     "gemini-3.6-flash": 0.92,
     "kimi-k3.1-pro": 0.9,
     "deepseek-v4-pro": 0.88,
-    "glm-5.2": 0.88
+    "glm-5.3": 0.88
   },
   // Seven official Terminal-Bench calibration trajectories favoured GPT-5 Mini
   // over the prior dynamic choice. Codex/Sonnet are close fallbacks; actual
@@ -3737,15 +3796,15 @@ var AFFINITY = {
   },
   codeEdit: {
     "gpt-5.3-codex": 1,
-    "claude-sonnet-4.6": 0.94,
-    "glm-5.2": 0.9,
+    "claude-sonnet-5.5": 0.94,
+    "glm-5.3": 0.9,
     "deepseek-v4-pro": 0.86
   },
   reasoning: {
     "claude-sonnet-5": 0.98,
-    "claude-sonnet-4.6": 0.98,
+    "claude-sonnet-5.5": 0.98,
     "deepseek-v4-pro": 0.95,
-    "grok-4.5": 0.94,
+    "grok-4.7": 0.94,
     "gemini-3.1-pro": 0.92,
     "gemini-3.6-flash": 0.92
   },
@@ -3788,7 +3847,7 @@ var AFFINITY = {
   vision: {
     "gemini-3.1-pro": 0.96,
     "qwen3.7-max": 0.9,
-    "claude-sonnet-4.6": 0.9,
+    "claude-sonnet-5.5": 0.9,
     "kimi-k3.1-pro": 0.9,
     "grok-4.3": 0.9
   },
@@ -3799,7 +3858,7 @@ var AFFINITY = {
   longContext: {
     "gemini-3.1-pro": 1,
     "qwen3.7-max": 0.89,
-    "glm-5.2": 0.89,
+    "glm-5.3": 0.89,
     "gemini-3.6-flash": 0.88,
     "deepseek-v4-pro": 0.85
   },
@@ -3828,7 +3887,7 @@ var AFFINITY = {
     "gemini-3.5-flash-lite": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
-    "claude-sonnet-4.6": 0.88
+    "claude-sonnet-5.5": 0.88
   },
   extraction: {
     "kimi-k3.1-pro": 0.9,
@@ -3836,7 +3895,7 @@ var AFFINITY = {
     "gemini-3.5-flash-lite": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
-    "claude-sonnet-4.6": 0.9
+    "claude-sonnet-5.5": 0.9
   },
   chat: {
     "gemini-3.6-flash": 0.86,
@@ -3943,7 +4002,7 @@ function evidenceCandidates(task) {
       "google/gemini-3.1-pro",
       "deepseek/deepseek-v4-pro",
       "qwen/qwen3.7-max",
-      "zai/glm-5.2",
+      "zai/glm-5.3",
       "google/gemini-3.6-flash"
     ];
   }
@@ -3976,12 +4035,15 @@ var VERIFIED_TOOL_FALLBACKS = [
   "anthropic/claude-sonnet-5.5",
   "deepseek/deepseek-v4.1-flash",
   "google/gemini-3.8-flash",
+  "google/gemini-4-argon",
   "google/gemini-4-carbon",
+  "google/gemini-4-hydrogen",
+  "google/gemini-4-neon",
   "openai/gpt-5.1",
-  "openai/gpt-6-astra",
+  "openai/gpt-5.6-luna-pro",
   "openai/gpt-6-luna",
-  "openai/gpt-6-sol",
-  "openai/gpt-6.1-sol",
+  "openai/gpt-6.2-astra",
+  "openai/gpt-6.2-sol",
   "xai/grok-4.6",
   "xai/grok-4.7",
   "xiaomi/mimo-v2.5"

@@ -534,6 +534,17 @@ type AffinityBand = Readonly<Record<string, number>>;
 // are a placeholder, not luna evidence. Re-measure luna on those suites — or
 // move the bands to a measured model — before relying on them.
 
+// 2026-11-27 generation refresh. Some values here are hand-set priors, not
+// measurements: the reasoning, codeEdit, vision, longContext, extraction and
+// extractionZh bands and the glm entry in codeAgent carry no calibration run.
+// Where such a prior named a model the chains no longer use, it moves to the
+// same family's successor, unchanged: claude-sonnet-4.6 -> claude-sonnet-5.5,
+// glm-5.2 -> glm-5.3, and grok-4.5's reasoning prior -> grok-4.7. These are
+// CARRIED, not measured. Measured values stay with the model that was measured
+// (grok-4.5 in parallel, reasoningMcq and reasoningMath; claude-opus-4.8 in the
+// BFCL parallel band and the trajectory bands; claude-sonnet-5 throughout),
+// and the evidence pools keep reaching those models.
+
 /** Affinity of a model with no task-specific evidence. */
 const NEUTRAL_AFFINITY = 0.68;
 
@@ -596,7 +607,7 @@ const AFFINITY = {
     "gemini-3.6-flash": 0.92,
     "kimi-k3.1-pro": 0.9,
     "deepseek-v4-pro": 0.88,
-    "glm-5.2": 0.88,
+    "glm-5.3": 0.88,
   },
   // Seven official Terminal-Bench calibration trajectories favoured GPT-5 Mini
   // over the prior dynamic choice. Codex/Sonnet are close fallbacks; actual
@@ -719,15 +730,15 @@ const AFFINITY = {
   },
   codeEdit: {
     "gpt-5.3-codex": 1,
-    "claude-sonnet-4.6": 0.94,
-    "glm-5.2": 0.9,
+    "claude-sonnet-5.5": 0.94,
+    "glm-5.3": 0.9,
     "deepseek-v4-pro": 0.86,
   },
   reasoning: {
     "claude-sonnet-5": 0.98,
-    "claude-sonnet-4.6": 0.98,
+    "claude-sonnet-5.5": 0.98,
     "deepseek-v4-pro": 0.95,
-    "grok-4.5": 0.94,
+    "grok-4.7": 0.94,
     "gemini-3.1-pro": 0.92,
     "gemini-3.6-flash": 0.92,
   },
@@ -770,7 +781,7 @@ const AFFINITY = {
   vision: {
     "gemini-3.1-pro": 0.96,
     "qwen3.7-max": 0.9,
-    "claude-sonnet-4.6": 0.9,
+    "claude-sonnet-5.5": 0.9,
     "kimi-k3.1-pro": 0.9,
     "grok-4.3": 0.9,
   },
@@ -781,7 +792,7 @@ const AFFINITY = {
   longContext: {
     "gemini-3.1-pro": 1,
     "qwen3.7-max": 0.89,
-    "glm-5.2": 0.89,
+    "glm-5.3": 0.89,
     "gemini-3.6-flash": 0.88,
     "deepseek-v4-pro": 0.85,
   },
@@ -810,7 +821,7 @@ const AFFINITY = {
     "gemini-3.5-flash-lite": 0.88,
     "gpt-4o-mini": 0.88,
     "claude-sonnet-5": 0.88,
-    "claude-sonnet-4.6": 0.88,
+    "claude-sonnet-5.5": 0.88,
   },
   extraction: {
     "kimi-k3.1-pro": 0.9,
@@ -818,7 +829,7 @@ const AFFINITY = {
     "gemini-3.5-flash-lite": 0.9,
     "gpt-4o-mini": 0.9,
     "claude-sonnet-5": 0.9,
-    "claude-sonnet-4.6": 0.9,
+    "claude-sonnet-5.5": 0.9,
   },
   chat: {
     "gemini-3.6-flash": 0.86,
@@ -932,7 +943,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "google/gemini-3.1-pro",
       "deepseek/deepseek-v4-pro",
       "qwen/qwen3.7-max",
-      "zai/glm-5.2",
+      "zai/glm-5.3",
       "google/gemini-3.6-flash",
     ];
   }
@@ -971,6 +982,19 @@ function evidenceCandidates(task: TaskType): string[] {
  * full agent evaluation earns a task-specific affinity above NEUTRAL_AFFINITY
  * floor. `isEligible` still applies every host capability override, context
  * limit, vision constraint, and unavailable-model guard before they are used.
+ *
+ * 2026-11-27 refresh: gpt-6-sol, gpt-6.1-sol and gpt-6-astra give way to
+ * GPT-6.2 Sol and Astra, which replace them at the same or a lower price. The
+ * Gemini 4 line (Argon, Hydrogen, Neon; Carbon was already here), the GPT-6.2
+ * pair and GPT-5.6 Luna Pro each returned a well-formed tool call on the
+ * 2026-11-27 probe. Opus 5.5, Sonnet 5.5, Grok 4.7 and GPT-6.2 Sol now also
+ * sit in configured chains; they stay listed so a tier whose chain lacks them
+ * keeps them as a rescue. Claude Fable 5.2 passed too, but only Base serves it
+ * (Solana answers 503 and does not list it), so it is not admitted to a
+ * chain-neutral list; Fable 5.1 stays. The free models that passed
+ * (nemotron-3.5-bolt, laguna-xs-2.1) are not admitted either: outside Premium
+ * this list is walked cheapest-first, which would put a capacity-limited free
+ * tier first in line to rescue a paid tool turn.
  */
 const VERIFIED_TOOL_FALLBACKS = [
   "anthropic/claude-fable-5.1",
@@ -978,12 +1002,15 @@ const VERIFIED_TOOL_FALLBACKS = [
   "anthropic/claude-sonnet-5.5",
   "deepseek/deepseek-v4.1-flash",
   "google/gemini-3.8-flash",
+  "google/gemini-4-argon",
   "google/gemini-4-carbon",
+  "google/gemini-4-hydrogen",
+  "google/gemini-4-neon",
   "openai/gpt-5.1",
-  "openai/gpt-6-astra",
+  "openai/gpt-5.6-luna-pro",
   "openai/gpt-6-luna",
-  "openai/gpt-6-sol",
-  "openai/gpt-6.1-sol",
+  "openai/gpt-6.2-astra",
+  "openai/gpt-6.2-sol",
   "xai/grok-4.6",
   "xai/grok-4.7",
   "xiaomi/mimo-v2.5",
