@@ -48,6 +48,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-4o-mini",
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
@@ -71,7 +72,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -80,10 +80,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -456,6 +464,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -480,7 +489,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -489,10 +497,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -536,7 +552,7 @@
   "tier": "REASONING",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0005406000000000001,
   "baselineCost": 0.032065,
   "savings": 0.9831404958677685,
@@ -546,6 +562,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -555,7 +572,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8923646112243454,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -563,26 +580,34 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8049604236508097,
+    "score": 0.8175944651626506,
     "quality": 0.9,
-    "cost": 0.6696793256278788,
+    "cost": 0.6704240006936617,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7924364175182868,
+    "score": 0.7927067927540891,
     "quality": 0.9,
-    "cost": 0.33370991570348485,
+    "cost": 0.33521200034683085,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.7673367765591398,
+    "score": 0.7719092353007219,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022544004161969555,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6864429511391557,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -701,6 +726,7 @@
   "agenticScore": 0.2,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -725,7 +751,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -734,10 +759,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -846,7 +879,7 @@
   "tier": "REASONING",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0014038,
   "baselineCost": 0.083365,
   "savings": 0.9831607988964194,
@@ -856,6 +889,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -865,7 +899,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8923646112243454,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -873,26 +907,34 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8049475744973322,
+    "score": 0.8175784752028741,
     "quality": 0.9,
-    "cost": 0.6696079414418932,
+    "cost": 0.670335167583792,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7924348113741021,
+    "score": 0.7926987977742008,
     "quality": 0.9,
-    "cost": 0.33370099268023656,
+    "cost": 0.33516758379189593,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.7673367765591398,
+    "score": 0.7718996413248559,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022011005502751146,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6864429511391557,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -950,6 +992,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -972,7 +1015,6 @@
    "google/gemini-3.8-flash",
    "openai/gpt-6-luna",
    "xai/grok-4.6",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
@@ -983,10 +1025,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -1044,6 +1094,7 @@
    "anthropic/claude-sonnet-5",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
+   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.6-flash",
    "openai/gpt-5.6-luna",
    "google/gemini-2.5-flash-lite",
@@ -1064,7 +1115,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -1073,7 +1123,7 @@
   "candidateScores": [
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8715990643333947,
+    "score": 0.8742657310000614,
     "quality": 0.85,
     "cost": 1,
     "speed": 0.41599064333394636,
@@ -1081,7 +1131,7 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8476874744447462,
+    "score": 0.8483541411114129,
     "quality": 1,
     "cost": 0.6671586075180138,
     "speed": 0.44883064339702206,
@@ -1089,7 +1139,7 @@
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.7789268101560526,
+    "score": 0.7809268101560526,
     "quality": 0.87,
     "cost": 0.6669849813351855,
     "speed": 0.3897141538220059,
@@ -1097,15 +1147,23 @@
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6705695484448334,
+    "score": 0.6739028817781667,
     "quality": 0.82,
     "cost": 0.333622710304714,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.647799952150104,
+    "quality": 1,
+    "cost": 0.00008681309141411742,
+    "speed": 0.47775644484507984,
+    "reliability": 1
+   },
+   {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6174492704622258,
+    "score": 0.618782603795559,
     "quality": 0.88,
     "cost": 0.0002604392742426853,
     "speed": 0.48576347465437786,
@@ -1270,6 +1328,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "anthropic/claude-opus-4.8",
+   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.6-flash",
    "google/gemini-2.5-flash-lite",
    "zai/glm-5.3-flash",
@@ -1290,7 +1349,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -1299,7 +1357,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8660542065109696,
+    "score": 0.8680542065109697,
     "quality": 0.82,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -1307,7 +1365,7 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8127901637311831,
+    "score": 0.8137901637311831,
     "quality": 0.84,
     "cost": 0.7518110692552884,
     "speed": 0.44883064339702206,
@@ -1315,7 +1373,7 @@
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7027551895595135,
+    "score": 0.7067551895595136,
     "quality": 0.78,
     "cost": 0.5,
     "speed": 0.41955189559513506,
@@ -1330,8 +1388,16 @@
     "reliability": 1
    },
    {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6596685450930272,
+    "quality": 0.84,
+    "cost": 0.2481889307447116,
+    "speed": 0.47775644484507984,
+    "reliability": 1
+   },
+   {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6514749275871417,
+    "score": 0.6544749275871417,
     "quality": 0.8,
     "cost": 0.24963778614894228,
     "speed": 0.48576347465437786,
@@ -1517,6 +1583,7 @@
    "moonshot/kimi-k3.1-pro",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
+   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.6-flash",
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
@@ -1539,7 +1606,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -1548,7 +1614,7 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9147490813920776,
+    "score": 0.9154157480587443,
     "quality": 1,
     "cost": 0.9066643466156254,
     "speed": 0.44883064339702206,
@@ -1556,7 +1622,7 @@
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8715990643333947,
+    "score": 0.8742657310000614,
     "quality": 0.85,
     "cost": 1,
     "speed": 0.41599064333394636,
@@ -1564,7 +1630,7 @@
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.8223196146513846,
+    "score": 0.8243196146513846,
     "quality": 0.87,
     "cost": 0.8219592831042283,
     "speed": 0.3897141538220059,
@@ -1572,15 +1638,23 @@
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7100175525314989,
+    "score": 0.7133508858648322,
     "quality": 0.82,
     "cost": 0.474508439185662,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6596343533761038,
+    "quality": 1,
+    "cost": 0.04235253175569875,
+    "speed": 0.47775644484507984,
+    "reliability": 1
+   },
+   {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6529524741402246,
+    "score": 0.6542858074735579,
     "quality": 0.88,
     "cost": 0.12705759526709592,
     "speed": 0.48576347465437786,
@@ -1635,7 +1709,7 @@
   "tier": "REASONING",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | eco | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | eco | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0005406000000000001,
   "baselineCost": 0.032065,
   "savings": 0.9831404958677685,
@@ -1646,6 +1720,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "qwen/qwen3.7-plus",
    "minimax/minimax-m3",
@@ -1654,7 +1729,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.9056542065109696,
+    "score": 0.9076542065109696,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -1662,34 +1737,42 @@
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8774500767606129,
+    "score": 0.8774522161585919,
     "quality": 0.88,
-    "cost": 0.9966107586686365,
+    "cost": 0.9966183993757045,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8013932755155083,
+    "score": 0.8046017845339276,
     "quality": 0.9,
-    "cost": 0.6696793256278788,
+    "cost": 0.6704240006936617,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7193939659564893,
+    "score": 0.7198145496566263,
     "quality": 0.9,
-    "cost": 0.33370991570348485,
+    "cost": 0.33521200034683085,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6635763474654379,
+    "score": 0.6652075795819731,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022544004161969555,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6157756444845081,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -1808,6 +1891,7 @@
    "moonshot/kimi-k3.1-pro",
    "openai/gpt-5.3-codex",
    "deepseek/deepseek-v4-pro",
+   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.6-flash",
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
@@ -1830,7 +1914,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -1839,7 +1922,7 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8741575568374959,
+    "score": 0.8748242235041626,
     "quality": 1,
     "cost": 0.7616946160635482,
     "speed": 0.44883064339702206,
@@ -1847,7 +1930,7 @@
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8715990643333947,
+    "score": 0.8742657310000614,
     "quality": 0.85,
     "cost": 1,
     "speed": 0.41599064333394636,
@@ -1855,7 +1938,7 @@
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.7960545105278317,
+    "score": 0.7980545105278317,
     "quality": 0.87,
     "cost": 0.7281553398058253,
     "speed": 0.3897141538220059,
@@ -1863,15 +1946,23 @@
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.6861401851464508,
+    "score": 0.6894735184797841,
     "quality": 0.82,
     "cost": 0.3892321270962047,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6524711431605893,
+    "quality": 1,
+    "cost": 0.01676963812886134,
+    "speed": 0.47775644484507984,
+    "reliability": 1
+   },
+   {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6314628434936814,
+    "score": 0.6327961768270147,
     "quality": 0.88,
     "cost": 0.05030891438658436,
     "speed": 0.48576347465437786,
@@ -1987,7 +2078,7 @@
   "tier": "REASONING",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | eco | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | eco | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0014038,
   "baselineCost": 0.083365,
   "savings": 0.9831607988964194,
@@ -1998,6 +2089,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "qwen/qwen3.7-plus",
    "minimax/minimax-m3",
@@ -2006,7 +2098,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.9056542065109696,
+    "score": 0.9076542065109696,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -2014,34 +2106,42 @@
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.8774725627791983,
+    "score": 0.8774746021022791,
     "quality": 0.88,
-    "cost": 0.9966910658778703,
+    "cost": 0.9966983491745873,
     "speed": 0.41599064333394636,
     "reliability": 1
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8013732879434324,
+    "score": 0.8045769112631641,
     "quality": 0.9,
-    "cost": 0.6696079414418932,
+    "cost": 0.670335167583792,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7193914675099798,
+    "score": 0.7198021130212444,
     "quality": 0.9,
-    "cost": 0.33370099268023656,
+    "cost": 0.33516758379189593,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.6635763474654379,
+    "score": 0.6651926556195149,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022011005502751146,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6157756444845081,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -2099,6 +2199,7 @@
    "openai/gpt-5.3-codex",
    "google/gemini-3.6-flash",
    "deepseek/deepseek-v4-pro",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3-flash",
@@ -2119,7 +2220,6 @@
    "openai/gpt-6.2-astra",
    "google/gemini-3.8-flash",
    "xai/grok-4.6",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
@@ -2130,7 +2230,7 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9408830643397024,
+    "score": 0.9415497310063691,
     "quality": 1,
     "cost": 1,
     "speed": 0.44883064339702206,
@@ -2138,7 +2238,7 @@
    },
    {
     "model": "openai/gpt-5.3-codex",
-    "score": 0.7745038408435178,
+    "score": 0.7765038408435178,
     "quality": 0.87,
     "cost": 0.6511886623618466,
     "speed": 0.3897141538220059,
@@ -2146,7 +2246,7 @@
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.7737061256946574,
+    "score": 0.7750394590279907,
     "quality": 0.88,
     "cost": 0.558320636532927,
     "speed": 0.48576347465437786,
@@ -2154,10 +2254,18 @@
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7464864914047818,
+    "score": 0.7498198247381151,
     "quality": 0.82,
     "cost": 0.6047546494473868,
     "speed": 0.41955189559513506,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7064382481750447,
+    "quality": 1,
+    "cost": 0.20950929889477365,
+    "speed": 0.47775644484507984,
     "reliability": 1
    },
    {
@@ -2170,7 +2278,7 @@
    },
    {
     "model": "moonshot/kimi-k3.1-pro",
-    "score": 0.5915990643333947,
+    "score": 0.5942657310000614,
     "quality": 0.85,
     "cost": 0,
     "speed": 0.41599064333394636,
@@ -2229,6 +2337,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-4o-mini",
    "openai/gpt-5.6-luna",
    "zai/glm-5.3-flash",
@@ -2252,7 +2361,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -2261,10 +2369,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -2637,6 +2753,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -2661,7 +2778,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -2670,10 +2786,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -2717,7 +2841,7 @@
   "tier": "REASONING",
   "confidence": 0.7231218051243898,
   "method": "portfolio",
-  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.08 | short (13 tokens) | upgraded to MEDIUM (structured output) | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0005406000000000001,
   "baselineCost": 0.032065,
   "savings": 0.9831404958677685,
@@ -2727,6 +2851,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -2736,7 +2861,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8923646112243454,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -2744,26 +2869,34 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8049604236508097,
+    "score": 0.8175944651626506,
     "quality": 0.9,
-    "cost": 0.6696793256278788,
+    "cost": 0.6704240006936617,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7924364175182868,
+    "score": 0.7927067927540891,
     "quality": 0.9,
-    "cost": 0.33370991570348485,
+    "cost": 0.33521200034683085,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.7673367765591398,
+    "score": 0.7719092353007219,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022544004161969555,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6864429511391557,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -2882,6 +3015,7 @@
   "agenticScore": 0.2,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -2906,7 +3040,6 @@
    "anthropic/claude-opus-5.5",
    "xai/grok-4.7",
    "google/gemini-4-carbon",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "anthropic/claude-fable-5.1",
@@ -2915,10 +3048,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -3027,7 +3168,7 @@
   "tier": "REASONING",
   "confidence": 0.5,
   "method": "portfolio",
-  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=9",
+  "reasoning": "score=-0.07 | short (33 tokens), constraints (budget, budget) | ambiguous -> default: MEDIUM | v3 task=reasoning_math agentRisk=standard deepWebResearch=false terminalCode=false terminalSafety=false candidates=10",
   "costEstimate": 0.0014038,
   "baselineCost": 0.083365,
   "savings": 0.9831607988964194,
@@ -3037,6 +3178,7 @@
    "anthropic/claude-sonnet-5",
    "deepseek/deepseek-v4-pro",
    "google/gemini-3.6-flash",
+   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-reasoner",
    "xai/grok-4.3",
    "qwen/qwen3.7-plus",
@@ -3046,7 +3188,7 @@
   "candidateScores": [
    {
     "model": "xai/grok-4.5",
-    "score": 0.8923646112243454,
+    "score": 0.9006979445576787,
     "quality": 0.93,
     "cost": 1,
     "speed": 0.40854206510969565,
@@ -3054,26 +3196,34 @@
    },
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8049475744973322,
+    "score": 0.8175784752028741,
     "quality": 0.9,
-    "cost": 0.6696079414418932,
+    "cost": 0.670335167583792,
     "speed": 0.44883064339702206,
     "reliability": 1
    },
    {
     "model": "deepseek/deepseek-v4-pro",
-    "score": 0.7924348113741021,
+    "score": 0.7926987977742008,
     "quality": 0.9,
-    "cost": 0.33370099268023656,
+    "cost": 0.33516758379189593,
     "speed": 0.41955189559513506,
     "reliability": 1
    },
    {
     "model": "google/gemini-3.6-flash",
-    "score": 0.7673367765591398,
+    "score": 0.7718996413248559,
     "quality": 1,
-    "cost": 0,
+    "cost": 0.0022011005502751146,
     "speed": 0.48576347465437786,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.6864429511391557,
+    "quality": 0.9,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -3131,6 +3281,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-luna",
    "google/gemini-3.6-flash",
    "zai/glm-5.3-flash",
@@ -3153,7 +3304,6 @@
    "google/gemini-3.8-flash",
    "openai/gpt-6-luna",
    "xai/grok-4.6",
-   "anthropic/claude-sonnet-5.5",
    "google/gemini-4-neon",
    "xiaomi/mimo-v2.5",
    "xai/grok-4.7",
@@ -3164,10 +3314,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.8714181450377915,
+    "score": 0.9614181450377914,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.7334429511391556,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -3228,6 +3386,7 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "google/gemini-3.6-flash",
    "anthropic/claude-haiku-4.5",
    "zai/glm-5.3",
@@ -3242,7 +3401,6 @@
    "deepseek/deepseek-v4-pro",
    "anthropic/claude-fable-5.1",
    "anthropic/claude-opus-5.5",
-   "anthropic/claude-sonnet-5.5",
    "deepseek/deepseek-v4.1-flash",
    "google/gemini-3.8-flash",
    "google/gemini-4-argon",
@@ -3261,10 +3419,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9269298386038214,
+    "score": 0.9669298386038214,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.8686653866907048,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -3647,13 +3813,13 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.8-flash",
    "xai/grok-4.7",
-   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-terra",
    "anthropic/claude-opus-5",
    "openai/gpt-5.6-luna",
@@ -3678,10 +3844,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9269298386038214,
+    "score": 0.9669298386038214,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.8686653866907048,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -3869,13 +4043,13 @@
   "agenticScore": 0.2,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.8-flash",
    "xai/grok-4.7",
-   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-terra",
    "anthropic/claude-opus-5",
    "openai/gpt-5.6-luna",
@@ -3900,10 +4074,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9269298386038214,
+    "score": 0.9669298386038214,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.8686653866907048,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],
@@ -4100,13 +4282,13 @@
   "agenticScore": 0,
   "candidates": [
    "anthropic/claude-sonnet-5",
+   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.3-codex",
    "moonshot/kimi-k3.1-pro",
    "zai/glm-5.3",
    "google/gemini-3.6-flash",
    "google/gemini-3.8-flash",
    "xai/grok-4.7",
-   "anthropic/claude-sonnet-5.5",
    "openai/gpt-5.6-terra",
    "anthropic/claude-opus-5",
    "openai/gpt-5.6-luna",
@@ -4131,10 +4313,18 @@
   "candidateScores": [
    {
     "model": "anthropic/claude-sonnet-5",
-    "score": 0.9269298386038214,
+    "score": 0.9669298386038214,
     "quality": 1,
-    "cost": 0.5,
+    "cost": 1,
     "speed": 0.44883064339702206,
+    "reliability": 1
+   },
+   {
+    "model": "anthropic/claude-sonnet-5.5",
+    "score": 0.8686653866907048,
+    "quality": 1,
+    "cost": 0,
+    "speed": 0.47775644484507984,
     "reliability": 1
    }
   ],

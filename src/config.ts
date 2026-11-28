@@ -1137,6 +1137,19 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   // calibration run says otherwise, and so do the measured values in
   // portfolio.ts (BFCL parallel, GPQA, MGSM, BrowseComp, tau2, Terminal-Bench)
   // and the evidence pools that reach them.
+  //
+  // Calibration 2026-11-27 (paired runs, results in portfolio.ts): both of
+  // those primaries STAY.
+  //  - Sonnet 5 vs Sonnet 5.5: 5.5 is not worse on any band that could be run
+  //    (GPQA better beyond noise, MGSM, BFCL and a reduced tau2 slice tied or
+  //    ahead), but Sonnet 5's Terminal-Bench and BrowseComp bands, which make
+  //    it the agentic COMPLEX/REASONING and premium REASONING default, need a
+  //    Docker host and the RouterBench Franklin host and were not rerun.
+  //    Sonnet 5.5 stays the in-family hot swap behind it and gets its own
+  //    measured values in the bands that were run.
+  //  - GPT-4o Mini vs GPT-6 Luna: Luna is worse beyond noise on BFCL parallel
+  //    calls (18/30 vs 26/30) while ahead on the tau2 slice (6/8 vs 4/8):
+  //    mixed evidence, so the agentic SIMPLE primary stays.
   //  - claude-opus-5 / -4.8 / -4.7 ($5/$25) -> claude-opus-5.5 ($4/$20), with
   //    opus-5 kept directly behind it as the in-family hot swap; 4.8 and 4.7
   //    leave the chains.
@@ -1348,6 +1361,8 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   // Agentic tier configs - models that excel at multi-step autonomous tasks
   agenticTiers: {
     SIMPLE: {
+      // 2026-11-27: kept over GPT-6 Luna ($0.10/$0.50) — BFCL 49/60 vs 41/60 on
+      // the pinned slice, parallel rows 26/30 vs 18/30 (portfolio.ts).
       primary: "openai/gpt-4o-mini", // $0.15/$0.60 - best tool compliance at lowest cost
       fallback: [
         "openai/gpt-5.6-luna", // $0.20/$1.20 — lightweight agentic tier of GPT-5.6
