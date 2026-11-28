@@ -141,6 +141,10 @@
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
   },
+  "mistral/mistral-large-4": {
+    "supportsTools": true,
+    "probedAt": "2026-11-28T04:13:09Z"
+  },
   "moonshot/kimi-k3": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
@@ -294,6 +298,10 @@
     "probedAt": "2026-10-20T18:12:51Z",
     "emptyCompletionSeen": true
   },
+  "openai/gpt-6.1-terra": {
+    "supportsTools": true,
+    "probedAt": "2026-11-28T04:14:35Z"
+  },
   "openai/gpt-6.2-astra": {
     "supportsTools": true,
     "probedAt": "2026-11-27T23:25:03Z"
@@ -322,6 +330,12 @@
     "probedAt": "2026-08-29T16:51:33Z",
     "emptyCompletionSeen": true
   },
+  "poolside/laguna-s-2.1": {
+    "supportsTools": false,
+    "probedAt": "2026-11-28T04:14:08Z",
+    "error": "API error after payment: 500",
+    "unavailable": true
+  },
   "poolside/laguna-xs-2.1": {
     "supportsTools": true,
     "probedAt": "2026-11-27T23:25:03Z"
@@ -339,12 +353,20 @@
     "probedAt": "2026-08-29T16:51:33Z"
   },
   "qwen/qwen3.8-flash": {
-    "supportsTools": false,
-    "probedAt": "2026-10-03T04:27:22Z"
+    "supportsTools": true,
+    "probedAt": "2026-11-28T04:15:07Z"
+  },
+  "qwen/qwen3.8-max": {
+    "supportsTools": true,
+    "probedAt": "2026-11-28T04:13:09Z"
   },
   "tencent/hy3": {
     "supportsTools": true,
     "probedAt": "2026-08-29T16:51:33Z"
+  },
+  "tencent/hy4-preview": {
+    "supportsTools": true,
+    "probedAt": "2026-11-28T04:13:09Z"
   },
   "xai/grok-4.3": {
     "supportsTools": true,
