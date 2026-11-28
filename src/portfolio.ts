@@ -544,6 +544,14 @@ type AffinityBand = Readonly<Record<string, number>>;
 // (grok-4.5 in parallel, reasoningMcq and reasoningMath; claude-opus-4.8 in the
 // BFCL parallel band and the trajectory bands; claude-sonnet-5 throughout),
 // and the evidence pools keep reaching those models.
+//
+// 2026-11-27 calibration (paired, same rows, pinned slices and graders):
+// claude-sonnet-5.5 now carries its OWN measured values in reasoningMcq
+// (GPQA, above Sonnet 5), reasoningMath (MGSM, tie), parallel (BFCL, tie) and
+// toolAgent (reduced tau2 slice, not worse); each band says how. Its
+// reasoning, codeEdit, vision and extraction entries are still Sonnet 4.6's
+// carried priors. gpt-6-luna was paired against gpt-4o-mini on the same BFCL
+// rows and tau2 slice and gets no band value (see RETAIL_POLICY_EXCEPTION).
 
 /** Affinity of a model with no task-specific evidence. */
 const NEUTRAL_AFFINITY = 0.68;
@@ -577,6 +585,20 @@ const WEB_RESEARCH: AffinityBand = {
   "claude-opus-4.8": 0.82,
 };
 
+// gpt-4o-mini's only measured values are these two tau2 retail risk bands.
+// GPT-6 Luna ($0.10/$0.50, the one cheaper tool-verified OpenAI chat model)
+// was paired against it on 2026-11-27 and is NOT added here:
+//  - BFCL, all 60 rows of the pinned RouterBench slice, BFCL's own FC handler
+//    and AST checker: 4o-mini 49/60, Luna 41/60, discordant 12 vs 4 (p =
+//    0.077). On the 30 parallel rows 26/30 vs 18/30, discordant 9 vs 1 (p =
+//    0.021): Luna is worse beyond noise at parallel calls, mostly wrong call
+//    counts and argument values; on three live_multiple rows it replied in
+//    prose (two of them clarifying questions) instead of calling a tool.
+//  - Reduced tau2 slice (8 tasks completed for both, generic base tasks, not
+//    policy-exception ones): 4o-mini 4/8, Luna 6/8, discordant 0 vs 2 (p =
+//    0.5); retail alone 2/4 each.
+// Neither run isolates the policy-exception risk split these bands encode,
+// and a parallel-call weakness argues against admitting Luna to them.
 const RETAIL_POLICY_EXCEPTION: AffinityBand = {
   "gpt-4.1": 1,
   "claude-sonnet-5": 0.9,
@@ -677,8 +699,21 @@ const AFFINITY = {
   // task with reward 1.0. Gemini 3.5 Flash emitted function calls as plain text
   // after the first structured calls and looped to the 100-step ceiling on the
   // airline task.
+  //
+  // Claude Sonnet 5.5, paired against Sonnet 5 (2026-11-27), a REDUCED tau2
+  // slice: 12 pinned base tasks (6 airline, 6 retail, chosen by a fixed
+  // SHA-256 order from the RouterBench tau slice), one trial each, official
+  // tau2 harness at 1d244f5d, frozen gpt-4.1 user simulator and evaluator,
+  // temperature 0. Nine tasks completed for both before the run's spend cap
+  // (airline-45, retail-49 and retail-69 were cut off unpaired). Sonnet 5 7/9,
+  // Sonnet 5.5 9/9; discordant pairs 0 Sonnet-5-only vs 2 Sonnet-5.5-only
+  // (airline-38, retail-64; p = 0.5). Not worse, so its own value is 1. This
+  // is the generic tau2 band only: the risk-split airline/retail bands and the
+  // Terminal-Bench and BrowseComp bands keep Sonnet 5 alone until risk-
+  // stratified trajectories and a Docker/Franklin host run measure 5.5 there.
   toolAgent: {
     "claude-sonnet-5": 1,
+    "claude-sonnet-5.5": 1,
     "gemini-3.6-flash": 0.88,
     "gpt-5.3-codex": 0.87,
     "kimi-k3.1-pro": 0.85,
@@ -721,9 +756,18 @@ const AFFINITY = {
   // payloads on 2/3 multilingual BFCL parallel cases. Gemini 3.5 Flash, Sonnet
   // 5, DeepSeek V4 Pro and Grok 4.5 were 0/3. This narrow prior only applies
   // after the conservative prompt feature in likelyNeedsParallelToolCalls.
+  //
+  // Claude Sonnet 5.5, paired against Sonnet 5 (2026-11-27): all 60 BFCL rows
+  // of the pinned RouterBench slice (15 each of live_simple, live_multiple,
+  // live_parallel, live_parallel_multiple; gorilla 6ea57973), BFCL's own
+  // OpenAI-compatible FC handler and AST checker. Overall 46/60 vs 48/60,
+  // discordant 3 Sonnet-5-only vs 5 Sonnet-5.5-only (p = 0.73). On the 30
+  // parallel rows both scored 24/30, and on the five non-English rows both
+  // passed the same three. A tie: Sonnet 5.5's own value is Sonnet 5's 0.84.
   parallel: {
     "claude-opus-4.8": 1,
     "claude-sonnet-5": 0.84,
+    "claude-sonnet-5.5": 0.84,
     "grok-4.5": 0.82,
     "gemini-3.6-flash": 0.8,
     "deepseek-v4-pro": 0.78,
@@ -748,10 +792,24 @@ const AFFINITY = {
   // ~170x more than Flash. The measured winner is the narrow default; version
   // recency alone is not a quality signal. Unused host tools must not change
   // this reasoning-only model choice.
+  //
+  // Claude Sonnet 5.5, paired against Sonnet 5 (2026-11-27): all 60 rows of
+  // the pinned RouterBench GPQA Diamond slice, the text adapter's
+  // `Answer: <letter>` contract and deterministic grader, 512 output tokens,
+  // temperature 0, same rows and settings for both. Sonnet 5 19/60, Sonnet 5.5
+  // 28/60; discordant pairs 3 Sonnet-5-only vs 12 Sonnet-5.5-only (exact
+  // McNemar p = 0.035). Sonnet 5 hit the 512-token cap on 38 rows and 5.5 on
+  // 28, and Sonnet 5 stopped with content_filter on two chemistry rows that
+  // 5.5 answered. Rerunning the 41 rows that either model truncated at 2,048
+  // tokens gave 18 vs 31 (overall 33/60 vs 47/60, discordant 3 vs 17, p =
+  // 0.003): the gap is not only verbosity. Sonnet 5.5 moves above Sonnet 5's
+  // 0.88 to 0.9, level with Grok 4.5 and below the two Gemini models, which no
+  // paired run compared it with. Sonnet 5's 0.88 is unchanged.
   reasoningMcq: {
     "gemini-3-flash-preview": 1,
     "gemini-3.6-flash": 0.91,
     "grok-4.5": 0.9,
+    "claude-sonnet-5.5": 0.9,
     "claude-sonnet-5": 0.88,
     "deepseek-v4-pro": 0.84,
   },
@@ -771,10 +829,18 @@ const AFFINITY = {
   // 10.4s vs 4.7s). It moves from K3's carried 0.9 to 0.88: below the models
   // the 4/5 calibration put at 0.9, by less than the raw 41/44 ratio because
   // the difference is within noise.
+  //
+  // Claude Sonnet 5.5, paired against Sonnet 5 on the same 50 rows and
+  // settings (2026-11-27): Sonnet 5 46/50, Sonnet 5.5 45/50; discordant pairs
+  // 1 Sonnet-5-only (mgsm-sw-062, 5.5 truncated at 512) vs 0. At 2,048 tokens
+  // the 4 rows either model truncated gave 2 vs 3 (46/50 vs 47/50 overall,
+  // discordant 0 vs 1). A tie: Sonnet 5.5's own measurement lands on the same
+  // 0.9.
   reasoningMath: {
     "gemini-3.6-flash": 1,
     "grok-4.5": 0.93,
     "claude-sonnet-5": 0.9,
+    "claude-sonnet-5.5": 0.9,
     "deepseek-v4-pro": 0.9,
     "kimi-k3.1-pro": 0.88,
   },
@@ -952,6 +1018,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "google/gemini-3-flash-preview",
       "google/gemini-3.6-flash",
       "xai/grok-4.5",
+      "anthropic/claude-sonnet-5.5",
       "anthropic/claude-sonnet-5",
       "deepseek/deepseek-v4-pro",
     ];
@@ -966,6 +1033,7 @@ function evidenceCandidates(task: TaskType): string[] {
       "google/gemini-3.6-flash",
       "xai/grok-4.5",
       "anthropic/claude-sonnet-5",
+      "anthropic/claude-sonnet-5.5",
       "deepseek/deepseek-v4-pro",
       "moonshot/kimi-k3.1-pro",
     ];
