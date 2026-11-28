@@ -142,12 +142,14 @@ Real output from the bundled defaults (`node` on the committed `dist/`):
   "candidates": ["google/gemini-3.6-flash", "deepseek/deepseek-v4-pro", "deepseek/deepseek-reasoner", "…"]
 }
 
-// same request, tools attached: "Cancel order B-42 and book the 9am flight to SFO."
+// route("Cancel order B-42 and book the 9am flight to SFO.", undefined, 256, { ..., hasTools: true, requiresTools: true })
 {
-  "model": "anthropic/claude-opus-4.8",
-  "taskType": "tool_agent_parallel",
+  "model": "anthropic/claude-sonnet-5",
+  "tier": "SIMPLE",
+  "taskType": "tool_agent",
   "profile": "agentic",
-  "reasoning": "… | agentic (tools) | v3 task=tool_agent_parallel agentRisk=high … candidates=12"
+  "candidates": ["anthropic/claude-sonnet-5", "openai/gpt-4o-mini", "openai/gpt-5.6-luna", "…"],
+  "reasoning": "score=-0.08 | short (13 tokens) | agentic (tools) | v3 task=tool_agent agentRisk=standard … candidates=29"
 }
 ```
 
@@ -268,7 +270,7 @@ Two rules govern this file, and both are load-bearing:
 1. **These are weak priors, never task-quality labels.** They inform the `speed` and `reliability` terms only. A model is not "better" because it is fast.
 2. **Historical numbers are never presented as a current provider SLA.** Hosts are expected to inject fresher observations (see below); the committed snapshot exists so the engine is safe and useful when a catalog is temporarily unavailable.
 
-The repository ships 69 live performance profiles (three samples per model), 9 auditable historical seeds, 84 function-calling probe results, and a built-in snapshot of the 97 text models in the public catalog (2026-11-24 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Gemini 4 Carbon, added 2026-11-11 ahead of its gateway listing, returned its own next tool call through a two-round tool history on both the streaming and non-streaming gateway paths, so it is admitted as a tool fallback too. Kimi K3.1 Pro, which replaced Kimi K3 in every chain and affinity band on 2026-11-23, passed the live profile probe (three completions, no errors, a well-formed tool call); its reasoningMath affinity is measured on K3.1 Pro (paired against K3 on 50 MGSM rows on 2026-11-23: 41/50 vs 44/50 at a 512-token budget, every gap a truncation, 46/50 each when the truncated rows were rerun at 2,048 tokens), and it moves from 0.9 to 0.88. Its other affinity values are still carried over from K3, not measured on K3.1 Pro. On 2026-11-24 Gemini 3.6 Flash replaced Gemini 3.5 Flash, and GPT-5.4 Mini replaced o4-mini, in every chain and affinity band, when the gateways began redirecting the retired ids to them; 3.6 Flash's affinity values are carried over from 3.5 Flash (which Google had been answering with 3.6 since October), not measured on 3.6. On 2026-12-01 Gemini 3.5 Flash-Lite replaces Gemini 2.5 Flash, and Gemini 3.8 Flash replaces Gemini 2.5 Pro, the same way; 3.5 Flash-Lite's extraction and chat affinity is carried over from 2.5 Flash. On 2026-12-11, when OpenAI shuts down o3, GPT-5 Mini and GPT-5 Nano, GPT-5.4 Mini replaces o3 (whose two rungs sat directly behind it and are dropped) and GPT-5.6 Luna replaces GPT-5 Mini, including as the agentic MEDIUM primary; Luna's terminal, tool-agent and web-research affinity is carried over from GPT-5 Mini, a reasoning model, not measured on Luna, which runs without reasoning. Mistral Large 4, Gemini 4 Argon, Hydrogen and Neon, Claude Fable 5.2, and GPT-6.2 Astra and Sol have no probe evidence yet. A model with no probe evidence can serve plain chat but never a tool-required turn.
+The repository ships 80 live performance profiles (three samples per model), 9 auditable historical seeds, 92 function-calling probe results, and a built-in snapshot of the 92 text models in the public catalog (2026-11-27 sync). Eleven newly listed models passed a real structured tool-call probe and are admitted as availability fallbacks for tool-required turns. DeepSeek V4 Flash Vision Experimental and Qwen 3.8 Flash did not return a valid tool call and remain fail-closed. GPT-6.1 Sol and DeepSeek V4.1 Flash also passed a structured tool-call probe in the subsequent capability refresh. Gemini 4 Carbon, added 2026-11-11 ahead of its gateway listing, returned its own next tool call through a two-round tool history on both the streaming and non-streaming gateway paths, so it is admitted as a tool fallback too. Kimi K3.1 Pro, which replaced Kimi K3 in every chain and affinity band on 2026-11-23, passed the live profile probe (three completions, no errors, a well-formed tool call); its reasoningMath affinity is measured on K3.1 Pro (paired against K3 on 50 MGSM rows on 2026-11-23: 41/50 vs 44/50 at a 512-token budget, every gap a truncation, 46/50 each when the truncated rows were rerun at 2,048 tokens), and it moves from 0.9 to 0.88. Its other affinity values are still carried over from K3, not measured on K3.1 Pro. On 2026-11-24 Gemini 3.6 Flash replaced Gemini 3.5 Flash, and GPT-5.4 Mini replaced o4-mini, in every chain and affinity band, when the gateways began redirecting the retired ids to them; 3.6 Flash's affinity values are carried over from 3.5 Flash (which Google had been answering with 3.6 since October), not measured on 3.6. On 2026-12-01 Gemini 3.5 Flash-Lite replaces Gemini 2.5 Flash, and Gemini 3.8 Flash replaces Gemini 2.5 Pro, the same way; 3.5 Flash-Lite's extraction and chat affinity is carried over from 2.5 Flash. On 2026-12-11, when OpenAI shuts down o3, GPT-5 Mini and GPT-5 Nano, GPT-5.4 Mini replaces o3 (whose two rungs sat directly behind it and are dropped) and GPT-5.6 Luna replaces GPT-5 Mini, including as the agentic MEDIUM primary; Luna's terminal, tool-agent and web-research affinity is carried over from GPT-5 Mini, a reasoning model, not measured on Luna, which runs without reasoning. On 2026-11-27 a generation refresh moved every fallback rung, and every primary without calibration behind it, to the same family's newer model at the same or a lower price: Opus 5.5 replaces Opus 5, 4.8 and 4.7 (Opus 5 stays as the in-family hot swap), Sonnet 5.5 replaces Sonnet 4.6, Grok 4.7 replaces Grok 4.5, GPT-6.2 Sol replaces GPT-5.5 and GPT-5.4, and GPT-6 Luna replaces GPT-5.4 Nano. Opus 5.5 also replaces Claude Fable 5 as the premium COMPLEX primary; Fable 5.2 is served on Base only, so no chain names it. None of these ids is retired at the gateway. The hand-set priors that named them (Sonnet 4.6's reasoning, code-edit, vision and extraction values, GLM 5.2's, and Grok 4.5's reasoning value) are carried to the successor, not measured; the measured values (BFCL parallel, GPQA, MGSM, BrowseComp, tau2, Terminal-Bench) stay with the model that was measured, and the primaries those measurements back (Sonnet 5, GPT-4o Mini, Gemini 3.1 Pro) do not move. The same day's probe gave GPT-6.2 Sol and Astra, Gemini 4 Argon, Hydrogen, Neon and Carbon, Claude Fable 5.2, GPT-5.6 Luna Pro, Nemotron 3.5 Bolt and Laguna XS 2.1 a well-formed tool call; the paid ones that every host can reach join the verified tool fallbacks, where GPT-6.2 Sol and Astra replace GPT-6 Sol, GPT-6.1 Sol and GPT-6 Astra. Mistral Large 4, Qwen 3.8 Max and Hunyuan 4 Preview have no probe evidence yet (the probe wallet ran dry before their requests were paid). A model with no probe evidence can serve plain chat but never a tool-required turn.
 
 Passing the function-call probe does **not** promote a model to primary. New tool-capable models are appended after the configured and trajectory-benchmarked candidate chains with neutral task affinity; they can recover an unavailable route immediately (cheapest first outside Premium), while primary promotion still requires an end-to-end agent evaluation.
 
@@ -293,7 +295,7 @@ const response = await fetch("https://blockrun.ai/api/v1/models");
 if (!response.ok) throw new Error(`Catalog unavailable: ${response.status}`);
 const catalog = parseModelCatalog(await response.json());
 
-catalog.chat;   // GPT-6.1 Sol and the other currently available chat models
+catalog.chat;   // GPT-6.2 Sol and the other currently available chat models
 catalog.image; // GPT Image, Nano Banana, Grok Imagine, CogView, Seedream, ...
 catalog.video; // Seedance, Grok Imagine Video, Sora (where available), ...
 catalog.music; // MiniMax Music and subsequent music listings
@@ -431,7 +433,7 @@ Omitted entries fall back to a weak historical prior rather than disqualifying a
 ```bash
 npm ci
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — 198 tests across 12 files
+npm test            # vitest — 211 tests across 12 files
 npm run build       # tsup → dist/
 npm run check       # all three, and what CI runs
 

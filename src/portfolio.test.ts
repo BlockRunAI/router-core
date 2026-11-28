@@ -38,6 +38,12 @@ const pricing = new Map<string, ModelPricing>([
   ["xai/grok-4.6", { inputPrice: 2, outputPrice: 10 }],
   ["xai/grok-4.7", { inputPrice: 2.5, outputPrice: 12 }],
   ["xiaomi/mimo-v2.5", { inputPrice: 0.5, outputPrice: 2 }],
+  ["google/gemini-4-argon", { inputPrice: 2, outputPrice: 10 }],
+  ["google/gemini-4-hydrogen", { inputPrice: 1.5, outputPrice: 7.5 }],
+  ["google/gemini-4-neon", { inputPrice: 3, outputPrice: 15 }],
+  ["openai/gpt-5.6-luna-pro", { inputPrice: 0.2, outputPrice: 1.2 }],
+  ["openai/gpt-6.2-astra", { inputPrice: 8, outputPrice: 40 }],
+  ["openai/gpt-6.2-sol", { inputPrice: 2, outputPrice: 10 }],
 ]);
 
 describe("PortfolioStrategy", () => {
@@ -126,7 +132,7 @@ describe("PortfolioStrategy", () => {
       hasTools: true,
       requiresTools: true,
       toolCount: 1,
-      unavailableModels: ["openai/gpt-6-astra"],
+      unavailableModels: ["openai/gpt-6.2-astra"],
     });
 
     expect(decision.taskType).toBe("tool_agent");
@@ -137,14 +143,21 @@ describe("PortfolioStrategy", () => {
         "anthropic/claude-opus-5.5",
         "anthropic/claude-sonnet-5.5",
         "google/gemini-3.8-flash",
+        "google/gemini-4-argon",
+        "google/gemini-4-hydrogen",
+        "google/gemini-4-neon",
         "openai/gpt-5.1",
+        "openai/gpt-5.6-luna-pro",
         "openai/gpt-6-luna",
-        "openai/gpt-6-sol",
+        "openai/gpt-6.2-sol",
         "xai/grok-4.6",
         "xai/grok-4.7",
         "xiaomi/mimo-v2.5",
       ]),
     );
+    expect(decision.candidates).not.toContain("openai/gpt-6.2-astra");
+    // Superseded by the GPT-6.2 pair on 2026-11-27: priced, but no longer listed.
+    expect(decision.candidates).not.toContain("openai/gpt-6-sol");
     expect(decision.candidates).not.toContain("openai/gpt-6-astra");
   });
 
@@ -155,8 +168,10 @@ describe("PortfolioStrategy", () => {
     });
 
     expect(decision.taskType).toBe("chat");
-    expect(decision.candidates).not.toContain("openai/gpt-6-luna");
-    expect(decision.candidates).not.toContain("anthropic/claude-sonnet-5.5");
+    // Both sit only in VERIFIED_TOOL_FALLBACKS (gpt-6-luna and sonnet-5.5,
+    // which this test used to name, joined configured chains on 2026-11-27).
+    expect(decision.candidates).not.toContain("xiaomi/mimo-v2.5");
+    expect(decision.candidates).not.toContain("google/gemini-4-neon");
   });
 
   it.each([

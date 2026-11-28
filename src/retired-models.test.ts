@@ -144,3 +144,44 @@ describe("retired models", () => {
     }
   });
 });
+
+/**
+ * The 2026-11-27 generation refresh. These ids are NOT retired — each still
+ * answers on both gateways — so they may keep calibrated affinity values and
+ * evidence-pool entries in portfolio.ts (that is where a measurement lives).
+ * What they may not do is reappear as a configured rung: the chains name the
+ * newer model of the same family at the same or a lower price.
+ */
+const SUPERSEDED: Readonly<Record<string, string>> = {
+  "anthropic/claude-fable-5": "anthropic/claude-opus-5.5",
+  "anthropic/claude-opus-4.8": "anthropic/claude-opus-5.5",
+  "anthropic/claude-opus-4.7": "anthropic/claude-opus-5.5",
+  "anthropic/claude-sonnet-4.6": "anthropic/claude-sonnet-5.5",
+  "xai/grok-4.5": "xai/grok-4.7",
+  "openai/gpt-5.5": "openai/gpt-6.2-sol",
+  "openai/gpt-5.4": "openai/gpt-6.2-sol",
+  "openai/gpt-5.4-nano": "openai/gpt-6-luna",
+};
+
+describe("superseded models (2026-11-27 refresh)", () => {
+  it("no configured chain names a superseded id", () => {
+    for (const [name, config] of chains()) {
+      for (const model of [config.primary, ...config.fallback]) {
+        expect(SUPERSEDED[model], `${name} names ${model}; use ${SUPERSEDED[model]}`).toBeUndefined();
+      }
+    }
+  });
+
+  it("every successor is tool-verified", () => {
+    for (const successor of new Set(Object.values(SUPERSEDED))) {
+      expect(DEFAULT_MODEL_CAPABILITIES[successor]?.supportsTools, successor).toBe(true);
+    }
+  });
+
+  it("premium COMPLEX is led by Opus 5.5, not a Base-only Fable", () => {
+    expect(DEFAULT_ROUTING_CONFIG.premiumTiers?.COMPLEX.primary).toBe("anthropic/claude-opus-5.5");
+    for (const [name, config] of chains()) {
+      expect([config.primary, ...config.fallback], name).not.toContain("anthropic/claude-fable-5.2");
+    }
+  });
+});

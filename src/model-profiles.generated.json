@@ -7,6 +7,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "anthropic/claude-fable-5.2": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 5587.3,
+    "p95LatencyMs": 6206.1,
+    "outputTokensPerSecond": 92.94,
+    "errorRate": 0,
+    "samples": 3
+  },
   "anthropic/claude-haiku-4.5": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 3157.4,
@@ -47,6 +55,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "anthropic/claude-opus-5.5": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 6485.2,
+    "p95LatencyMs": 6951.2,
+    "outputTokensPerSecond": 79.15,
+    "errorRate": 0,
+    "samples": 3
+  },
   "anthropic/claude-sonnet-4.5": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 6330.4,
@@ -71,6 +87,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "anthropic/claude-sonnet-5.5": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 4770.2,
+    "p95LatencyMs": 5352,
+    "outputTokensPerSecond": 108.11,
+    "errorRate": 0,
+    "samples": 3
+  },
   "deepseek/deepseek-chat": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 4351.4,
@@ -84,6 +108,14 @@
     "latencyMs": 5201.2,
     "p95LatencyMs": 6079.6,
     "outputTokensPerSecond": 99.77,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "deepseek/deepseek-v4-flash-vision-exp": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 4078.4,
+    "p95LatencyMs": 4464.5,
+    "outputTokensPerSecond": 127,
     "errorRate": 0,
     "samples": 3
   },
@@ -175,6 +207,38 @@
     "errorRate": 0,
     "samples": 3
   },
+  "google/gemini-4-argon": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 9565.7,
+    "p95LatencyMs": 10491.9,
+    "outputTokensPerSecond": 53.87,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-4-carbon": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 10692.9,
+    "p95LatencyMs": 12609.2,
+    "outputTokensPerSecond": 48.61,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-4-hydrogen": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 4520.7,
+    "p95LatencyMs": 4928.3,
+    "outputTokensPerSecond": 113.78,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "google/gemini-4-neon": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 6728,
+    "p95LatencyMs": 8294.8,
+    "outputTokensPerSecond": 78,
+    "errorRate": 0,
+    "samples": 3
+  },
   "minimax/minimax-m2.7": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 8761.1,
@@ -221,6 +285,14 @@
     "p95LatencyMs": 12992,
     "outputTokensPerSecond": 64.96,
     "errorRate": 0.3333,
+    "samples": 3
+  },
+  "nvidia/nemotron-3.5-bolt": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 5670.2,
+    "p95LatencyMs": 5688.6,
+    "outputTokensPerSecond": 90.3,
+    "errorRate": 0,
     "samples": 3
   },
   "nvidia/nemotron-nano-12b-v2-vl": {
@@ -360,11 +432,11 @@
     "samples": 3
   },
   "openai/gpt-5.6-luna-pro": {
-    "measuredAt": "2026-08-29T16:59:54Z",
-    "latencyMs": 13914.9,
-    "p95LatencyMs": 13914.9,
-    "outputTokensPerSecond": 36.79,
-    "errorRate": 0.6667,
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 11046.8,
+    "p95LatencyMs": 12033.6,
+    "outputTokensPerSecond": 148.22,
+    "errorRate": 0,
     "samples": 3
   },
   "openai/gpt-5.6-sol": {
@@ -404,6 +476,22 @@
     "latencyMs": 11324,
     "p95LatencyMs": 12747.6,
     "outputTokensPerSecond": 45.11,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-6.2-astra": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 7973.9,
+    "p95LatencyMs": 9532.7,
+    "outputTokensPerSecond": 47.21,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "openai/gpt-6.2-sol": {
+    "measuredAt": "2026-11-27T23:25:03Z",
+    "latencyMs": 6310.9,
+    "p95LatencyMs": 6725.5,
+    "outputTokensPerSecond": 58.01,
     "errorRate": 0,
     "samples": 3
   },
