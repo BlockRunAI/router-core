@@ -255,6 +255,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "mistral/mistral-large-4": {
+    "measuredAt": "2026-11-28T04:13:09Z",
+    "latencyMs": 6174.9,
+    "p95LatencyMs": 7306.8,
+    "outputTokensPerSecond": 84.27,
+    "errorRate": 0,
+    "samples": 3
+  },
   "moonshot/kimi-k3": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 24498.9,
@@ -479,6 +487,14 @@
     "errorRate": 0,
     "samples": 3
   },
+  "openai/gpt-6.1-terra": {
+    "measuredAt": "2026-11-28T04:14:35Z",
+    "latencyMs": 6020,
+    "p95LatencyMs": 6378.1,
+    "outputTokensPerSecond": 57.78,
+    "errorRate": 0,
+    "samples": 3
+  },
   "openai/gpt-6.2-astra": {
     "measuredAt": "2026-11-27T23:25:03Z",
     "latencyMs": 7973.9,
@@ -551,11 +567,35 @@
     "errorRate": 0,
     "samples": 3
   },
+  "qwen/qwen3.8-flash": {
+    "measuredAt": "2026-11-28T04:13:09Z",
+    "latencyMs": 8271.9,
+    "p95LatencyMs": 8495,
+    "outputTokensPerSecond": 61.95,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "qwen/qwen3.8-max": {
+    "measuredAt": "2026-11-28T04:13:09Z",
+    "latencyMs": 15575.9,
+    "p95LatencyMs": 16331,
+    "outputTokensPerSecond": 32.95,
+    "errorRate": 0,
+    "samples": 3
+  },
   "tencent/hy3": {
     "measuredAt": "2026-08-29T16:51:33Z",
     "latencyMs": 6062.3,
     "p95LatencyMs": 7070.2,
     "outputTokensPerSecond": 87.3,
+    "errorRate": 0,
+    "samples": 3
+  },
+  "tencent/hy4-preview": {
+    "measuredAt": "2026-11-28T04:13:09Z",
+    "latencyMs": 9049.2,
+    "p95LatencyMs": 9460.4,
+    "outputTokensPerSecond": 56.69,
     "errorRate": 0,
     "samples": 3
   },

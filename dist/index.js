@@ -2307,10 +2307,9 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "mistral/mistral-large-4": {
-    // supportsTools: not probed — fails closed
     contextWindow: 524288,
     maxOutputTokens: 262144,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "moonshot/kimi-k3.1-pro": {
@@ -2527,6 +2526,12 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsTools: true,
     supportsVision: true
   },
+  "openai/gpt-6.1-terra": {
+    contextWindow: 105e4,
+    maxOutputTokens: 128e3,
+    supportsTools: true,
+    supportsVision: true
+  },
   "openai/gpt-6.2-astra": {
     contextWindow: 105e4,
     maxOutputTokens: 128e3,
@@ -2546,7 +2551,7 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
     supportsVision: false
   },
   "poolside/laguna-s-2.1": {
-    // supportsTools: not probed — fails closed
+    // supportsTools: gateway unavailable at probe time — fails closed
     contextWindow: 1048576,
     maxOutputTokens: 131072,
     supportsTools: false,
@@ -2579,21 +2584,19 @@ var DEFAULT_MODEL_CAPABILITIES = Object.freeze({
   "qwen/qwen3.8-flash": {
     contextWindow: 1e6,
     maxOutputTokens: 131072,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: true
   },
   "qwen/qwen3.8-max": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1e6,
     maxOutputTokens: 131072,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: false
   },
   "tencent/hy4-preview": {
-    // supportsTools: not probed — fails closed
     contextWindow: 1048576,
     maxOutputTokens: 64e3,
-    supportsTools: false,
+    supportsTools: true,
     supportsVision: false
   },
   "xai/grok-4.3": {
@@ -2934,6 +2937,14 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "mistral/mistral-large-4": {
+    measuredAt: "2026-11-28T04:13:09Z",
+    latencyMs: 6174.9,
+    p95LatencyMs: 7306.8,
+    outputTokensPerSecond: 84.27,
+    errorRate: 0,
+    samples: 3
+  },
   "moonshot/kimi-k3": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 24498.9,
@@ -3158,6 +3169,14 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "openai/gpt-6.1-terra": {
+    measuredAt: "2026-11-28T04:14:35Z",
+    latencyMs: 6020,
+    p95LatencyMs: 6378.1,
+    outputTokensPerSecond: 57.78,
+    errorRate: 0,
+    samples: 3
+  },
   "openai/gpt-6.2-astra": {
     measuredAt: "2026-11-27T23:25:03Z",
     latencyMs: 7973.9,
@@ -3230,11 +3249,35 @@ var model_profiles_generated_default = {
     errorRate: 0,
     samples: 3
   },
+  "qwen/qwen3.8-flash": {
+    measuredAt: "2026-11-28T04:13:09Z",
+    latencyMs: 8271.9,
+    p95LatencyMs: 8495,
+    outputTokensPerSecond: 61.95,
+    errorRate: 0,
+    samples: 3
+  },
+  "qwen/qwen3.8-max": {
+    measuredAt: "2026-11-28T04:13:09Z",
+    latencyMs: 15575.9,
+    p95LatencyMs: 16331,
+    outputTokensPerSecond: 32.95,
+    errorRate: 0,
+    samples: 3
+  },
   "tencent/hy3": {
     measuredAt: "2026-08-29T16:51:33Z",
     latencyMs: 6062.3,
     p95LatencyMs: 7070.2,
     outputTokensPerSecond: 87.3,
+    errorRate: 0,
+    samples: 3
+  },
+  "tencent/hy4-preview": {
+    measuredAt: "2026-11-28T04:13:09Z",
+    latencyMs: 9049.2,
+    p95LatencyMs: 9460.4,
+    outputTokensPerSecond: 56.69,
     errorRate: 0,
     samples: 3
   },
